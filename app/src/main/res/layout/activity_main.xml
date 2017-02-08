@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -8,20 +9,29 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cjx.nexwork.MainActivity">
+    tools:context="com.cjx.nexwork.activities.MainActivity">
 
     <TextView
+        android:id="@+id/accessToken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView" />
+        android:text="Access Token" />
+
+    <TextView
+        android:id="@+id/expireTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/accessToken"
+        android:text="Time" />
 
     <Button
-        android:text="Login"
+        android:id="@+id/btnStudies"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="161dp"
-        android:id="@+id/btnLogin" />
+        android:layout_below="@+id/expireTime"
+        android:text="View studies" />
+
 </RelativeLayout>
+
