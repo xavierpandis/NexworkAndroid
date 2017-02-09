@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView accessToken;
     private TextView timeExpire;
     private Button btnStudies;
+    private Button btnUserProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,20 @@ public class MainActivity extends AppCompatActivity {
         timeExpire = (TextView) findViewById(R.id.expireTime);
 
         btnStudies = (Button) findViewById(R.id.btnStudies);
+        btnUserProfile = (Button) findViewById(R.id.btnUserProfile);
 
         btnStudies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent studiesIntent = new Intent(MainActivity.this, StudiesActivity.class);
+                startActivity(studiesIntent);
+            }
+        });
+
+        btnUserProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent studiesIntent = new Intent(MainActivity.this, UserProfileActivity.class);
                 startActivity(studiesIntent);
             }
         });
