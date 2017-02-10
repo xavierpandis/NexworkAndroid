@@ -24,7 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         getSupportActionBar().hide();
 
-        final UserToken userToken = UserLoginManager.getInstance(this.getApplicationContext()).getUserToken();
+        final UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
         TimerTask task = new TimerTask() {
             @Override

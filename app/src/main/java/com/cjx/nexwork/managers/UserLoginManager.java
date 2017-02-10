@@ -16,21 +16,19 @@ public class UserLoginManager {
     private String bearerToken;
     private String username;
 
-    private UserLoginManager(Context context) {
-        this.context = context;
+    private UserLoginManager() {
     }
 
-    public static UserLoginManager getInstance(Context context) {
+    public static UserLoginManager getInstance() {
         if(ourInstance == null){
-            ourInstance = new UserLoginManager(context);
+            ourInstance = new UserLoginManager();
         }
 
-        ourInstance.context = context;
         return ourInstance;
     }
 
     public synchronized void performLogin(final String username, String password, final LoginCallback loginCallback){
-        Call<UserToken> call =  UserTokenManager.getInstance(context).getUserToken(username, password);
+        Call<UserToken> call =  UserTokenManager.getInstance().getUserToken(username, password);
         this.username = username;
         call.enqueue(new Callback<UserToken>() {
             @Override

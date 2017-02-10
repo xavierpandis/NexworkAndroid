@@ -3,15 +3,21 @@ package com.cjx.nexwork.managers.user;
 import android.content.Context;
 import android.util.Log;
 
+import com.cjx.nexwork.managers.BaseManager;
 import com.cjx.nexwork.managers.UserLoginManager;
+import com.cjx.nexwork.managers.UserTokenManager;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.services.UserService;
 import com.cjx.nexwork.util.CustomProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,41 +28,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Xavi on 08/02/2017.
  */
 
-public class UserManager {
+public class UserManager extends BaseManager{
 
     private static UserManager ourInstance;
-    private List<User> studies;
-    private Retrofit retrofit;
-    private Context context;
+    private List<User> users;
     private UserService userService;
     private User user;
 
-    private UserManager(Context cntxt) {
-        context = cntxt;
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.getInstance(context).get("app.baseUrl"))
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
+    private UserManager() {
+        Retrofit retrofit = BaseManager.getInstance().getRetrofit();
         userService = retrofit.create(UserService.class);
     }
 
-    public static UserManager getInstance(Context cntxt) {
+    public static UserManager getInstance() {
         if (ourInstance == null) {
-            ourInstance = new UserManager(cntxt);
+            ourInstance = new UserManager();
         }
-
-        ourInstance.context = cntxt;
 
         return ourInstance;
     }
 
     public synchronized void getUser(final UserDetailCallback userDetailCallback) {
-        Call<User> call = userService.getUser(UserLoginManager.getInstance(context).getUsername(), UserLoginManager.getInstance(context).getBearerToken());
+        Call<User> call = userService.getUser(UserLoginManager.getInstance().getUsername());
 
         call.enqueue(new Callback<User>() {
             @Override
@@ -83,4 +76,5 @@ public class UserManager {
             }
         });
     }
+
 }

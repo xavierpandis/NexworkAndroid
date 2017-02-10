@@ -30,32 +30,29 @@ public class StudyManager {
     private StudyService studyService;
     private Study study;
 
-    private StudyManager(Context cntxt) {
-        context = cntxt;
+    private StudyManager() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.getInstance(context).get("app.baseUrl"))
+                .baseUrl(CustomProperties.baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         studyService = retrofit.create(StudyService.class);
     }
 
-    public static StudyManager getInstance(Context cntxt) {
+    public static StudyManager getInstance() {
         if (ourInstance == null) {
-            ourInstance = new StudyManager(cntxt);
+            ourInstance = new StudyManager();
         }
-
-        ourInstance.context = cntxt;
 
         return ourInstance;
     }
 
     public synchronized void getAllPlayers(final StudyCallback studyCallback) {
-        Call<List<Study>> call = studyService.getAllStudies(UserLoginManager.getInstance(context).getUsername() ,UserLoginManager.getInstance(context).getBearerToken());
+        Call<List<Study>> call = studyService.getAllStudies(UserLoginManager.getInstance().getUsername() ,UserLoginManager.getInstance().getBearerToken());
 
         call.enqueue(new Callback<List<Study>>() {
             @Override
@@ -84,7 +81,7 @@ public class StudyManager {
     }
 
     public synchronized void getDetailStudy(Long id, final StudyDetailCallback studyDetailCallback) {
-        Call<Study> call = studyService.getStudy(id , UserLoginManager.getInstance(context).getBearerToken());
+        Call<Study> call = studyService.getStudy(id , UserLoginManager.getInstance().getBearerToken());
         call.enqueue(new Callback<Study>() {
             @Override
             public void onResponse(Call<Study> call, Response<Study> response) {

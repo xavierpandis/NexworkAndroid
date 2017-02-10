@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        UserToken userToken = UserLoginManager.getInstance(this.getApplicationContext()).getUserToken();
+        UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
         if(userToken != null){
             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            UserLoginManager.getInstance(this.getApplicationContext()).performLogin(username, password, LoginActivity.this);
+            UserLoginManager.getInstance().performLogin(username, password, LoginActivity.this);
         }
     }
 

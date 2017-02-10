@@ -25,30 +25,27 @@ public class UserTokenManager {
     private String authorization;
     private Context context;
 
-    public static UserTokenManager getInstance(Context context) {
+    public static UserTokenManager getInstance() {
         if(ourInstance == null){
-            ourInstance = new UserTokenManager(context);
+            ourInstance = new UserTokenManager();
         }
 
-        ourInstance.context = context;
         return ourInstance;
     }
 
-    private UserTokenManager(Context context) {
+    private UserTokenManager() {
 
         try {
-            this.context = context;
-            //grant_type=password&scope=read%20write&client_secret=mySecretOAuthSecret&client_id=basketballapp
-            grantType = CustomProperties.getInstance(this.context).get("app.grantType");
-            scope = CustomProperties.getInstance(this.context).get("app.scope");
-            client_secret = CustomProperties.getInstance(this.context).get("app.clientSecret");
-            client_id = CustomProperties.getInstance(this.context).get("app.clientId");
+            grantType = CustomProperties.grantType;
+            scope = CustomProperties.scope;
+            client_secret = CustomProperties.clientSecret;
+            client_id = CustomProperties.clientId;
             String source = client_id + ":" + client_secret;
             byte[] byteArray = source.getBytes("UTF-8");
             authorization = "Basic " + Base64.encodeToString(byteArray, 0, byteArray.length, Base64.DEFAULT).trim();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(CustomProperties.getInstance(this.context).get("app.baseUrl"))
+                    .baseUrl(CustomProperties.baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 

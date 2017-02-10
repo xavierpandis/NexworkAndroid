@@ -37,7 +37,7 @@ public class StudyDetailActivity extends AppCompatActivity implements StudyDetai
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        StudyManager.getInstance(this.getApplicationContext()).getDetailStudy(id, StudyDetailActivity.this);
+        StudyManager.getInstance().getDetailStudy(id, StudyDetailActivity.this);
     }
 
     @Override

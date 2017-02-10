@@ -37,7 +37,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        UserManager.getInstance(this.getApplicationContext()).getUser(UserProfileActivity.this);
+        UserManager.getInstance().getUser(UserProfileActivity.this);
     }
 
 
@@ -50,7 +50,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
             userImage.setImageResource(R.drawable.default_user_image);
         }else{
             Picasso.with(this)
-                    .load(CustomProperties.getInstance(this).get("app.baseUrl")+"/"+user.getImagen())
+                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
                     .resize(300, 300)
                     .into(userImage);
         }

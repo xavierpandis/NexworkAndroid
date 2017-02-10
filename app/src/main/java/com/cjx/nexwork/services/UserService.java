@@ -17,8 +17,8 @@ public interface UserService {
             /**
              * "Bearer [space ]token"
              */
-            @Path("login") String login,
-            @Header("Authorization") String Authorization
+            @Path("login") String login
+            //@Header("Authorization") String Authorization
     );
 
 }
