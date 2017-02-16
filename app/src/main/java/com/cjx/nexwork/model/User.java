@@ -9,6 +9,7 @@ import java.util.Date;
 public class User {
     Long id;
     String login;
+    String password;
     String firstName;
     String lastName;
     String email;
@@ -21,9 +22,10 @@ public class User {
     String carta_presentacion;
     String ciudad;
 
-    public User(Long id, String login, String firstName, String lastName, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal) {
+    public User(Long id, String password, String login, String firstName, String lastName, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal) {
         this.id = id;
         this.login = login;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -34,6 +36,22 @@ public class User {
         this.github = github;
         this.carta_presentacion = carta_presentacion;
         this.web_personal = web_personal;
+    }
+
+    public User(String login, String password, String email, String firstName, String lastName){
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -163,6 +181,7 @@ public class User {
                 "carta_presentacion='" + carta_presentacion + '\'' +
                 ", id=" + id +
                 ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

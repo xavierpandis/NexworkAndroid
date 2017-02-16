@@ -2,6 +2,7 @@ package com.cjx.nexwork.services;
 
 import com.cjx.nexwork.model.User;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -27,6 +28,7 @@ public interface UserService {
     @GET("/api/account")
     Call<User> getCurrentUser();
 
-    @POST("/api/register")
-    Call<User> registerAccount();
+    @POST("/api/register/app")
+    Call<ResponseBody> registerAccount(@Body User user);
+
 }
