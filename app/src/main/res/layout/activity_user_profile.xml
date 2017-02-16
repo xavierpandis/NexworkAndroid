@@ -12,6 +12,16 @@
     android:clipToPadding="false"
     tools:context="com.cjx.nexwork.activities.UserProfileActivity">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerLoading"
+        android:elevation="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:padding="150dp" />
+
     <LinearLayout
         android:elevation="15dp"
         android:background="@color/background_box"
@@ -23,7 +33,8 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:id="@+id/boxUser">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -33,7 +44,6 @@
 
             <ImageView
                 android:layout_height="80dp"
-                app:srcCompat="@mipmap/ic_launcher"
                 android:id="@+id/userImage"
                 android:layout_width="80dp" />
 
@@ -45,7 +55,6 @@
                 android:layout_marginLeft="10dp">
 
                 <TextView
-                    android:text="User User"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/userName"
@@ -74,21 +83,18 @@
                 android:paddingBottom="8dp">
 
                 <TextView
-                    android:text="Facebook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/userFacebook"
                     android:layout_weight="0.33" />
 
                 <TextView
-                    android:text="Twitter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/userTwitter"
                     android:layout_weight="0.33" />
 
                 <TextView
-                    android:text="Github"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/userGithub"
@@ -109,7 +115,6 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:text="TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/userDescription" />
@@ -118,4 +123,5 @@
 
         </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

@@ -1,11 +1,14 @@
 package com.cjx.nexwork.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.model.UserToken;
 
@@ -26,14 +29,24 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         final UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String accessToken =  preferences.getString("accessToken","");
+
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if(userToken!=null) {
-                    Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                    startActivity(loginIntent);
-                } else {
+                if(accessToken.equals("")){
                     Intent loginIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                }else{
+
+                    TokenStoreManager.getInstance().setAccessToken(preferences.getString("accessToken",""));
+                    TokenStoreManager.getInstance().setRefreshToken(preferences.getString("refreshToken",""));
+                    TokenStoreManager.getInstance().setTokenType(preferences.getString("tokenType",""));
+                    TokenStoreManager.getInstance().setUsername(preferences.getString("username",""));
+                    TokenStoreManager.getInstance().setContext(SplashScreenActivity.this);
+
+                    Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     startActivity(loginIntent);
                 }
                 finish();

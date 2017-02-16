@@ -67,6 +67,17 @@
                 android:background="@color/colorPrimary"
                 android:layout_weight="2.56" />
 
+            <Button
+                android:id="@+id/createAccount"
+                style="@android:style/Widget.Material.Light.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_create_account"
+                android:textStyle="bold"
+                android:background="@color/colorAccent"
+                android:layout_weight="2.56" />
+
         </LinearLayout>
     </ScrollView>
 

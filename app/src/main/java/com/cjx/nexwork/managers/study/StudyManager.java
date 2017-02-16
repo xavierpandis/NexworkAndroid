@@ -1,45 +1,29 @@
 package com.cjx.nexwork.managers.study;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.cjx.nexwork.managers.UserLoginManager;
+import com.cjx.nexwork.managers.BaseManager;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.services.StudyService;
-import com.cjx.nexwork.util.CustomProperties;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Xavi on 08/02/2017.
  */
 
-public class StudyManager {
+public class StudyManager extends BaseManager{
     private static StudyManager ourInstance;
     private List<Study> studies;
-    private Retrofit retrofit;
-    private Context context;
     private StudyService studyService;
     private Study study;
 
     private StudyManager() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl(CustomProperties.baseUrl)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
         studyService = retrofit.create(StudyService.class);
     }
 
@@ -52,7 +36,7 @@ public class StudyManager {
     }
 
     public synchronized void getAllPlayers(final StudyCallback studyCallback) {
-        Call<List<Study>> call = studyService.getAllStudies(UserLoginManager.getInstance().getUsername() ,UserLoginManager.getInstance().getBearerToken());
+        Call<List<Study>> call = studyService.getAllStudies(TokenStoreManager.getInstance().getUsername());
 
         call.enqueue(new Callback<List<Study>>() {
             @Override
@@ -81,7 +65,7 @@ public class StudyManager {
     }
 
     public synchronized void getDetailStudy(Long id, final StudyDetailCallback studyDetailCallback) {
-        Call<Study> call = studyService.getStudy(id , UserLoginManager.getInstance().getBearerToken());
+        Call<Study> call = studyService.getStudy(id);
         call.enqueue(new Callback<Study>() {
             @Override
             public void onResponse(Call<Study> call, Response<Study> response) {

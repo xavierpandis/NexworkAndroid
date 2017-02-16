@@ -1,10 +1,12 @@
 package com.cjx.nexwork.services;
 
+import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.model.UserToken;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -21,4 +23,13 @@ public interface TokenService {
             @Field("client_secret") String client_secret,
             @Field("client_id") String client_id
     );
+
+    @FormUrlEncoded
+    @POST("/oauth/token")
+    Call<UserToken> getNewAccessToken(
+            @Field("client_id") String client_id,
+            @Field("client_secret") String client_secret,
+            @Field("refresh_token") String refresh_token,
+            @Field("grant_type") String grantType);
+
 }

@@ -45,7 +45,6 @@ public class StudiesActivity extends AppCompatActivity implements StudyCallback 
     @Override
     public void onSuccess(List<Study> listStudies) {
         studies = listStudies;
-        Log.d("nxw", studies.toString());
 
         ListView listStudyView = (ListView) findViewById(R.id.list_study);
 

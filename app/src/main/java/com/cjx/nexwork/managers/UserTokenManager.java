@@ -23,7 +23,6 @@ public class UserTokenManager {
     private String client_id;
     private String client_secret;
     private String authorization;
-    private Context context;
 
     public static UserTokenManager getInstance() {
         if(ourInstance == null){
@@ -59,4 +58,10 @@ public class UserTokenManager {
         Call<UserToken> call = tokenService.requestToken(authorization, username, password, grantType, scope, client_secret, client_id);
         return call;
     }
+
+    public synchronized Call<UserToken> getNewToken(String refreshToken){
+        Call<UserToken> call = tokenService.getNewAccessToken(CustomProperties.clientId,  CustomProperties.clientSecret, refreshToken, "refresh_token");
+        return call;
+    }
+
 }

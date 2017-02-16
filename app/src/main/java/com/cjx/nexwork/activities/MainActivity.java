@@ -1,19 +1,21 @@
 package com.cjx.nexwork.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.study.StudiesActivity;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.model.UserToken;
 
@@ -59,10 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
-        if(userToken!=null) {
-            accessToken.setText("Token: " + userToken.getAccessToken());
-            timeExpire.setText("expires in: " +  Math.ceil(userToken.getExpiresIn() / 60) + " minutes.");
-            Log.d("nxw", "RefreshToken: " + userToken.getRefreshToken());
+        if(TokenStoreManager.getInstance().getAccessToken()!=null || TokenStoreManager.getInstance().getAccessToken() != "") {
+            accessToken.setText("Token: " + TokenStoreManager.getInstance().getAccessToken() +" || "+ TokenStoreManager.getInstance().getRefreshToken());
+            //timeExpire.setText("expires in: " +  Math.ceil(userToken.getExpiresIn()) + " seconds.");
         } else {
             Log.e("MainActivity->", "onResume ERROR: userToken is NULL");
             Intent loginIntent = new Intent(this, LoginActivity.class);
@@ -70,4 +71,44 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logOut:
+                logOut();
+                return true;
+            case R.id.goProfile:
+                Intent profileIntent = new Intent(MainActivity.this, UserProfileActivity.class);
+                startActivity(profileIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void logOut(){
+        SharedPreferences mySPrefs =PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = mySPrefs.edit();
+        editor.remove("accessToken");
+        editor.remove("refreshToken");
+        editor.remove("tokenType");
+        editor.remove("username");
+        editor.apply();
+        TokenStoreManager.getInstance().setAccessToken("");
+        TokenStoreManager.getInstance().setRefreshToken("");
+        TokenStoreManager.getInstance().setTokenType("");
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
+
+
 }

@@ -1,6 +1,6 @@
 package com.cjx.nexwork.managers;
 
-import android.content.Context;
+import android.accounts.AccountManager;
 import android.util.Log;
 
 import com.cjx.nexwork.model.UserToken;
@@ -12,9 +12,9 @@ import retrofit2.Response;
 public class UserLoginManager {
     private static UserLoginManager ourInstance;
     private UserToken userToken;
-    private Context context;
     private String bearerToken;
     private String username;
+    AccountManager mAccountManager;
 
     private UserLoginManager() {
     }
@@ -29,7 +29,7 @@ public class UserLoginManager {
 
     public synchronized void performLogin(final String username, String password, final LoginCallback loginCallback){
         Call<UserToken> call =  UserTokenManager.getInstance().getUserToken(username, password);
-        this.username = username;
+        TokenStoreManager.getInstance().setUsername(username);
         call.enqueue(new Callback<UserToken>() {
             @Override
             public void onResponse(Call<UserToken> call, Response<UserToken> response) {

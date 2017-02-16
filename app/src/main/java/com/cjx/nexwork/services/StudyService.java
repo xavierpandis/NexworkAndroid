@@ -19,13 +19,11 @@ public interface StudyService {
             /**
              * "Bearer [space ]token"
              */
-            @Path("login") String login,
-            @Header("Authorization") String Authorization
+            @Path("login") String login
     );
 
     @GET("/api/estudios/{id}")
     Call<Study> getStudy(
-            @Path("id") Long id,
-            @Header("Authorization") String Authorization
+            @Path("id") Long id
     );
 }

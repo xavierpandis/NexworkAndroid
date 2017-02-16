@@ -3,6 +3,7 @@ package com.cjx.nexwork.managers.user;
 import android.content.Context;
 import android.util.Log;
 
+import com.cjx.nexwork.exceptions.NexworkTokenException;
 import com.cjx.nexwork.managers.BaseManager;
 import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.managers.UserTokenManager;
@@ -29,14 +30,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class UserManager extends BaseManager{
-
     private static UserManager ourInstance;
     private List<User> users;
     private UserService userService;
     private User user;
 
     private UserManager() {
-        Retrofit retrofit = BaseManager.getInstance().getRetrofit();
         userService = retrofit.create(UserService.class);
     }
 
@@ -49,7 +48,40 @@ public class UserManager extends BaseManager{
     }
 
     public synchronized void getUser(final UserDetailCallback userDetailCallback) {
-        Call<User> call = userService.getUser(UserLoginManager.getInstance().getUsername());
+        Call<User> call = userService.getUser("admin");
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                user = response.body();
+
+                int code = response.code();
+
+                if(code == 200 || code == 201){
+                    if(user != null){
+                        userDetailCallback.onSuccess(user);
+                    }
+                }
+                else{
+                    userDetailCallback.onFailure(new Throwable("ERROR" + code + ", " + response.raw().message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("StudyManager->", "getAllStudies()->ERROR: " + t);
+
+
+                if (t instanceof NexworkTokenException){
+                    Log.d("nxw => T", t.getMessage());
+                }
+                userDetailCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void getCurrentUser(final UserDetailCallback userDetailCallback) {
+        Call<User> call = userService.getCurrentUser();
 
         call.enqueue(new Callback<User>() {
             @Override

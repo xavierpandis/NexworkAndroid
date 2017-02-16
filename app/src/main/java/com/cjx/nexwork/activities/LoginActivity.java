@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -19,8 +21,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cjx.nexwork.activities.account.RegisterActivity;
 import com.cjx.nexwork.managers.LoginCallback;
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.model.UserToken;
 
@@ -40,16 +44,17 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        UserToken userToken = UserLoginManager.getInstance().getUserToken();
-
-        if(userToken != null){
-            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(mainIntent);
-            finish();
-        }
-
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+        Button createAccountButton = (Button) findViewById(R.id.createAccount);
+
+        createAccountButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -120,12 +125,23 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() >= 4;
     }
 
     @Override
     public void onSuccess(UserToken userToken) {
         showProgress(false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("accessToken",userToken.getAccessToken());
+        editor.putString("refreshToken",userToken.getRefreshToken());
+        editor.putString("tokenType", userToken.getTokenType());
+        editor.putString("username", TokenStoreManager.getInstance().getUsername());
+        editor.apply();
+
+        TokenStoreManager.getInstance().setAccessToken(userToken.getAccessToken());
+        TokenStoreManager.getInstance().setRefreshToken(userToken.getRefreshToken());
+        TokenStoreManager.getInstance().setTokenType(userToken.getTokenType());
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -136,7 +152,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     public void onFailure(Throwable t) {
         Log.e("LoginActivity->", "performLogin->onFailure ERROR " + t.getMessage());
 
-        // TODO: Gestionar los diversos tipos de errores. Por ejemplo, no se ha podido conectar correctamente.
         showProgress(false);
         mPasswordView.setError("ERROR");
         mPasswordView.requestFocus();
