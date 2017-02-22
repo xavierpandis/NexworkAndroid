@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.Login"/>
         <activity android:name=".activities.study.StudiesActivity" />
         <activity android:name=".activities.study.StudyDetailActivity" />
         <activity android:name=".activities.UserProfileActivity" />

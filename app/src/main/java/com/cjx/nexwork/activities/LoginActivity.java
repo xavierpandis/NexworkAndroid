@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
-        Button createAccountButton = (Button) findViewById(R.id.createAccount);
+        TextView createAccountButton = (TextView) findViewById(R.id.createAccount);
 
         createAccountButton.setOnClickListener(new OnClickListener() {
             @Override
