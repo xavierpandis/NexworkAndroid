@@ -4,99 +4,133 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.cjx.nexwork.R;
-import com.cjx.nexwork.activities.study.StudiesActivity;
+import com.cjx.nexwork.fragments.UserProfileFragment;
 import com.cjx.nexwork.managers.TokenStoreManager;
-import com.cjx.nexwork.managers.UserLoginManager;
-import com.cjx.nexwork.model.UserToken;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView accessToken;
-    private TextView timeExpire;
-    private Button btnStudies;
-    private Button btnUserProfile;
+    Stack<Integer> pageHistory;
+    int currentPage;
+    boolean saveToHistory;
+    ViewPager mViewPager;
+    Toolbar toolbar;
+    TabLayout tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        accessToken = (TextView) findViewById(R.id.accessToken);
-        timeExpire = (TextView) findViewById(R.id.expireTime);
+        tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.home_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
 
-        btnStudies = (Button) findViewById(R.id.btnStudies);
-        btnUserProfile = (Button) findViewById(R.id.btnUserProfile);
 
-        btnStudies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent studiesIntent = new Intent(MainActivity.this, StudiesActivity.class);
-                startActivity(studiesIntent);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_main, UserProfileFragment.newInstance())
+                .addToBackStack(null)
+                .commit();
+
+        /*mViewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(mViewPager);
+        tabs.setupWithViewPager(mViewPager);
+        tabs.getTabAt(0).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(1).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(2).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(3).setIcon(R.drawable.home_icon);*/
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new UserProfileFragment());
+        viewPager.setAdapter(adapter);
+    }
+
+    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public DemoCollectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            return mFragmentList.get(i);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+
+            Log.d("xs",mFragmentList.get(position).getView()+"");
+            String  spannableString = null;
+
+            if (position == 0) {
             }
-        });
-
-        btnUserProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent studiesIntent = new Intent(MainActivity.this, UserProfileActivity.class);
-                startActivity(studiesIntent);
+            if (position == 1) {
             }
-        });
-
+            if (position == 2) {
+            }
+            return spannableString;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        UserToken userToken = UserLoginManager.getInstance().getUserToken();
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String accessToken =  preferences.getString("accessToken","");
 
-        if(TokenStoreManager.getInstance().getAccessToken()!=null || TokenStoreManager.getInstance().getAccessToken() != "") {
-            accessToken.setText("Token: " + TokenStoreManager.getInstance().getAccessToken() +" || "+ TokenStoreManager.getInstance().getRefreshToken());
-            //timeExpire.setText("expires in: " +  Math.ceil(userToken.getExpiresIn()) + " seconds.");
-        } else {
-            Log.e("MainActivity->", "onResume ERROR: userToken is NULL");
-            Intent loginIntent = new Intent(this, LoginActivity.class);
+        if(accessToken.equals("")){
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
+        }else{
+
+            TokenStoreManager.getInstance().setAccessToken(preferences.getString("accessToken",""));
+            TokenStoreManager.getInstance().setRefreshToken(preferences.getString("refreshToken",""));
+            TokenStoreManager.getInstance().setTokenType(preferences.getString("tokenType",""));
+            TokenStoreManager.getInstance().setUsername(preferences.getString("username",""));
+            TokenStoreManager.getInstance().setContext(MainActivity.this);
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_settings, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.logOut:
-                logOut();
-                return true;
-            case R.id.goProfile:
-                Intent profileIntent = new Intent(MainActivity.this, UserProfileActivity.class);
-                startActivity(profileIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     public void logOut(){
-        SharedPreferences mySPrefs =PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = mySPrefs.edit();
         editor.remove("accessToken");
         editor.remove("refreshToken");
@@ -108,6 +142,29 @@ public class MainActivity extends AppCompatActivity {
         TokenStoreManager.getInstance().setTokenType("");
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(loginIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            logOut();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 

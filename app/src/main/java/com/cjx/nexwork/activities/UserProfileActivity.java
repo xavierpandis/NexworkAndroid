@@ -57,7 +57,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
         if(user.getImagen() == null){
-            userImage.setImageResource(R.drawable.default_user_image);
+            userImage.setImageResource(R.drawable.account_profile_icon);
         }else{
             Picasso.with(this)
                     .load(CustomProperties.baseUrl+"/"+user.getImagen())

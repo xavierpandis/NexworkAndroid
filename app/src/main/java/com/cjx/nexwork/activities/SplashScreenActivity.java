@@ -25,7 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().hide();
+        /*getSupportActionBar().hide();*/
 
         final UserToken userToken = UserLoginManager.getInstance().getUserToken();
 
