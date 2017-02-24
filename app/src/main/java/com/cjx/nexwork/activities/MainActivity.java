@@ -46,19 +46,19 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
 
 
-        getSupportFragmentManager()
+       /* getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_main, UserProfileFragment.newInstance())
                 .addToBackStack(null)
-                .commit();
+                .commit();*/
 
-        /*mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
         setupViewPager(mViewPager);
         tabs.setupWithViewPager(mViewPager);
         tabs.getTabAt(0).setIcon(R.drawable.home_icon);
         tabs.getTabAt(1).setIcon(R.drawable.home_icon);
         tabs.getTabAt(2).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(3).setIcon(R.drawable.home_icon);*/
+        tabs.getTabAt(3).setIcon(R.drawable.home_icon);
     }
 
     private void setupViewPager(ViewPager viewPager) {

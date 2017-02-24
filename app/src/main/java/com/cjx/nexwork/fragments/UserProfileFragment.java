@@ -3,7 +3,11 @@ package com.cjx.nexwork.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +18,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.activities.MainActivity;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.util.CustomProperties;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Xavi on 23/02/2017.
@@ -33,6 +41,7 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     private TextView userFacebook, userTwitter, userGithub, userDescription;
     private ProgressBar spinner;
     private LinearLayout boxUser;
+    private ViewPager mViewPager;
 
     public static UserProfileFragment newInstance() {
         return new UserProfileFragment();
@@ -54,6 +63,39 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         super.onDestroyView();
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter.addFragment(new UserProfileStudiesFragment());
+        adapter.addFragment(new UserProfileStudiesFragment());
+        adapter.addFragment(new UserProfileStudiesFragment());
+        adapter.addFragment(new UserProfileStudiesFragment());
+        viewPager.setAdapter(adapter);
+    }
+
+    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public DemoCollectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            return mFragmentList.get(i);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +103,20 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         UserManager.getInstance().getCurrentUser(this);
         spinner = (ProgressBar) view.findViewById(R.id.spinnerLoading);
         spinner.setVisibility(View.VISIBLE);
+
+        TabLayout tabs = (TabLayout) view.findViewById(R.id.tabsUserProfile);
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.home_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
+
+        mViewPager = (ViewPager) view.findViewById(R.id.pagerProfile);
+        setupViewPager(mViewPager);
+        tabs.setupWithViewPager(mViewPager);
+        tabs.getTabAt(0).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(1).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(2).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(3).setIcon(R.drawable.home_icon);
 
         userName = (TextView) view.findViewById(R.id.userName);
         userImage = (ImageView) view.findViewById(R.id.userImage);
@@ -75,8 +131,6 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
     @Override
     public void onSuccess(User user) {
-        Log.d("nxw",user.toString());
-
         spinner.setVisibility(View.INVISIBLE);
         boxUser.setVisibility(View.VISIBLE);
 
