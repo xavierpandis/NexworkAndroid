@@ -28,6 +28,8 @@
             android:theme="@style/AppTheme.Login"/>
         <activity android:name=".activities.study.StudiesActivity" />
         <activity android:name=".activities.study.StudyDetailActivity" />
+        <activity android:name=".activities.work.WorkActivity" />
+        <activity android:name=".activities.work.WorkDetailActivity" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.account.RegisterActivity" />
     </application>

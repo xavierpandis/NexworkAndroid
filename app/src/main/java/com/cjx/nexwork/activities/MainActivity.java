@@ -14,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.fragments.UserManagmentFragment;
 import com.cjx.nexwork.fragments.UserProfileFragment;
 import com.cjx.nexwork.managers.TokenStoreManager;
 
@@ -39,14 +41,16 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setIcon(R.drawable.home_icon);
+
         tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setIcon(R.drawable.home_icon));
         tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
+        tabs.addTab(tabs.newTab().setIcon(R.drawable.managment_icon));
         tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
 
 
-       /* getSupportFragmentManager()
+        /*getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_main, UserProfileFragment.newInstance())
                 .addToBackStack(null)
@@ -56,16 +60,16 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
         tabs.setupWithViewPager(mViewPager);
         tabs.getTabAt(0).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(1).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(2).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(3).setIcon(R.drawable.home_icon);
+        tabs.getTabAt(1).setIcon(R.drawable.chat_icon);
+        tabs.getTabAt(2).setIcon(R.drawable.managment_icon);
+        tabs.getTabAt(3).setIcon(R.drawable.account_profile_icon);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new UserProfileFragment());
         adapter.addFragment(new UserProfileFragment());
-        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new UserManagmentFragment());
         adapter.addFragment(new UserProfileFragment());
         viewPager.setAdapter(adapter);
     }

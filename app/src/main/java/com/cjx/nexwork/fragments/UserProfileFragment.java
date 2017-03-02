@@ -1,6 +1,7 @@
 package com.cjx.nexwork.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.MainActivity;
+import com.cjx.nexwork.activities.work.WorkActivity;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
@@ -109,6 +112,15 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
         tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
         tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
+
+        Button puton = (Button) view.findViewById(R.id.button3);
+        puton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intento = new Intent(getActivity(), WorkActivity.class);
+                getActivity().startActivity(intento);
+            }
+        });
 
         mViewPager = (ViewPager) view.findViewById(R.id.pagerProfile);
         setupViewPager(mViewPager);

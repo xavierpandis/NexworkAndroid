@@ -3,6 +3,7 @@ package com.cjx.nexwork.managers;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.cjx.nexwork.activities.LoginActivity;
 import com.cjx.nexwork.exceptions.NexworkTokenException;
@@ -67,6 +68,12 @@ public abstract class BaseManager {
                 try{
 
                     retrofit2.Response<UserToken> tokenResponse = call.execute();
+
+                    if(tokenResponse.code() == 400 || tokenResponse.code() == 401){
+                        Intent intentLogin = new Intent(TokenStoreManager.getInstance().getContext(), LoginActivity.class);
+                        TokenStoreManager.getInstance().getContext().startActivity(intentLogin);
+                        return null;
+                    }
                     if(tokenResponse.code() == 200) {
                         UserToken newToken = tokenResponse.body();
 

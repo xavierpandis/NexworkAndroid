@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Nexwork.iml" filepath="$PROJECT_DIR$/Nexwork.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NexworkAndroid.iml" filepath="$PROJECT_DIR$/NexworkAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
