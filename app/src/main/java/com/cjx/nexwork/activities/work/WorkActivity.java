@@ -72,7 +72,7 @@ public class WorkActivity extends AppCompatActivity{
 
             FragmentCreateWork mainFragment = FragmentCreateWork.newInstance();
 
-            getSupportFragmentManager().beginTransaction().add(R.id.fragment_work, mainFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_work, mainFragment).commit();
 
             return true;
         }

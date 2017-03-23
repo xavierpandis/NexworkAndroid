@@ -64,7 +64,7 @@ public class UserProfileStudiesFragment extends Fragment implements UserDetailCa
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_studies, container, false);
+        view = inflater.inflate(R.layout.activity_login, container, false);
         return view;
     }
 
