@@ -128,6 +128,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/button3" />
+
+        <Button
+            android:text="Works"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button4" />
+
+        <Button
+            android:text="ButtonChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnChat" />
     </LinearLayout>
 
     <LinearLayout

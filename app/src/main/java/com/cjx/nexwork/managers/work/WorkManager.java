@@ -53,7 +53,7 @@ public class WorkManager extends BaseManager {
 
     public synchronized void getWorksUser(final WorkCallback workCallback) {
         Call<List<WorkDTO>> call = workService.getWorksUser(TokenStoreManager.getInstance().getUsername());
-
+        works = new ArrayList<>();
         call.enqueue(new Callback<List<WorkDTO>>() {
             @Override
             public void onResponse(Call<List<WorkDTO>> call, Response<List<WorkDTO>> response) {

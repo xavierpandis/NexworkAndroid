@@ -3,18 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/search"
+        android:title="Search work"
         android:icon="@drawable/search_icon"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="Logout"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action2"
-        android:title=""
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/notification_icon" />
+        android:id="@+id/create_work"
+        android:checkable="false"
+        android:enabled="true"
+        android:icon="@drawable/add_icon"
+        android:title="Add new work"
+        android:visible="true"
+        app:showAsAction="always" />
 </menu>

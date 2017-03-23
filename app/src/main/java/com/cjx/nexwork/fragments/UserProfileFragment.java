@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.MainActivity;
+import com.cjx.nexwork.activities.study.StudiesActivity;
 import com.cjx.nexwork.activities.work.WorkActivity;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
@@ -119,6 +120,22 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
             public void onClick(View v) {
                 Intent intento = new Intent(getActivity(), WorkActivity.class);
                 getActivity().startActivity(intento);
+            }
+        });
+
+        Button btnStudies = (Button) view.findViewById(R.id.button4);
+        btnStudies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intento = new Intent(getActivity(), StudiesActivity.class);
+                getActivity().startActivity(intento);
+            }
+        });
+
+        Button btnChat = (Button) view.findViewById(R.id.btnChat);
+        btnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         });
 

@@ -20,11 +20,12 @@
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar" />
 
-        <ListView
+        <FrameLayout
+            android:id="@+id/fragment_work"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/list_work"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:layout_height="wrap_content" >
+        </FrameLayout>
+
+
     </LinearLayout>
 </RelativeLayout>
