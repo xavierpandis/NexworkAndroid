@@ -51,6 +51,33 @@ public class WorkManager extends BaseManager {
         return ourInstance;
     }
 
+    public synchronized void createWork(Work newWork, final WorkDetailCallback workDetailCallback){
+        Call<Work> call = workService.postWork(newWork);
+        works = new ArrayList<>();
+        call.enqueue(new Callback<Work>() {
+            @Override
+            public void onResponse(Call<Work> call, Response<Work> response) {
+                work =  response.body();
+
+                int code = response.code();
+
+                if(code == 200 || code == 201){
+                    workDetailCallback.onSuccess(work);
+                }
+                else{
+                    workDetailCallback.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Work> call, Throwable t) {
+                Log.e("StudyManager->", "getAllStudies()->ERROR: " + t);
+
+                workDetailCallback.onFailure(t);
+            }
+        });
+    }
+
     public synchronized void getWorksUser(final WorkCallback workCallback) {
         Call<List<WorkDTO>> call = workService.getWorksUser(TokenStoreManager.getInstance().getUsername());
         works = new ArrayList<>();

@@ -20,11 +20,12 @@
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar" />
 
+        C
+
         <FrameLayout
             android:id="@+id/fragment_work"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
 
     </LinearLayout>

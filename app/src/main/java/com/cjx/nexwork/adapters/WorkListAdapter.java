@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.fragments.work.FragmentDetailWork;
 import com.cjx.nexwork.model.Work;
 import com.squareup.picasso.Picasso;
 
@@ -87,7 +88,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
         holder.startedDate.setText(formateador.format(start));
         if(workList.get(position).getActualmente()){
             holder.endDate.setVisibility(View.GONE);
-            holder.current.setText("Actualmente");
+            holder.current.setText(R.string.current_work);
         }
         else{
             holder.endDate.setText(formateador.format(end));
@@ -97,14 +98,15 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Fragment fragment = new TrackDetailFragment();
+                Fragment fragment = new FragmentDetailWork();
                 Bundle args = new Bundle();
-                args.putString(TrackDetailFragment.ARG_ITEM_ID, holder.track.getId().toString());
+                args.putLong(FragmentDetailWork.WORK_ID, holder.work.getId());
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_main, fragment);
+                transaction.setCustomAnimations(android.R.anim.fade_out, android.R.anim.fade_in);
+                transaction.add(R.id.fragment_work, fragment);
                 transaction.addToBackStack(null);
-                transaction.commit();*/
+                transaction.commit();
             }
         });
     }

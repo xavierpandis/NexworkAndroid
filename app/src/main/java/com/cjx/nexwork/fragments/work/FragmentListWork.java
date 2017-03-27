@@ -3,11 +3,18 @@ package com.cjx.nexwork.fragments.work;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,7 +28,7 @@ import com.cjx.nexwork.model.Work;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentListWork extends Fragment implements WorkCallback{
+public class FragmentListWork extends Fragment implements WorkCallback, View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +36,7 @@ public class FragmentListWork extends Fragment implements WorkCallback{
 
     private RecyclerView recyclerView;
     private View view;
+    private FloatingActionButton floatingActionButton;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -52,7 +60,7 @@ public class FragmentListWork extends Fragment implements WorkCallback{
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        WorkManager.getInstance().getWorksUser(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -61,14 +69,22 @@ public class FragmentListWork extends Fragment implements WorkCallback{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_list_work,container, false);
 
+        WorkManager.getInstance().getWorksUser(this);
+
         List<Work> workList = new ArrayList<>();
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new WorkListAdapter(workList, this, view.getContext()));
+
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
+        floatingActionButton.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
     }
 
     @Override
@@ -87,6 +103,8 @@ public class FragmentListWork extends Fragment implements WorkCallback{
 
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);*/
         recyclerView.setAdapter(new WorkListAdapter(workList, this, getContext()));
 
     }
@@ -94,5 +112,46 @@ public class FragmentListWork extends Fragment implements WorkCallback{
     @Override
     public void onFailure(Throwable t) {
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        inflater.inflate(R.menu.menu_work, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.create_work) {
+
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.fragment_work, new FragmentCreateWork(), "listWorks")
+                    .addToBackStack(null)
+                    .commit();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnAddJob:
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                        .replace(R.id.fragment_work, new FragmentCreateWork())
+                        .addToBackStack(null)
+                        .commit();
+                break;
+        }
     }
 }

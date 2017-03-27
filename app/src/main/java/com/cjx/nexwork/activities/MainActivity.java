@@ -19,6 +19,9 @@ import android.view.View;
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.UserManagmentFragment;
 import com.cjx.nexwork.fragments.UserProfileFragment;
+import com.cjx.nexwork.fragments.work.FragmentCreateWork;
+import com.cjx.nexwork.fragments.work.FragmentDetailWork;
+import com.cjx.nexwork.fragments.work.FragmentListWork;
 import com.cjx.nexwork.managers.TokenStoreManager;
 
 import java.util.ArrayList;
@@ -67,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserProfileFragment());
-        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new FragmentDetailWork());
+        adapter.addFragment(new FragmentCreateWork());
         adapter.addFragment(new UserManagmentFragment());
         adapter.addFragment(new UserProfileFragment());
         viewPager.setAdapter(adapter);

@@ -3,6 +3,7 @@ package com.cjx.nexwork.activities.work;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,39 +46,11 @@ public class WorkActivity extends AppCompatActivity{
 
         setSupportActionBar(toolbar);
 
-        FragmentListWork mainFragment = FragmentListWork.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_work, mainFragment).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right).replace(R.id.fragment_work, new FragmentListWork()).commit();
     }
     @Override
     protected void onPostResume() {
         super.onPostResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_work, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.create_work) {
-
-            FragmentCreateWork mainFragment = FragmentCreateWork.newInstance();
-
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_work, mainFragment).commit();
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

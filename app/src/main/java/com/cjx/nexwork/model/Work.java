@@ -1,5 +1,7 @@
 package com.cjx.nexwork.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.joda.time.LocalDate;
 
 import java.util.Date;
@@ -22,9 +24,10 @@ public class Work {
 
     String descripcionCargo;
 
-    //Empresa empresa;
+    @SerializedName("trabajador")
+    User worker;
 
-    //User trabajador;
+    //Empresa empresa;
 
 
     public Work() {
@@ -87,6 +90,14 @@ public class Work {
         this.descripcionCargo = descripcionCargo;
     }
 
+    public User getWorker() {
+        return worker;
+    }
+
+    public void setWorker(User worker) {
+        this.worker = worker;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +113,9 @@ public class Work {
             return false;
         if (actualmente != null ? !actualmente.equals(work.actualmente) : work.actualmente != null)
             return false;
-        return descripcionCargo != null ? descripcionCargo.equals(work.descripcionCargo) : work.descripcionCargo == null;
+        if (descripcionCargo != null ? !descripcionCargo.equals(work.descripcionCargo) : work.descripcionCargo != null)
+            return false;
+        return worker != null ? worker.equals(work.worker) : work.worker == null;
 
     }
 
@@ -114,6 +127,7 @@ public class Work {
         result = 31 * result + (fechaFin != null ? fechaFin.hashCode() : 0);
         result = 31 * result + (actualmente != null ? actualmente.hashCode() : 0);
         result = 31 * result + (descripcionCargo != null ? descripcionCargo.hashCode() : 0);
+        result = 31 * result + (worker != null ? worker.hashCode() : 0);
         return result;
     }
 
@@ -126,6 +140,8 @@ public class Work {
                 ", fechaFin=" + fechaFin +
                 ", actualmente=" + actualmente +
                 ", descripcionCargo='" + descripcionCargo + '\'' +
+                ", worker=" + worker +
                 '}';
     }
+
 }

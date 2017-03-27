@@ -13,6 +13,6 @@
         android:enabled="true"
         android:icon="@drawable/add_icon"
         android:title="Add new work"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always" />
 </menu>
