@@ -255,8 +255,8 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
             Picasso
                     .with(getContext())
                     .load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .resize(userBackground.getWidth(), userBackground.getHeight())
                     .transform(new BlurTransformation(getContext()))
-                    .placeholder(R.drawable.account_profile_icon)
                     .memoryPolicy(MemoryPolicy.NO_CACHE)
                     .networkPolicy(NetworkPolicy.NO_CACHE)
                     .centerCrop()
