@@ -35,7 +35,7 @@ public class StudyManager extends BaseManager{
         return ourInstance;
     }
 
-    public synchronized void getAllPlayers(final StudyCallback studyCallback) {
+    public synchronized void getUserWorks(final StudyCallback studyCallback) {
         Call<List<Study>> call = studyService.getAllStudies(TokenStoreManager.getInstance().getUsername());
 
         call.enqueue(new Callback<List<Study>>() {
