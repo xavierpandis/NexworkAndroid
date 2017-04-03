@@ -2,13 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cjx.nexwork">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>.
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -24,14 +21,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme.Login"/>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.Login" />
         <activity android:name=".activities.study.StudiesActivity" />
         <activity android:name=".activities.study.StudyDetailActivity" />
         <activity android:name=".activities.work.WorkActivity" />
-        <activity android:name=".activities.work.WorkDetailActivity" />
         <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.account.RegisterActivity" />
+        <activity
+            android:name=".activities.account.EditProfileActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

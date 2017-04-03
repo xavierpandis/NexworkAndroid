@@ -29,7 +29,7 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.fragment_user_profile);
 
         spinner = (ProgressBar) findViewById(R.id.spinnerLoading);
         spinner.setVisibility(View.VISIBLE);

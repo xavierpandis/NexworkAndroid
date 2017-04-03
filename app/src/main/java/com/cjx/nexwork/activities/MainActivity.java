@@ -14,14 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.UserManagmentFragment;
 import com.cjx.nexwork.fragments.UserProfileFragment;
-import com.cjx.nexwork.fragments.work.FragmentCreateWork;
-import com.cjx.nexwork.fragments.work.FragmentDetailWork;
-import com.cjx.nexwork.fragments.work.FragmentListWork;
 import com.cjx.nexwork.managers.TokenStoreManager;
 
 import java.util.ArrayList;
@@ -43,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setIcon(R.drawable.home_icon);
 
         tabs = (TabLayout) findViewById(R.id.tabs);
@@ -68,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
         tabs.getTabAt(3).setIcon(R.drawable.account_profile_icon);
     }
 
+
+
     private void setupViewPager(ViewPager viewPager) {
         DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentDetailWork());
-        adapter.addFragment(new FragmentCreateWork());
         adapter.addFragment(new UserManagmentFragment());
-        adapter.addFragment(new UserProfileFragment());
+        adapter.addFragment(new UserManagmentFragment());
+        adapter.addFragment(new UserManagmentFragment());
+        adapter.addFragment(UserProfileFragment.newInstance(true));
         viewPager.setAdapter(adapter);
     }
 

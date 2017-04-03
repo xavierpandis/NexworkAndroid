@@ -2,13 +2,19 @@ package com.cjx.nexwork.services;
 
 import com.cjx.nexwork.model.User;
 
+import java.util.HashMap;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -30,5 +36,11 @@ public interface UserService {
 
     @POST("/api/register/app")
     Call<ResponseBody> registerAccount(@Body User user);
+
+    @Multipart
+    @POST("/api/account/update_image/android")
+    Call<ResponseBody> updateUserImage (
+            @Part("file\"; filename=\"pp.png\" ") RequestBody file ,
+            @Part("name") RequestBody name);
 
 }

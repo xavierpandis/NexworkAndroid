@@ -1,4 +1,4 @@
-package com.cjx.nexwork.fragments.work;
+package com.cjx.nexwork.fragments.study;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,10 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,21 +23,19 @@ import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentCreateWork.OnFragmentInteractionListener} interface
+ * {@link FragmentCreateStudy.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentCreateWork#newInstance} factory method to
+ * Use the {@link FragmentCreateStudy#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentCreateWork extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, WorkDetailCallback {
+public class FragmentCreateStudy extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, WorkDetailCallback {
 
     Calendar startCalendar = Calendar.getInstance();
     Calendar endCalendar = Calendar.getInstance();
@@ -90,13 +85,13 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     private String mParam1;
     private String mParam2;
 
-    public FragmentCreateWork() {
+    public FragmentCreateStudy() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static FragmentCreateWork newInstance() {
-        FragmentCreateWork fragment = new FragmentCreateWork();
+    public static FragmentCreateStudy newInstance() {
+        FragmentCreateStudy fragment = new FragmentCreateStudy();
         return fragment;
     }
 
@@ -258,8 +253,8 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
-                .replace(R.id.fragment_work, new FragmentListWork())
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .replace(R.id.fragment_work, new FragmentListStudy())
                 .addToBackStack(null)
                 .commit();
     }

@@ -1,12 +1,13 @@
 package com.cjx.nexwork.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Xavi on 08/02/2017.
  */
 
-public class User {
+public class User implements Serializable {
     Long id;
     String login;
     String password;

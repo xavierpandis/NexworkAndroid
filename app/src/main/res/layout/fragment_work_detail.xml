@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_study_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cjx.nexwork.activities.study.StudyDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,81 +30,206 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:text="TextView"
-                android:textAlignment="viewStart"
-                android:textSize="30sp" />
+                android:text="Position"
+                android:textAppearance="@android:style/TextAppearance.Material.Display1" />
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                card_view:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
 
-                <ImageView
-                    android:id="@+id/workUserImage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/account_profile_icon" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/workWorker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-            <LinearLayout
+                            <ImageView
+                                android:id="@+id/workUserImage"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                app:srcCompat="@drawable/account_profile_icon" />
+
+                            <TextView
+                                android:id="@+id/workWorker"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="User"
+                                android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                card_view:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
 
-                <TextView
-                    android:id="@+id/fechaInicio"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/relworkdates"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/fechaFinal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/border_left"
+                        android:orientation="vertical">
 
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Started"
+                            android:textAppearance="@android:style/TextAppearance.Material.Headline" />
 
-            <LinearLayout
+                        <TextView
+                            android:id="@+id/fechaInicio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Ended"
+                            android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
+                        <TextView
+                            android:id="@+id/fechaFinal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                app:cardUseCompatPadding="true"
+                card_view:cardCornerRadius="4dp">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/relworkcompany"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Description" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/workDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="18sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtWorkCompany"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center_vertical"
+                        android:text="Company"
+                        android:textAppearance="@android:style/TextAppearance.Material.Headline" />
 
-            <LinearLayout
+                    <TextView
+                        android:id="@+id/workCompany"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="Lorem ipsum"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
 
-                <TextView
-                    android:id="@+id/Recomendaciones"
+                <LinearLayout
+                    android:id="@+id/relworkdescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
+                    <TextView
+                        android:id="@+id/workDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lorem ipsum"
+                        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:id="@+id/relworkrecomendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtRecomendations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Recomendations"
+                        android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
     </ScrollView>

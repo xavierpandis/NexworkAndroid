@@ -21,12 +21,19 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.MainActivity;
+import com.cjx.nexwork.activities.account.EditProfileActivity;
 import com.cjx.nexwork.activities.study.StudiesActivity;
 import com.cjx.nexwork.activities.work.WorkActivity;
+import com.cjx.nexwork.fragments.study.FragmentListStudy;
+import com.cjx.nexwork.fragments.work.FragmentListWork;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
+import com.cjx.nexwork.util.BlurTransformation;
+import com.cjx.nexwork.util.CircleTransform;
 import com.cjx.nexwork.util.CustomProperties;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,14 +47,21 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
     View view;
     private User user;
-    private TextView userName;
-    private ImageView userImage;
+
     private TextView userFacebook, userTwitter, userGithub, userDescription;
     private ProgressBar spinner;
     private LinearLayout boxUser;
     private ViewPager mViewPager;
 
-    public static UserProfileFragment newInstance() {
+    private TextView userName;
+    private ImageView userImage;
+    private TextView userAlias;
+    private ImageView userBackground;
+    private TabLayout tabLayout;
+    public static Boolean profileConnected = false;
+
+    public static UserProfileFragment newInstance(Boolean userConnected) {
+        profileConnected = userConnected;
         return new UserProfileFragment();
     }
 
@@ -69,7 +83,7 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
     private void setupViewPager(ViewPager viewPager) {
         DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new UserProfileStudiesFragment());
+        adapter.addFragment(new FragmentListWork(profileConnected));
         adapter.addFragment(new UserProfileStudiesFragment());
         adapter.addFragment(new UserProfileStudiesFragment());
         adapter.addFragment(new UserProfileStudiesFragment());
@@ -103,9 +117,49 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_user_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         UserManager.getInstance().getCurrentUser(this);
-        spinner = (ProgressBar) view.findViewById(R.id.spinnerLoading);
+
+        TabLayout tabLayoutParent = (TabLayout) getActivity().findViewById(R.id.tabs);
+        tabLayoutParent.setVisibility(View.GONE);
+
+        Button button6 = (Button) view.findViewById(R.id.button6);
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(getContext(), EditProfileActivity.class);
+                startActivity(intent);
+
+                /*Intent intent = new Intent();
+                // Show only images, no videos or anything else
+                intent.setType("image*//*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                // Always show the chooser (if there are multiple options available)
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);*/
+            }
+        });
+
+        userName = (TextView) view.findViewById(R.id.profileUserRealName);
+        userImage = (ImageView) view.findViewById(R.id.profileUserImage);
+        userAlias = (TextView) view.findViewById(R.id.profileUserAlias);
+        userBackground = (ImageView) view.findViewById(R.id.profileUserBackgroundImage);
+        tabLayout = (TabLayout) view.findViewById(R.id.tabs_profile);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_icon));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.chat_icon));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_profile_icon));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification_icon));
+
+        mViewPager = (ViewPager) view.findViewById(R.id.pager_profile);
+        setupViewPager(mViewPager);
+        tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.home_icon);
+        tabLayout.getTabAt(1).setIcon(R.drawable.chat_icon);
+        tabLayout.getTabAt(2).setIcon(R.drawable.managment_icon);
+        tabLayout.getTabAt(3).setIcon(R.drawable.account_profile_icon);
+
+        /*spinner = (ProgressBar) view.findViewById(R.id.spinnerLoading);
         spinner.setVisibility(View.VISIBLE);
 
         TabLayout tabs = (TabLayout) view.findViewById(R.id.tabsUserProfile);
@@ -124,10 +178,12 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         });
 
         Button btnStudies = (Button) view.findViewById(R.id.button4);
+        btnStudies.setText("Chat 2");
         btnStudies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intento = new Intent(getActivity(), StudiesActivity.class);
+                //Intent intento = new Intent(getActivity(), StudiesActivity.class);
+                Intent intento = new Intent(getActivity(), ChatActivity.class);
                 getActivity().startActivity(intento);
             }
         });
@@ -154,13 +210,13 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         userGithub = (TextView) view.findViewById(R.id.userGithub);
         userDescription = (TextView) view.findViewById(R.id.userDescription);
         boxUser = (LinearLayout) view.findViewById(R.id.boxUser);
-        boxUser.setVisibility(View.INVISIBLE);
+        boxUser.setVisibility(View.INVISIBLE);*/
         return view;
     }
 
     @Override
     public void onSuccess(User user) {
-        spinner.setVisibility(View.INVISIBLE);
+       /* spinner.setVisibility(View.INVISIBLE);
         boxUser.setVisibility(View.VISIBLE);
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
@@ -175,7 +231,40 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         userFacebook.setText(user.getFacebook());
         userTwitter.setText(user.getTwitter());
         userGithub.setText(user.getGithub());
-        userDescription.setText(user.getCarta_presentacion());
+        userDescription.setText(user.getCarta_presentacion());*/
+
+        if(user.getImagen() == null){
+            userImage.setImageResource(R.drawable.account_profile_icon);
+            userBackground.setImageResource(R.drawable.account_profile_icon);
+        }else{
+
+            Picasso.with(getActivity())
+                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .resize(300, 300)
+                    .transform(new CircleTransform())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(userImage);
+
+           /* Picasso.with(getActivity())
+                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .into(userBackground);*/
+
+            Picasso
+                    .with(getContext())
+                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .transform(new BlurTransformation(getContext()))
+                    .placeholder(R.drawable.account_profile_icon)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
+                    .centerCrop()
+                    .into(userBackground);
+        }
+
+        userName.setText(user.getFirstName() + " " + user.getLastName());
+        userAlias.setText(user.getLogin());
     }
 
     @Override

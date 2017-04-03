@@ -1,9 +1,6 @@
 package com.cjx.nexwork.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,17 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.work.FragmentDetailWork;
 import com.cjx.nexwork.model.Work;
-import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +22,7 @@ import java.util.List;
  * Created by xavi on 18/02/2017.
  */
 
-public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHolder> {
+public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.ViewHolder> {
     private List<Work> workList;
     Fragment fragmentOne;
 
@@ -65,7 +57,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public WorkListAdapter(List<Work> works, Fragment fragmentOne, Context cntxt) {
+    public StudyListAdapter(List<Work> works, Fragment fragmentOne, Context cntxt) {
         workList = works;
         this.fragmentOne = fragmentOne;
         context = cntxt;
@@ -73,7 +65,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
 
     // Create new views (invoked by the layout manager)
     @Override
-    public WorkListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StudyListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.work_list, parent, false);
 
@@ -109,8 +101,8 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
                 args.putLong(FragmentDetailWork.WORK_ID, holder.work.getId());
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
-                transaction.replace(R.id.fragment_work, fragment, "detailWork");
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragment_work, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

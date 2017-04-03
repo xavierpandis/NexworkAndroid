@@ -4,13 +4,14 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.LocalDate;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by jotabono on 8/2/17.
  */
 
-public class Work {
+public class Work implements Serializable{
 
     Long id;
 
@@ -27,8 +28,20 @@ public class Work {
     @SerializedName("trabajador")
     User worker;
 
-    //Empresa empresa;
+    @SerializedName("empresa")
+    Company company;
 
+
+    public Work(Long id, String cargo, Date fechaInicio, Date fechaFin, Boolean actualmente, String descripcionCargo, User worker, Company company) {
+        this.id = id;
+        this.cargo = cargo;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.actualmente = actualmente;
+        this.descripcionCargo = descripcionCargo;
+        this.worker = worker;
+        this.company = company;
+    }
 
     public Work() {
     }
@@ -98,6 +111,28 @@ public class Work {
         this.worker = worker;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "Work{" +
+                "id=" + id +
+                ", cargo='" + cargo + '\'' +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFin=" + fechaFin +
+                ", actualmente=" + actualmente +
+                ", descripcionCargo='" + descripcionCargo + '\'' +
+                ", worker=" + worker +
+                ", company=" + company +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,7 +150,8 @@ public class Work {
             return false;
         if (descripcionCargo != null ? !descripcionCargo.equals(work.descripcionCargo) : work.descripcionCargo != null)
             return false;
-        return worker != null ? worker.equals(work.worker) : work.worker == null;
+        if (worker != null ? !worker.equals(work.worker) : work.worker != null) return false;
+        return company != null ? company.equals(work.company) : work.company == null;
 
     }
 
@@ -128,20 +164,8 @@ public class Work {
         result = 31 * result + (actualmente != null ? actualmente.hashCode() : 0);
         result = 31 * result + (descripcionCargo != null ? descripcionCargo.hashCode() : 0);
         result = 31 * result + (worker != null ? worker.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Work{" +
-                "id=" + id +
-                ", cargo='" + cargo + '\'' +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFin=" + fechaFin +
-                ", actualmente=" + actualmente +
-                ", descripcionCargo='" + descripcionCargo + '\'' +
-                ", worker=" + worker +
-                '}';
     }
 
 }

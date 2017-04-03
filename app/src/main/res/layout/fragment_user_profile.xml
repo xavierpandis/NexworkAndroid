@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:id="@+id/relinfouser"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="0.08"
+        android:background="#80000000">
+
+        <ImageView
+            android:id="@+id/backbuttonprofile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:elevation="5dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/arrow_left_icon" />
+
+        <ImageView
+            android:id="@+id/profileUserBackgroundImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="false"
+            android:background="#80000000"
+            android:backgroundTintMode="src_in"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_user_image" />
+
+        <RelativeLayout
+            android:id="@+id/reluserinfoin"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="true"
+            android:layout_weight="0.08">
+
+            <ImageView
+                android:id="@+id/profileUserImage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:minHeight="150dp"
+                android:minWidth="150dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/default_user_image" />
+
+            <TextView
+                android:id="@+id/profileUserAlias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/profileUserImage"
+                android:layout_alignRight="@+id/profileUserImage"
+                android:layout_below="@+id/profileUserImage"
+                android:gravity="center_horizontal"
+                android:text="00:00"
+                android:textColor="@color/material_bluegrey50"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profileUserRealName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/profileUserImage"
+                android:layout_alignRight="@+id/profileUserImage"
+                android:layout_below="@+id/profileUserAlias"
+                android:gravity="center_horizontal"
+                android:text="00:00"
+                android:textColor="@color/material_bluegrey50"
+                android:textSize="22sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/reltabsprofile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/reluserinfoin"
+            android:layout_weight="0.08"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relinfouser"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:visibility="visible" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</RelativeLayout>

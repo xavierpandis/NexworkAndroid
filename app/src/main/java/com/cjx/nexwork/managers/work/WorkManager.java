@@ -20,7 +20,9 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +37,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class WorkManager extends BaseManager {
 
     private static WorkManager ourInstance;
-    private ArrayList<Work> works = new ArrayList<>();
+    private List<Work> works = new ArrayList<>();
     private WorkService workService;
     private Work work;
 
@@ -53,7 +55,6 @@ public class WorkManager extends BaseManager {
 
     public synchronized void createWork(Work newWork, final WorkDetailCallback workDetailCallback){
         Call<Work> call = workService.postWork(newWork);
-        works = new ArrayList<>();
         call.enqueue(new Callback<Work>() {
             @Override
             public void onResponse(Call<Work> call, Response<Work> response) {
@@ -108,6 +109,57 @@ public class WorkManager extends BaseManager {
             public void onFailure(Call<List<WorkDTO>> call, Throwable t) {
                 Log.e("StudyManager->", "getAllStudies()->ERROR: " + t);
 
+                workCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void editWork(Work newWork, final WorkDetailCallback workDetailCallback){
+        Call<Work> call = workService.editWork(newWork);
+        call.enqueue(new Callback<Work>() {
+            @Override
+            public void onResponse(Call<Work> call, Response<Work> response) {
+                work =  response.body();
+
+                int code = response.code();
+
+                if(code == 200 || code == 201){
+                    workDetailCallback.onSuccess(work);
+                }
+                else{
+                    workDetailCallback.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Work> call, Throwable t) {
+                Log.e("StudyManager->", "getAllStudies()->ERROR: " + t);
+
+                workDetailCallback.onFailure(t);
+            }
+        });
+    }
+
+    public synchronized void searchWorkByName(String query, final WorkCallback workCallback){
+        Call<List<Work>> call = workService.searchWorkByName(query);
+        works = new ArrayList<>();
+        call.enqueue(new Callback<List<Work>>() {
+            @Override
+            public void onResponse(Call<List<Work>> call, Response<List<Work>> response) {
+                works = response.body();
+
+                int code = response.code();
+
+                if(code == 200 || code == 201){
+                    workCallback.onSuccess(works);
+                }
+                else{
+                    workCallback.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Work>> call, Throwable t) {
                 workCallback.onFailure(t);
             }
         });

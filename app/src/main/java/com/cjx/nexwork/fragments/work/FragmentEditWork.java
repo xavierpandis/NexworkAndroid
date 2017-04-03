@@ -4,12 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,28 +15,32 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentCreateWork.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FragmentCreateWork#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by Xavi on 28/03/2017.
  */
-public class FragmentCreateWork extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, WorkDetailCallback {
+
+public class FragmentEditWork extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, WorkDetailCallback {
+
+    public static final String WORK = null;
+
+    private Long workId;
+
+    private Work work;
 
     Calendar startCalendar = Calendar.getInstance();
     Calendar endCalendar = Calendar.getInstance();
@@ -53,66 +53,25 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     private CheckBox checkWorking;
     private EditText editDescription;
 
-    /*DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
+    private boolean editPetition = false;
 
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            // TODO Auto-generated method stub
-            startCalendar.set(Calendar.YEAR, year);
-            startCalendar.set(Calendar.MONTH, monthOfYear);
-            startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateStart();
-        }
-
-    };
-
-    DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            // TODO Auto-generated method stub
-            endCalendar.set(Calendar.YEAR, year);
-            endCalendar.set(Calendar.MONTH, monthOfYear);
-            endCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateEnd();
-        }
-
-    };*/
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public FragmentCreateWork() {
+    public FragmentEditWork() {
         // Required empty public constructor
-    }
-
-    // TODO: Rename and change types and number of parameters
-    public static FragmentCreateWork newInstance() {
-        FragmentCreateWork fragment = new FragmentCreateWork();
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        if(getArguments() != null){
+            this.workId = getArguments().getLong(WORK);
+            WorkManager.getInstance().getDetailWork(this.workId, this);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_work,container, false);
 
         editPosition = (EditText) view.findViewById(R.id.editPosition);
@@ -122,6 +81,7 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         editDescription = (EditText) view.findViewById(R.id.editDescription);
 
         Button btnAddJob = (Button) view.findViewById(R.id.btn_add_job);
+        btnAddJob.setText("GUARDAR");
         btnAddJob.setOnClickListener(this);
 
         editDateStarted.setFocusable(false);
@@ -137,6 +97,11 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
@@ -147,6 +112,43 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onSuccess(Work work) {
+        Log.d("nxw", ""+editPetition);
+        if(!editPetition){
+            this.work = work;
+
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+
+            editPosition.setText(work.getCargo());
+            editDateStarted.setText(formateador.format(work.getFechaInicio()));
+            startCalendar.setTime(work.getFechaInicio());
+            if(!work.getActualmente()){
+                editDateEnd.setText(formateador.format(work.getFechaFin()));
+                endCalendar.setTime(work.getFechaFin());
+                checkWorking.setChecked(false);
+            }
+            else {
+                checkWorking.setChecked(true);
+            }
+            editDescription.setText(work.getDescripcionCargo());
+        }
+        else{
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
+                    .replace(R.id.fragment_work, new FragmentListWork(), "editFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
+
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        Log.d("nxw", t.getMessage());
+    }
+
+    @Override
     public void onClick(final View v) {
         if(v.getId() == R.id.editPosition){
             Log.d("nxw", "position");
@@ -154,7 +156,7 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.btn_add_job:
-                addJob();
+                editJob();
                 break;
             case R.id.editPosition:
                 Log.d("nxw", "position");
@@ -193,11 +195,12 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         }
     }
 
-    private void addJob() {
+    private void editJob() {
+
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         try{
-            Work work = new Work();
             work.setCargo(editPosition.getText().toString());
             Date startDate = new Date();
             Date endDate = new Date();
@@ -209,20 +212,16 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
             if(!editDescription.getText().toString().isEmpty()) work.setDescripcionCargo(editDescription.getText().toString());
             startDate = dateFormat.parse(editDateStarted.getText().toString());
             work.setFechaInicio(startDate);
+            editPetition = true;
+            WorkManager.getInstance().editWork(work, this);
 
-            WorkManager.getInstance().createWork(work, this);
 
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
-        /*getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_work, new FragmentListStudy())
-                .commit();*/
-        Log.d("nxw", "add job");
+
     }
 
     @Override
@@ -250,37 +249,5 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onSuccess(Work work) {
-        Log.d("nxw", work.toString());
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
-                .replace(R.id.fragment_work, new FragmentListWork())
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onFailure(Throwable t) {
-        Log.d("nxw", t.getMessage());
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

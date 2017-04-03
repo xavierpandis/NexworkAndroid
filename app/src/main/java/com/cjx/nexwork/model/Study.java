@@ -1,12 +1,15 @@
 package com.cjx.nexwork.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Xavi on 08/02/2017.
  */
 
-public class Study {
+public class Study implements Serializable{
 
     Long id;
     Date fechaInicio;
@@ -15,12 +18,14 @@ public class Study {
     String curso;
     Float nota;
     String descripcion;
-    //Centro centro_estudios;
+
+    @SerializedName("centro")
+    Center center;
 
     public Study() {
     }
 
-    public Study(Long id, Date fechaInicio, Date fechaFinal, Boolean actualmente, String curso, Float nota, String descripcion) {
+    public Study(Long id, Date fechaInicio, Date fechaFinal, Boolean actualmente, String curso, Float nota, String descripcion, Center center) {
         this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;
@@ -28,6 +33,7 @@ public class Study {
         this.curso = curso;
         this.nota = nota;
         this.descripcion = descripcion;
+        this.center = center;
     }
 
     public Long getId() {
@@ -86,6 +92,28 @@ public class Study {
         this.descripcion = descripcion;
     }
 
+    public Center getCenter() {
+        return center;
+    }
+
+    public void setCenter(Center center) {
+        this.center = center;
+    }
+
+    @Override
+    public String toString() {
+        return "Study{" +
+                "id=" + id +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFinal=" + fechaFinal +
+                ", actualmente=" + actualmente +
+                ", curso='" + curso + '\'' +
+                ", nota=" + nota +
+                ", descripcion='" + descripcion + '\'' +
+                ", center=" + center +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +130,9 @@ public class Study {
             return false;
         if (curso != null ? !curso.equals(study.curso) : study.curso != null) return false;
         if (nota != null ? !nota.equals(study.nota) : study.nota != null) return false;
-        return descripcion != null ? descripcion.equals(study.descripcion) : study.descripcion == null;
+        if (descripcion != null ? !descripcion.equals(study.descripcion) : study.descripcion != null)
+            return false;
+        return center != null ? center.equals(study.center) : study.center == null;
 
     }
 
@@ -115,19 +145,7 @@ public class Study {
         result = 31 * result + (curso != null ? curso.hashCode() : 0);
         result = 31 * result + (nota != null ? nota.hashCode() : 0);
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
+        result = 31 * result + (center != null ? center.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Study{" +
-                "id=" + id +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFinal=" + fechaFinal +
-                ", actualmente=" + actualmente +
-                ", curso='" + curso + '\'' +
-                ", nota=" + nota +
-                ", descripcion='" + descripcion + '\'' +
-                '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.cjx.nexwork.fragments.work;
+package com.cjx.nexwork.fragments.study;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,12 +12,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +32,7 @@ import com.cjx.nexwork.model.Work;
 
 import java.util.List;
 
-public class FragmentListWork extends Fragment implements WorkCallback, View.OnClickListener{
+public class FragmentListStudy extends Fragment implements WorkCallback, View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,26 +45,18 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     private ItemTouchHelper.SimpleCallback simpleItemTouchCallback;
     private WorkListAdapter workListAdapter;
     private Paint p = new Paint();
-    private Toolbar toolbar;
-    private ActionBar actionBar;
-
-    private Boolean worksUserConnected = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public FragmentListWork() {
+    public FragmentListStudy() {
         // Required empty public constructor
     }
 
-    public FragmentListWork(Boolean worksUserConnected) {
-        this.worksUserConnected = worksUserConnected;
-    }
-
     // TODO: Rename and change types and number of parameters
-    public static FragmentListWork newInstance() {
-        FragmentListWork fragment = new FragmentListWork();
+    public static FragmentListStudy newInstance() {
+        FragmentListStudy fragment = new FragmentListStudy();
         return fragment;
     }
 
@@ -80,7 +69,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         }
 
         setHasOptionsMenu(true);
-        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
     }
 
@@ -91,8 +79,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         view = inflater.inflate(R.layout.fragment_list_work,container, false);
 
         WorkManager.getInstance().getWorksUser(this);
-
-        actionBar.setTitle("Your works");
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
@@ -122,10 +108,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     public void onSuccess(List<Work> workList) {
         Log.d("nxw", workList.toString());
 
-        for(Work work: workList){
-            Log.d("nxw", "Company -> "+work.getCompany());
-        }
-
         works = workList;
 
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
@@ -148,81 +130,79 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
     @SuppressLint("NewApi")
     private void initSwipe(){
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
-        if(worksUserConnected){
-            ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return false;
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                Work work = works.get(position);
+
+                if (direction == ItemTouchHelper.LEFT){
+                    workListAdapter.removeItem(position);
                 }
+                else if(direction == ItemTouchHelper.RIGHT){
+                    Log.d("nxw", "editar");
+                    Log.d("nxw", work.getCargo());
 
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    int position = viewHolder.getAdapterPosition();
+                    Bundle args = new Bundle();
+                    args.putLong(FragmentEditStudy.WORK, work.getId());
 
-                    Work work = works.get(position);
+                    Fragment fragment = new FragmentEditStudy();
+                    fragment.setArguments(args);
 
-                    if (direction == ItemTouchHelper.LEFT){
-                        workListAdapter.removeItem(position);
-                    }
-                    else if(direction == ItemTouchHelper.RIGHT){
-                        Log.d("nxw", "editar");
-                        Log.d("nxw", work.getCargo());
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                            .replace(R.id.fragment_work, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            }
 
-                        Bundle args = new Bundle();
-                        args.putLong(FragmentEditWork.WORK, work.getId());
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
-                        Fragment fragment = new FragmentEditWork();
-                        fragment.setArguments(args);
+                Log.d("nxw", ""+dX);
+                Bitmap icon;
 
-                        getActivity()
-                                .getSupportFragmentManager()
-                                .beginTransaction()
-                                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                                .replace(R.id.fragment_work, fragment)
-                                .addToBackStack(null)
-                                .commit();
+                Drawable drawableDelete = getResources().getDrawable(R.drawable.delete_icon, null);
+                Drawable drawableEdit = getResources().getDrawable(R.drawable.pencil_icon, null);
+
+                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if(dX > 0){
+                        p.setColor(Color.parseColor("#388E3C"));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
+                        icon = drawableToBitmap(drawableEdit);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+                        icon = drawableToBitmap(drawableDelete);
+                        c.drawBitmap(icon,null,icon_dest,p);
                     }
                 }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(this.recyclerView);
 
-                @Override
-                public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
-                    Log.d("nxw", ""+dX);
-                    Bitmap icon;
-
-                    Drawable drawableDelete = getResources().getDrawable(R.drawable.delete_icon, null);
-                    Drawable drawableEdit = getResources().getDrawable(R.drawable.pencil_icon, null);
-
-                    if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-
-                        View itemView = viewHolder.itemView;
-                        float height = (float) itemView.getBottom() - (float) itemView.getTop();
-                        float width = height / 3;
-
-                        if(dX > 0){
-                            p.setColor(Color.parseColor("#388E3C"));
-                            RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
-                            c.drawRect(background,p);
-                            RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
-                            icon = drawableToBitmap(drawableEdit);
-                            c.drawBitmap(icon,null,icon_dest,p);
-                        } else {
-                            p.setColor(Color.parseColor("#D32F2F"));
-                            RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
-                            c.drawRect(background,p);
-                            RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
-                            icon = drawableToBitmap(drawableDelete);
-                            c.drawBitmap(icon,null,icon_dest,p);
-                        }
-                    }
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                }
-            };
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-            itemTouchHelper.attachToRecyclerView(this.recyclerView);
-        }
     }
 
     public static Bitmap drawableToBitmap (Drawable drawable) {
@@ -293,8 +273,8 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
-                    .replace(R.id.fragment_work, new FragmentCreateWork(), "listWorks")
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.fragment_work, new FragmentCreateStudy(), "listWorks")
                     .addToBackStack(null)
                     .commit();
 
@@ -312,7 +292,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                         .getSupportFragmentManager()
                         .beginTransaction()
                         .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                        .replace(R.id.fragment_work, new FragmentCreateWork())
+                        .replace(R.id.fragment_work, new FragmentCreateStudy())
                         .addToBackStack(null)
                         .commit();
                 break;
