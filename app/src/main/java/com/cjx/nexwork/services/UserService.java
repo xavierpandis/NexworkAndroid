@@ -1,8 +1,10 @@
 package com.cjx.nexwork.services;
 
+import com.cjx.nexwork.model.Friend;
 import com.cjx.nexwork.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -42,5 +44,11 @@ public interface UserService {
     Call<ResponseBody> updateUserImage (
             @Part("file\"; filename=\"pp.png\" ") RequestBody file ,
             @Part("name") RequestBody name);
+
+    @GET("")
+    Call<List<Friend>> getFriendsUserConnected();
+
+    @GET("")
+    Call<List<Friend>> getFriendsUser(@Path("id") Long id);
 
 }

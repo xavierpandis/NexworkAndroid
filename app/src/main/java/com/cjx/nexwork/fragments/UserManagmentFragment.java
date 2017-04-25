@@ -2,8 +2,11 @@ package com.cjx.nexwork.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,20 +29,19 @@ import com.squareup.picasso.Picasso;
 
 public class UserManagmentFragment extends Fragment{
 
-
     public static UserManagmentFragment newInstance() {
         return new UserManagmentFragment();
     }
 
     @Override
     public void onAttach(Context context) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         super.onAttach(context);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -51,7 +53,6 @@ public class UserManagmentFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.managment_fragment, container, false);
-
         return view;
     }
 }

@@ -110,7 +110,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
-                transaction.replace(R.id.fragment_work, fragment, "detailWork");
+                transaction.replace(R.id.content_main, fragment, "detailWork");
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

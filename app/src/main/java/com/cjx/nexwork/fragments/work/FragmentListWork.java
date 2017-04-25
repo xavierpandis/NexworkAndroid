@@ -2,6 +2,7 @@ package com.cjx.nexwork.fragments.work;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,14 +28,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.adapters.WorkListAdapter;
 import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentListWork extends Fragment implements WorkCallback, View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
@@ -61,6 +69,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         // Required empty public constructor
     }
 
+    @SuppressLint("ValidFragment")
     public FragmentListWork(Boolean worksUserConnected) {
         this.worksUserConnected = worksUserConnected;
     }
@@ -92,6 +101,29 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
         WorkManager.getInstance().getWorksUser(this);
 
+        /*works = new ArrayList<>();
+
+        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
+        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));*/
+
         actionBar.setTitle("Your works");
 
         Context context = view.getContext();
@@ -99,6 +131,12 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
         floatingActionButton.setOnClickListener(this);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
+        workListAdapter = new WorkListAdapter(works, this, getContext());
+        recyclerView.setAdapter(workListAdapter);
+
+        workListAdapter.notifyDataSetChanged();
 
         return view;
     }
@@ -115,12 +153,26 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
     @Override
     public void onDetach() {
+        workListAdapter.notifyDataSetChanged();
         super.onDetach();
     }
 
     @Override
     public void onSuccess(List<Work> workList) {
         Log.d("nxw", workList.toString());
+
+        /*SharedPreferences mPrefs = getActivity().getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(workList); // myObject - instance of MyObject
+        prefsEditor.putString("worksUserLogged", json);
+        prefsEditor.apply();
+
+        String jsonLoaded = mPrefs.getString("worksUserLogged", "");
+        if(!json.equals("")){
+
+        }
+        MyObject obj = gson.fromJson(json, MyObject.class);*/
 
         for(Work work: workList){
             Log.d("nxw", "Company -> "+work.getCompany());
@@ -180,9 +232,12 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                                 .getSupportFragmentManager()
                                 .beginTransaction()
                                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                                .replace(R.id.fragment_work, fragment)
+                                .add(R.id.content_main, fragment, "editWork")
                                 .addToBackStack(null)
                                 .commit();
+
+                        workListAdapter.notifyDataSetChanged();
+
                     }
                 }
 
@@ -222,6 +277,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
             };
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
             itemTouchHelper.attachToRecyclerView(this.recyclerView);
+            workListAdapter.notifyDataSetChanged();
         }
     }
 

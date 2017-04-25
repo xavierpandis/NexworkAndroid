@@ -39,7 +39,8 @@ public class StudiesActivity extends AppCompatActivity implements StudyCallback 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        StudyManager.getInstance().getAllPlayers(StudiesActivity.this);
+        StudyManager.getInstance()
+                .getUserWorks(StudiesActivity.this);
     }
 
     @Override

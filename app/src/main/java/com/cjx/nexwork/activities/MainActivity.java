@@ -2,6 +2,7 @@ package com.cjx.nexwork.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -14,8 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.fragments.HomeFragment;
 import com.cjx.nexwork.fragments.UserManagmentFragment;
 import com.cjx.nexwork.fragments.UserProfileFragment;
 import com.cjx.nexwork.managers.TokenStoreManager;
@@ -39,77 +43,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(R.drawable.home_icon);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-        tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.home_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.managment_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
-
-
-        /*getSupportFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_main, UserProfileFragment.newInstance())
-                .addToBackStack(null)
-                .commit();*/
+                .replace(R.id.content_main, HomeFragment.newInstance())
+                .commit();
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        setupViewPager(mViewPager);
-        tabs.setupWithViewPager(mViewPager);
-        tabs.getTabAt(0).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(1).setIcon(R.drawable.chat_icon);
-        tabs.getTabAt(2).setIcon(R.drawable.managment_icon);
-        tabs.getTabAt(3).setIcon(R.drawable.account_profile_icon);
-    }
-
-
-
-    private void setupViewPager(ViewPager viewPager) {
-        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserManagmentFragment());
-        adapter.addFragment(new UserManagmentFragment());
-        adapter.addFragment(new UserManagmentFragment());
-        adapter.addFragment(UserProfileFragment.newInstance(true));
-        viewPager.setAdapter(adapter);
-    }
-
-    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            return mFragmentList.get(i);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment) {
-            mFragmentList.add(fragment);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-
-            Log.d("xs",mFragmentList.get(position).getView()+"");
-            String  spannableString = null;
-
-            if (position == 0) {
-            }
-            if (position == 1) {
-            }
-            if (position == 2) {
-            }
-            return spannableString;
-        }
     }
 
     @Override
@@ -151,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -167,9 +108,25 @@ public class MainActivity extends AppCompatActivity {
             logOut();
             return true;
         }
+        Log.d("nxw", item.getItemId()+"");
+        if(id == android.R.id.home){
+            Log.d("nxw", "back");
+            onBackPressed();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        } else {
+            super.onBackPressed();
+        }
+
+    }
 
 }

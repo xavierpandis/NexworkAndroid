@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/htab_maincontent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/htab_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/htab_collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:fitsSystemWindows="true"
+            android:translationZ="20dp"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+            app:titleEnabled="false"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Subhead">
+
+            <RelativeLayout
+                android:id="@+id/relinfouser"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_weight="0.08"
+                android:background="#80000000">
+
+                <ImageButton
+                    android:id="@+id/backbuttonprofile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@android:color/transparent"
+                    android:elevation="5dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/arrow_left_icon"
+                    tools:ignore="VectorDrawableCompat" />
+
+                <ImageView
+                    android:id="@+id/profileUserBackgroundImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="false"
+                    android:backgroundTintMode="src_in"
+                    android:foreground="@drawable/gradient_background_profile"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_user_image" />
+
+                <RelativeLayout
+                    android:id="@+id/reluserinfoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_marginBottom="20dp"
+                    android:layout_weight="0.08">
+
+                    <ImageView
+                        android:id="@+id/profileUserImage"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:adjustViewBounds="true"
+                        android:minHeight="150dp"
+                        android:minWidth="150dp"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/default_user_image" />
+
+                    <TextView
+                        android:id="@+id/profileUserAlias"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/profileUserImage"
+                        android:layout_alignRight="@+id/profileUserImage"
+                        android:layout_below="@+id/profileUserImage"
+                        android:gravity="center_horizontal"
+                        android:text="00:00"
+                        android:textColor="@color/material_bluegrey50"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/profileUserRealName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/profileUserImage"
+                        android:layout_alignRight="@+id/profileUserImage"
+                        android:layout_below="@+id/profileUserAlias"
+                        android:gravity="center_horizontal"
+                        android:text="00:00"
+                        android:textColor="@color/material_bluegrey50"
+                        android:textSize="22sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/htab_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_gravity="top"
+                android:layout_marginBottom="48dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+            <LinearLayout
+                android:id="@+id/reltabsprofile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/reluserinfoin"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                app:layout_collapseMode="pin">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:translationZ="30dp" />
+
+            </LinearLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,23 +1,44 @@
 package com.cjx.nexwork.fragments;
 
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.MainActivity;
@@ -32,9 +53,11 @@ import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.util.BlurTransformation;
 import com.cjx.nexwork.util.CircleTransform;
 import com.cjx.nexwork.util.CustomProperties;
+import com.github.florent37.picassopalette.PicassoPalette;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +66,7 @@ import java.util.List;
  * Created by Xavi on 23/02/2017.
  */
 
+@SuppressLint("NewApi")
 public class UserProfileFragment extends Fragment implements UserDetailCallback {
 
     View view;
@@ -53,12 +77,19 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     private LinearLayout boxUser;
     private ViewPager mViewPager;
 
+    Drawable drawableHomeIcon;
+    Drawable drawableChatIcon;
+    Drawable drawableManagementIcon;
+
     private TextView userName;
     private ImageView userImage;
     private TextView userAlias;
     private ImageView userBackground;
     private TabLayout tabLayout;
     public static Boolean profileConnected = false;
+    CollapsingToolbarLayout collapsingToolbar;
+    private AppBarLayout appBarLayout;
+    private Toolbar toolbarCollapsed;
 
     public static UserProfileFragment newInstance(Boolean userConnected) {
         profileConnected = userConnected;
@@ -77,17 +108,13 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     }
 
     @Override
-    public void onDestroyView(){
-        super.onDestroyView();
+    public void onDetach(){
+        super.onDetach();
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new FragmentListWork(profileConnected));
-        adapter.addFragment(new UserProfileStudiesFragment());
-        adapter.addFragment(new UserProfileStudiesFragment());
-        adapter.addFragment(new UserProfileStudiesFragment());
-        viewPager.setAdapter(adapter);
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
     }
 
     public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
@@ -100,12 +127,17 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
         @Override
         public Fragment getItem(int i) {
-            return mFragmentList.get(i);
+            switch (i){
+                case 0: return new FragmentListWork(profileConnected);
+                case 1: return new UserProfileStudiesFragment();
+                case 2: return new FragmentFriendList();
+                default: return new FragmentListWork(profileConnected);
+            }
         }
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+            return 3;
         }
 
         public void addFragment(Fragment fragment) {
@@ -117,26 +149,18 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        view = inflater.inflate(R.layout.collapse_layout, container, false);
+
         UserManager.getInstance().getCurrentUser(this);
 
-        TabLayout tabLayoutParent = (TabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayoutParent.setVisibility(View.GONE);
+        collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.htab_collapse_toolbar);
 
-        Button button6 = (Button) view.findViewById(R.id.button6);
-        button6.setOnClickListener(new View.OnClickListener() {
+        collapsingToolbar.setTitle("Username");
+        collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        collapsingToolbar.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
-                Intent intent = new Intent(getContext(), EditProfileActivity.class);
-                startActivity(intent);
-
-                /*Intent intent = new Intent();
-                // Show only images, no videos or anything else
-                intent.setType("image*//*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                // Always show the chooser (if there are multiple options available)
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);*/
             }
         });
 
@@ -144,123 +168,143 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         userImage = (ImageView) view.findViewById(R.id.profileUserImage);
         userAlias = (TextView) view.findViewById(R.id.profileUserAlias);
         userBackground = (ImageView) view.findViewById(R.id.profileUserBackgroundImage);
+
+        appBarLayout = (AppBarLayout) view.findViewById(R.id.htab_appbar);
+
         tabLayout = (TabLayout) view.findViewById(R.id.tabs_profile);
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.home_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.chat_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.account_profile_icon));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.notification_icon));
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
 
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);*/
+
+        tabLayout.addTab(tabLayout.newTab());
+        tabLayout.addTab(tabLayout.newTab());
+        tabLayout.addTab(tabLayout.newTab());
+
+        drawableHomeIcon = getResources().getDrawable(R.drawable.home_icon);
+        drawableChatIcon = getResources().getDrawable(R.drawable.chat_icon);
+        drawableManagementIcon = getResources().getDrawable(R.drawable.account_profile_icon);
+
+        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
         mViewPager = (ViewPager) view.findViewById(R.id.pager_profile);
-        setupViewPager(mViewPager);
+        mViewPager.setAdapter(adapter);
+
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(R.drawable.home_icon);
-        tabLayout.getTabAt(1).setIcon(R.drawable.chat_icon);
-        tabLayout.getTabAt(2).setIcon(R.drawable.managment_icon);
-        tabLayout.getTabAt(3).setIcon(R.drawable.account_profile_icon);
+        tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
+        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
+        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);
 
-        /*spinner = (ProgressBar) view.findViewById(R.id.spinnerLoading);
-        spinner.setVisibility(View.VISIBLE);
-
-        TabLayout tabs = (TabLayout) view.findViewById(R.id.tabsUserProfile);
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.home_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.chat_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.account_profile_icon));
-        tabs.addTab(tabs.newTab().setIcon(R.drawable.notification_icon));
-
-        Button puton = (Button) view.findViewById(R.id.button3);
-        puton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intento = new Intent(getActivity(), WorkActivity.class);
-                getActivity().startActivity(intento);
-            }
-        });
-
-        Button btnStudies = (Button) view.findViewById(R.id.button4);
-        btnStudies.setText("Chat 2");
-        btnStudies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intento = new Intent(getActivity(), StudiesActivity.class);
-                Intent intento = new Intent(getActivity(), ChatActivity.class);
-                getActivity().startActivity(intento);
-            }
-        });
-
-        Button btnChat = (Button) view.findViewById(R.id.btnChat);
-        btnChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
-        mViewPager = (ViewPager) view.findViewById(R.id.pagerProfile);
-        setupViewPager(mViewPager);
-        tabs.setupWithViewPager(mViewPager);
-        tabs.getTabAt(0).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(1).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(2).setIcon(R.drawable.home_icon);
-        tabs.getTabAt(3).setIcon(R.drawable.home_icon);
-
-        userName = (TextView) view.findViewById(R.id.userName);
-        userImage = (ImageView) view.findViewById(R.id.userImage);
-        userFacebook = (TextView) view.findViewById(R.id.userFacebook);
-        userTwitter = (TextView) view.findViewById(R.id.userTwitter);
-        userGithub = (TextView) view.findViewById(R.id.userGithub);
-        userDescription = (TextView) view.findViewById(R.id.userDescription);
-        boxUser = (LinearLayout) view.findViewById(R.id.boxUser);
-        boxUser.setVisibility(View.INVISIBLE);*/
         return view;
     }
 
     @Override
     public void onSuccess(User user) {
-       /* spinner.setVisibility(View.INVISIBLE);
-        boxUser.setVisibility(View.VISIBLE);
 
-        userName.setText(user.getFirstName() + " " + user.getLastName());
-        if(user.getImagen() == null){
-            userImage.setImageResource(R.drawable.account_profile_icon);
-        }else{
-            Picasso.with(getActivity())
-                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
-                    .resize(300, 300)
-                    .into(userImage);
-        }
-        userFacebook.setText(user.getFacebook());
-        userTwitter.setText(user.getTwitter());
-        userGithub.setText(user.getGithub());
-        userDescription.setText(user.getCarta_presentacion());*/
+        collapsingToolbar.setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
+
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
 
         if(user.getImagen() == null){
             userImage.setImageResource(R.drawable.account_profile_icon);
             userBackground.setImageResource(R.drawable.account_profile_icon);
         }else{
 
-            Picasso.with(getActivity())
-                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
-                    .resize(300, 300)
+            Picasso.with(getContext()).load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .resize(userImage.getWidth(), userImage.getHeight())
                     .transform(new CircleTransform())
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(userImage);
+                    .centerCrop()
+                    .into(userImage,
+                            PicassoPalette.with(CustomProperties.baseUrl+"/"+user.getImagen(), userImage)
+                                    .intoCallBack(
+                                            new PicassoPalette.CallBack() {
+                                                @Override
+                                                public void onPaletteLoaded(Palette palette) {
+                                                    //specific task
+                                                    Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                                                    Palette.Swatch vibrantLightSwatch = palette.getLightVibrantSwatch();
+                                                    Palette.Swatch vibrantDarkSwatch = palette.getDarkVibrantSwatch();
+                                                    Palette.Swatch mutedSwatch = palette.getMutedSwatch();
+                                                    Palette.Swatch dominantSwatch = palette.getDominantSwatch();
+                                                    Palette.Swatch mutedLightSwatch = palette.getLightMutedSwatch();
+                                                    Palette.Swatch mutedDarkSwatch = palette.getDarkMutedSwatch();
 
-           /* Picasso.with(getActivity())
-                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
-                    .into(userBackground);*/
+                                                    Log.d("nxw",""+vibrantSwatch.getRgb());
+                                                    Log.d("nxw",""+vibrantLightSwatch.getRgb());
+                                                    Log.d("nxw",""+vibrantDarkSwatch.getRgb());
+                                                    Log.d("nxw",""+mutedSwatch.getRgb());
+                                                    Log.d("nxw",""+dominantSwatch.getRgb());
+                                                    Log.d("nxw",""+mutedLightSwatch.getRgb());
+                                                    Log.d("nxw",""+mutedDarkSwatch.getRgb());
+
+                                                    if(vibrantSwatch != null){
+                                                        collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                                                        collapsingToolbar.setStatusBarScrimColor(vibrantSwatch.getRgb());
+                                                        appBarLayout.setBackgroundColor(vibrantSwatch.getRgb());
+
+                                                        /*drawableHomeIcon.setTint(vibrantSwatch.getTitleTextColor());
+                                                        drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                        drawableChatIcon.setTint(vibrantSwatch.getTitleTextColor());
+                                                        drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                        drawableManagementIcon.setTint(vibrantSwatch.getTitleTextColor());
+                                                        drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                        tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
+                                                        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
+                                                        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);*/
+                                                    }
+                                                    else{
+                                                        if(vibrantLightSwatch == null){
+                                                            collapsingToolbar.setContentScrimColor(dominantSwatch.getRgb());
+                                                            collapsingToolbar.setStatusBarScrimColor(dominantSwatch.getRgb());
+                                                            appBarLayout.setBackgroundColor(dominantSwatch.getRgb());
+
+                                                            /*drawableHomeIcon.setTint(dominantSwatch.getTitleTextColor());
+                                                            drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                            drawableChatIcon.setTint(dominantSwatch.getTitleTextColor());
+                                                            drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                            drawableManagementIcon.setTint(dominantSwatch.getTitleTextColor());
+                                                            drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);*/
+                                                        }
+                                                        else{
+                                                            collapsingToolbar.setContentScrimColor(vibrantLightSwatch.getRgb());
+                                                            collapsingToolbar.setStatusBarScrimColor(vibrantLightSwatch.getRgb());
+                                                            /*appBarLayout.setBackgroundColor(vibrantLightSwatch.getRgb());
+
+                                                            drawableHomeIcon.setTint(vibrantLightSwatch.getTitleTextColor());
+                                                            drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                            drawableChatIcon.setTint(vibrantLightSwatch.getTitleTextColor());
+                                                            drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
+
+                                                            drawableManagementIcon.setTint(vibrantLightSwatch.getTitleTextColor());
+                                                            drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);*/
+                                                        }
+
+                                                        /*tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
+                                                        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
+                                                        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);*/
+                                                    }
+
+                                                }
+                                            })
+                    );
 
             Picasso
                     .with(getContext())
                     .load(CustomProperties.baseUrl+"/"+user.getImagen())
                     .resize(userBackground.getWidth(), userBackground.getHeight())
                     .transform(new BlurTransformation(getContext()))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE)
                     .centerCrop()
                     .into(userBackground);
+
         }
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
@@ -271,4 +315,5 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     public void onFailure(Throwable t) {
 
     }
+
 }

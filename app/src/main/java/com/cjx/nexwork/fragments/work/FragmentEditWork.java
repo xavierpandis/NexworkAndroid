@@ -5,21 +5,27 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.activities.MainActivity;
 import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
@@ -52,6 +58,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
     private EditText editDateEnd;
     private CheckBox checkWorking;
     private EditText editDescription;
+    private View view;
 
     private boolean editPetition = false;
 
@@ -62,6 +69,9 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         if(getArguments() != null){
             this.workId = getArguments().getLong(WORK);
             WorkManager.getInstance().getDetailWork(this.workId, this);
@@ -72,7 +82,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_create_work,container, false);
+        view = inflater.inflate(R.layout.fragment_create_work,container, false);
 
         editPosition = (EditText) view.findViewById(R.id.editPosition);
         editDateStarted = (EditText) view.findViewById(R.id.editDateStarted);
@@ -108,6 +118,12 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onDetach() {
+        /*ViewPager viewPager  = (ViewPager) getActivity().findViewById(R.id.pager);
+        viewPager.setVisibility(View.VISIBLE);
+        FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.relfragmentapp);
+        frameLayout.setVisibility(View.GONE);*/
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         super.onDetach();
     }
 
@@ -226,7 +242,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        final TableRow rowEnd = (TableRow) getView().findViewById(R.id.rowEnd);
+        final TableRow rowEnd = (TableRow) view.findViewById(R.id.rowEnd);
         switch (buttonView.getId()){
             case R.id.checkWorking:
                 if(isChecked){

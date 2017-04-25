@@ -15,5 +15,6 @@ public class CustomProperties {
     public static String grantType = "password";
     public static String scope = "read write";
     public static String baseUrl = "http://172.16.140.114:8080";
-    //public static String baseUrl = "http://192.168.1.39:8080";
+    //public static String baseUrl = "http://a62efa24.ngrok.io";
+    //public static String baseUrl = "http://192.168.1.34:8080";
 }

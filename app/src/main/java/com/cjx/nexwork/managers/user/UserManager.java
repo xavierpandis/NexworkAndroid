@@ -1,35 +1,20 @@
 package com.cjx.nexwork.managers.user;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.cjx.nexwork.exceptions.NexworkTokenException;
 import com.cjx.nexwork.managers.BaseManager;
-import com.cjx.nexwork.managers.UpdateImageCallback;
-import com.cjx.nexwork.managers.UserLoginManager;
-import com.cjx.nexwork.managers.UserTokenManager;
+import com.cjx.nexwork.managers.friend.FriendCallback;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.services.UserService;
-import com.cjx.nexwork.util.CustomProperties;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Multipart;
 
 /**
  * Created by Xavi on 08/02/2017.

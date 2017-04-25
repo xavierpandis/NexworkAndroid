@@ -3,7 +3,8 @@
     package="com.cjx.nexwork">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>.
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    .
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -32,7 +33,7 @@
         <activity
             android:name=".activities.account.EditProfileActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
