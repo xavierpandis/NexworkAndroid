@@ -128,10 +128,10 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         @Override
         public Fragment getItem(int i) {
             switch (i){
-                case 0: return new FragmentListWork(profileConnected);
-                case 1: return new UserProfileStudiesFragment();
+                case 0: return new FragmentListWork(false);
+                case 1: return new FragmentListStudy();
                 case 2: return new FragmentFriendList();
-                default: return new FragmentListWork(profileConnected);
+                default: return new FragmentListWork(false);
             }
         }
 
@@ -185,18 +185,14 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        drawableHomeIcon = getResources().getDrawable(R.drawable.home_icon);
-        drawableChatIcon = getResources().getDrawable(R.drawable.chat_icon);
-        drawableManagementIcon = getResources().getDrawable(R.drawable.account_profile_icon);
-
         DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
         mViewPager = (ViewPager) view.findViewById(R.id.pager_profile);
         mViewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
-        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
-        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);
+        tabLayout.getTabAt(0).setText("Experience");
+        tabLayout.getTabAt(1).setText("Studies");
+        tabLayout.getTabAt(2).setText("Contacts");
 
         return view;
     }
@@ -209,8 +205,8 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
 
         if(user.getImagen() == null){
-            userImage.setImageResource(R.drawable.account_profile_icon);
-            userBackground.setImageResource(R.drawable.account_profile_icon);
+            userImage.setImageResource(R.drawable.account_circle);
+            userBackground.setImageResource(R.drawable.account_circle);
         }else{
 
             Picasso.with(getContext()).load(CustomProperties.baseUrl+"/"+user.getImagen())

@@ -54,7 +54,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:adjustViewBounds="true"
+                android:adjustViewBounds="false"
                 android:minHeight="150dp"
                 android:minWidth="150dp"
                 android:scaleType="centerCrop"
@@ -68,7 +68,6 @@
                 android:layout_alignRight="@+id/profileUserImage"
                 android:layout_below="@+id/profileUserImage"
                 android:gravity="center_horizontal"
-                android:text="00:00"
                 android:textColor="@color/material_bluegrey50"
                 android:textSize="18sp" />
 
@@ -80,7 +79,6 @@
                 android:layout_alignRight="@+id/profileUserImage"
                 android:layout_below="@+id/profileUserAlias"
                 android:gravity="center_horizontal"
-                android:text="00:00"
                 android:textColor="@color/material_bluegrey50"
                 android:textSize="22sp" />
         </RelativeLayout>
@@ -112,7 +110,7 @@
             android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="editar"
             android:visibility="visible" />
 
         <Button

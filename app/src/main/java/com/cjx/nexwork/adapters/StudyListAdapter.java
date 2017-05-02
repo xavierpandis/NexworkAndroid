@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.work.FragmentDetailWork;
+import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.model.Work;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +24,7 @@ import java.util.List;
  */
 
 public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.ViewHolder> {
-    private List<Work> workList;
+    private List<Study> studyList;
     Fragment fragmentOne;
 
     // Provide a reference to the views for each data item
@@ -32,33 +33,35 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public final View mView;
-        public TextView positionWork;
-        public TextView startedDate;
-        public TextView endDate;
-        public TextView current;
-        public Work work;
+        public TextView studyName;
+        public TextView studyDateStarted;
+        public TextView studyDateEnded;
+        public TextView studyDescription;
+        public TextView studyQualification;
+        public Study study;
 
         public ViewHolder(View v) {
             super(v);
             mView = v;
-            positionWork = (TextView) v.findViewById(R.id.workPosition);
-            startedDate = (TextView) v.findViewById(R.id.startDate);
-            endDate = (TextView) v.findViewById(R.id.endDate);
-            current = (TextView) v.findViewById(R.id.currentWork);
+            studyName = (TextView) v.findViewById(R.id.nameStudy);
+            studyDateStarted = (TextView) v.findViewById(R.id.dateStarted);
+            studyDateEnded = (TextView) v.findViewById(R.id.dateEnded);
+            studyDescription = (TextView) v.findViewById(R.id.description);
+            studyQualification = (TextView) v.findViewById(R.id.qualification);
         }
     }
 
     Context context;
 
-    public void removeItem(int position) {
-        workList.remove(position);
+    public void remove(String item) {
+        int position = studyList.indexOf(item);
+        studyList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, workList.size());
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public StudyListAdapter(List<Work> works, Fragment fragmentOne, Context cntxt) {
-        workList = works;
+    public StudyListAdapter(List<Study> studies, Fragment fragmentOne, Context cntxt) {
+        studyList = studies;
         this.fragmentOne = fragmentOne;
         context = cntxt;
     }
@@ -67,7 +70,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
     @Override
     public StudyListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.work_list, parent, false);
+                .inflate(R.layout.study_list, parent, false);
 
         return new ViewHolder(view);
     }
@@ -75,25 +78,26 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.work = workList.get(position);
-        holder.positionWork.setText(workList.get(position).getCargo());
+        holder.study = studyList.get(position);
+        holder.studyName.setText(studyList.get(position).getCurso());
 
-        Date start = workList.get(position).getFechaInicio();
-        Date end = workList.get(position).getFechaFin();
+        Date start = studyList.get(position).getFechaInicio();
+        Date end = studyList.get(position).getFechaFinal();
 
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 
-        holder.startedDate.setText(formateador.format(start));
-        if(workList.get(position).getActualmente()){
-            holder.endDate.setVisibility(View.GONE);
-            holder.current.setText(R.string.current_work);
+        holder.studyDateStarted.setText(formateador.format(start));
+        if (studyList.get(position).getActualmente() != null) {
+            if(studyList.get(position).getActualmente()){
+                holder.studyDateEnded.setText(R.string.current_work);
+            }
+            else{
+                holder.studyDateEnded.setText(formateador.format(end));
+            }
         }
-        else{
-            holder.endDate.setText(formateador.format(end));
-            holder.current.setVisibility(View.GONE);
-        }
+        else holder.studyDateEnded.setText(formateador.format(end));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+/*        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new FragmentDetailWork();
@@ -106,12 +110,12 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
-        });
+        });*/
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return workList.size();
+        return studyList.size();
     }
 }

@@ -72,19 +72,14 @@ public class HomeFragment extends Fragment{
         tabs.addTab(tabs.newTab());
         tabs.addTab(tabs.newTab());
         tabs.addTab(tabs.newTab());
-        tabs.addTab(tabs.newTab());
-
-        drawableHomeIcon = getResources().getDrawable(R.drawable.home_icon);
-        drawableChatIcon = getResources().getDrawable(R.drawable.chat_icon);
-        drawableManagementIcon = getResources().getDrawable(R.drawable.account_profile_icon);
 
         mViewPager = (ViewPager) view.findViewById(R.id.home_pager);
         setupViewPager(mViewPager);
         tabs.setupWithViewPager(mViewPager);
-        tabs.getTabAt(0).setIcon(drawableHomeIcon);
-        tabs.getTabAt(1).setIcon(drawableChatIcon);
-        tabs.getTabAt(2).setIcon(drawableManagementIcon);
-        tabs.getTabAt(3).setIcon(R.drawable.account_profile_icon);
+        tabs.getTabAt(0).setIcon(R.drawable.home);
+        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
+        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
+        //tabs.getTabAt(1).setIcon(R.drawable.account_search);
 
         return view;
     }
@@ -92,7 +87,6 @@ public class HomeFragment extends Fragment{
 
     private void setupViewPager(ViewPager viewPager) {
         HomeFragment.DemoCollectionPagerAdapter adapter = new HomeFragment.DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(UserManagmentFragment.newInstance());
         adapter.addFragment(UserManagmentFragment.newInstance());
         adapter.addFragment(UserManagmentFragment.newInstance());
         adapter.addFragment(UserProfileFragment.newInstance(true));

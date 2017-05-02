@@ -34,6 +34,7 @@
             android:name=".activities.account.EditProfileActivity"
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme" />
+        <activity android:name=".activities.ContactProfileActivity"></activity>
     </application>
 
 </manifest>

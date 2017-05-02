@@ -1,6 +1,8 @@
 package com.cjx.nexwork.activities;
 
 import android.app.ProgressDialog;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,11 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
     private TextView userFacebook, userTwitter, userGithub, userDescription;
     private ProgressBar spinner;
     private LinearLayout boxUser;
+
+    private AnimationDrawable loadingViewAnim=null;
+    private TextView loadigText = null;
+    private ImageView loadigIcon = null;
+    private LinearLayout loadingLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +59,16 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
 
     @Override
     public void onSuccess(User user) {
+
+        // This line is to start Asyn Task only when OnCreate Method get completed, So Loading Icon Rotation Animation work properly
+        loadigIcon.post(new Starter());
+
         spinner.setVisibility(View.INVISIBLE);
         boxUser.setVisibility(View.VISIBLE);
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
         if(user.getImagen() == null){
-            userImage.setImageResource(R.drawable.account_profile_icon);
+            userImage.setImageResource(R.drawable.account_circle);
         }else{
             Picasso.with(this)
                     .load(CustomProperties.baseUrl+"/"+user.getImagen())
@@ -68,6 +79,45 @@ public class UserProfileActivity extends AppCompatActivity implements UserDetail
         userTwitter.setText(user.getTwitter());
         userGithub.setText(user.getGithub());
         userDescription.setText(user.getCarta_presentacion());
+    }
+
+    class Starter implements Runnable {
+        public void run() {
+            //start Asyn Task here
+            new LongOperation().execute("");
+        }
+    }
+
+    private class LongOperation extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            //ToDo your Network Job/Request etc. here
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            //ToDo with result you got from Task
+
+            //Stop Loading Animation
+            loadingLayout.setVisibility(View.GONE);
+            loadigText.setVisibility(View.GONE);
+            loadigIcon.setVisibility(View.GONE);
+            loadingViewAnim.stop();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //Start  Loading Animation
+            loadingLayout.setVisibility(View.VISIBLE);
+            loadigText.setVisibility(View.VISIBLE);
+            loadigIcon.setVisibility(View.VISIBLE);
+            loadingViewAnim.start();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 
     @Override

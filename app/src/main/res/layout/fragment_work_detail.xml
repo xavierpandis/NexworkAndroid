@@ -60,7 +60,7 @@
                                 android:id="@+id/workUserImage"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
-                                app:srcCompat="@drawable/account_profile_icon" />
+                                app:srcCompat="@drawable/account_circle" />
 
                             <TextView
                                 android:id="@+id/workWorker"
