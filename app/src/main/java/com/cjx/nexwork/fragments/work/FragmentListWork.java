@@ -59,7 +59,8 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     private Toolbar toolbar;
     private ActionBar actionBar;
 
-    private Boolean worksUserConnected = false;
+    private String loginUser;
+    private Boolean userConected;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -70,8 +71,9 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     }
 
     @SuppressLint("ValidFragment")
-    public FragmentListWork(Boolean worksUserConnected) {
-        this.worksUserConnected = worksUserConnected;
+    public FragmentListWork(String login, Boolean userConected) {
+        this.loginUser = login;
+        this.userConected = userConected;
     }
 
     // TODO: Rename and change types and number of parameters
@@ -99,32 +101,11 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_list_work,container, false);
 
-        WorkManager.getInstance().getWorksUser(this);
+        WorkManager.getInstance().getWorksUser(loginUser, this);
 
-        /*works = new ArrayList<>();
-
-        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(1L, "CEO", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(2L, "CEO2", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(3L, "CEO3", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(4L, "CEO4", new Date(), new Date(), true, "dsadsadasdasdas"));
-        works.add(new Work(5L, "CEO5", new Date(), new Date(), true, "dsadsadasdasdas"));*/
-
-        actionBar.setTitle("Your works");
+        if(actionBar != null){
+            actionBar.setTitle("Your works");
+        }
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
@@ -201,7 +182,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     @SuppressLint("NewApi")
     private void initSwipe(){
 
-        if(worksUserConnected){
+        if(userConected){
             ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
                 @Override
@@ -321,7 +302,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                 //Do something on change
                 Log.d("nxw", "INPUT SEARCH CHANGE");
                 if(newText.isEmpty()){
-                    WorkManager.getInstance().getWorksUser(workCallback);
+                    WorkManager.getInstance().getWorksUser(loginUser, workCallback);
                 }
                 return true;
             }

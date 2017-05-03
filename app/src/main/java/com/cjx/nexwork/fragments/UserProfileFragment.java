@@ -47,6 +47,7 @@ import com.cjx.nexwork.activities.study.StudiesActivity;
 import com.cjx.nexwork.activities.work.WorkActivity;
 import com.cjx.nexwork.fragments.study.FragmentListStudy;
 import com.cjx.nexwork.fragments.work.FragmentListWork;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
@@ -128,10 +129,10 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         @Override
         public Fragment getItem(int i) {
             switch (i){
-                case 0: return new FragmentListWork(false);
-                case 1: return new FragmentListStudy();
-                case 2: return new FragmentFriendList();
-                default: return new FragmentListWork(false);
+                case 0: return new FragmentListWork(TokenStoreManager.getInstance().getUsername(), false);
+                case 1: return new FragmentListStudy(TokenStoreManager.getInstance().getUsername(), false);
+                case 2: return new FragmentFriendList(TokenStoreManager.getInstance().getUsername(), false);
+                default: return new FragmentListWork(TokenStoreManager.getInstance().getUsername(), false);
             }
         }
 

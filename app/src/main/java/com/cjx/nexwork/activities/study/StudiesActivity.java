@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.LoginActivity;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.study.StudyManager;
 import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.managers.study.StudyCallback;
@@ -40,7 +41,7 @@ public class StudiesActivity extends AppCompatActivity implements StudyCallback 
     protected void onPostResume() {
         super.onPostResume();
         StudyManager.getInstance()
-                .getUserWorks(StudiesActivity.this);
+                .getUserStudies(TokenStoreManager.getInstance().getUsername(),StudiesActivity.this);
     }
 
     @Override

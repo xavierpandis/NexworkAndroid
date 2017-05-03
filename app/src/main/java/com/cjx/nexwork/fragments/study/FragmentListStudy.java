@@ -1,5 +1,6 @@
 package com.cjx.nexwork.fragments.study;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -41,8 +42,17 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
     private String mParam1;
     private String mParam2;
 
+    private String loginUser;
+    private Boolean userConected;
+
     public FragmentListStudy() {
         // Required empty public constructor
+    }
+
+    @SuppressLint("ValidFragment")
+    public FragmentListStudy(String login, Boolean userConected) {
+        this.loginUser = login;
+        this.userConected = userConected;
     }
 
     // TODO: Rename and change types and number of parameters
@@ -68,7 +78,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_list_study,container, false);
 
-        StudyManager.getInstance().getUserWorks(this);
+        StudyManager.getInstance().getUserStudies(loginUser, this);
 
         List<Study> studyList = new ArrayList<>();
 
@@ -129,7 +139,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                    .replace(R.id.fragment_work, new FragmentCreateWork(), "listWorks")
+                    .replace(R.id.fragment_work, new FragmentCreateWork(), "listStudies")
                     .addToBackStack(null)
                     .commit();
 
