@@ -27,7 +27,6 @@ import java.util.List;
 /**
  * Created by Xavi on 08/04/2017.
  */
-
 public class HomeFragment extends Fragment{
 
     View view;
@@ -79,25 +78,41 @@ public class HomeFragment extends Fragment{
         tabs.getTabAt(0).setIcon(R.drawable.home);
         tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
         tabs.getTabAt(2).setIcon(R.drawable.account_circle);
-        //tabs.getTabAt(1).setIcon(R.drawable.account_search);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         return view;
     }
 
 
     private void setupViewPager(ViewPager viewPager) {
-        HomeFragment.DemoCollectionPagerAdapter adapter = new HomeFragment.DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+        HomeFragment.HomePagerAdapter adapter = new HomeFragment.HomePagerAdapter(getChildFragmentManager());
         adapter.addFragment(UserManagmentFragment.newInstance());
         adapter.addFragment(UserManagmentFragment.newInstance());
         adapter.addFragment(UserProfileFragment.newInstance(true));
         viewPager.setAdapter(adapter);
     }
 
-    public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
+    public class HomePagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+        public HomePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

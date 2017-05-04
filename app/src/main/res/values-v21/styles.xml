@@ -7,5 +7,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:textColor">@color/material_black</item>
         <item name="android:textColorPrimary">@color/material_black</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

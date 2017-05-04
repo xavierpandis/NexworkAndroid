@@ -22,6 +22,8 @@ public class Study implements Serializable{
     @SerializedName("centro")
     Center center;
 
+    User user;
+
     public Study() {
     }
 
@@ -100,18 +102,12 @@ public class Study implements Serializable{
         this.center = center;
     }
 
-    @Override
-    public String toString() {
-        return "Study{" +
-                "id=" + id +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFinal=" + fechaFinal +
-                ", actualmente=" + actualmente +
-                ", curso='" + curso + '\'' +
-                ", nota=" + nota +
-                ", descripcion='" + descripcion + '\'' +
-                ", center=" + center +
-                '}';
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -132,7 +128,8 @@ public class Study implements Serializable{
         if (nota != null ? !nota.equals(study.nota) : study.nota != null) return false;
         if (descripcion != null ? !descripcion.equals(study.descripcion) : study.descripcion != null)
             return false;
-        return center != null ? center.equals(study.center) : study.center == null;
+        if (center != null ? !center.equals(study.center) : study.center != null) return false;
+        return user != null ? user.equals(study.user) : study.user == null;
 
     }
 
@@ -146,6 +143,23 @@ public class Study implements Serializable{
         result = 31 * result + (nota != null ? nota.hashCode() : 0);
         result = 31 * result + (descripcion != null ? descripcion.hashCode() : 0);
         result = 31 * result + (center != null ? center.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Study{" +
+                "id=" + id +
+                ", fechaInicio=" + fechaInicio +
+                ", fechaFinal=" + fechaFinal +
+                ", actualmente=" + actualmente +
+                ", curso='" + curso + '\'' +
+                ", nota=" + nota +
+                ", descripcion='" + descripcion + '\'' +
+                ", center=" + center +
+                ", user=" + user +
+                '}';
+    }
+
 }

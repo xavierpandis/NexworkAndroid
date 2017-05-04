@@ -4,6 +4,7 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/search_icon"
+        android:visible="false"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
     <item
@@ -13,8 +14,9 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action2"
-        android:title=""
+        android:icon="@drawable/notification_icon"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        android:icon="@drawable/notification_icon" />
+        android:title=""
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>

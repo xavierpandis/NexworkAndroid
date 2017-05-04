@@ -41,10 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cjx.nexwork.R;
-import com.cjx.nexwork.activities.MainActivity;
-import com.cjx.nexwork.activities.account.EditProfileActivity;
-import com.cjx.nexwork.activities.study.StudiesActivity;
-import com.cjx.nexwork.activities.work.WorkActivity;
 import com.cjx.nexwork.fragments.study.FragmentListStudy;
 import com.cjx.nexwork.fragments.work.FragmentListWork;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
@@ -185,7 +181,7 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
-        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getActivity().getSupportFragmentManager());
+        DemoCollectionPagerAdapter adapter = new DemoCollectionPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) view.findViewById(R.id.pager_profile);
         mViewPager.setAdapter(adapter);
 

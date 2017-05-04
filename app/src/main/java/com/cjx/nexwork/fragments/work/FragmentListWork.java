@@ -129,9 +129,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
 
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.btnAddJob);
-        floatingActionButton.setOnClickListener(this);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
         workListAdapter = new WorkListAdapter(works, this, getContext());
         recyclerView.setAdapter(workListAdapter);
@@ -362,16 +359,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnAddJob:
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                        .replace(R.id.fragment_work, new FragmentCreateWork())
-                        .addToBackStack(null)
-                        .commit();
-                break;
-        }
+
     }
 }

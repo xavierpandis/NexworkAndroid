@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.fragments.study.FragmentDetailStudy;
 import com.cjx.nexwork.fragments.work.FragmentDetailWork;
 import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.model.Work;
@@ -97,20 +98,20 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
         }
         else holder.studyDateEnded.setText(formateador.format(end));
 
-/*        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new FragmentDetailWork();
+                Fragment fragment = new FragmentDetailStudy();
                 Bundle args = new Bundle();
-                args.putLong(FragmentDetailWork.WORK_ID, holder.work.getId());
+                args.putLong(FragmentDetailStudy.STUDY_ID, holder.study.getId());
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                transaction.replace(R.id.fragment_work, fragment);
+                transaction.replace(R.id.content_main, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
-        });*/
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)

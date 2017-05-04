@@ -5,9 +5,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="com.cjx.nexwork.activities.LoginActivity"
-    android:background="@color/colorPrimary"
-    android:clipToPadding="false">
+    tools:context="com.cjx.nexwork.activities.LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="@color/colorBackgroundOpaque">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="false"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/fondo_splash" />
+    </RelativeLayout>
 
     <!-- Login progress -->
     <LinearLayout
@@ -41,7 +53,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/shape"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="15dp"

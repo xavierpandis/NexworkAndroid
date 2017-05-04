@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    .
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -25,10 +24,7 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.Login" />
-        <activity android:name=".activities.study.StudiesActivity" />
-        <activity android:name=".activities.study.StudyDetailActivity" />
         <activity android:name=".activities.work.WorkActivity" />
-        <activity android:name=".activities.UserProfileActivity" />
         <activity android:name=".activities.account.RegisterActivity" />
         <activity
             android:name=".activities.account.EditProfileActivity"
