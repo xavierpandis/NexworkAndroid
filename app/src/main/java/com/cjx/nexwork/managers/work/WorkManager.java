@@ -79,8 +79,9 @@ public class WorkManager extends BaseManager {
         });
     }
 
-    public synchronized void getWorksUser(final WorkCallback workCallback) {
-        Call<List<WorkDTO>> call = workService.getWorksUser(TokenStoreManager.getInstance().getUsername());
+    public synchronized void getWorksUser(String login, final WorkCallback workCallback) {
+        Call<List<WorkDTO>> call = workService.getWorksUser(login);
+        //Call<List<WorkDTO>> call = workService.getWorksUser(TokenStoreManager.getInstance().getUsername());
         works = new ArrayList<>();
         call.enqueue(new Callback<List<WorkDTO>>() {
             @Override

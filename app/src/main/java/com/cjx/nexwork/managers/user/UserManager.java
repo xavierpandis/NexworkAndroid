@@ -38,8 +38,8 @@ public class UserManager extends BaseManager{
         return ourInstance;
     }
 
-    public synchronized void getUser(final UserDetailCallback userDetailCallback) {
-        Call<User> call = userService.getUser("admin");
+    public synchronized void getUser(String login, final UserDetailCallback userDetailCallback) {
+        Call<User> call = userService.getUser(login);
 
         call.enqueue(new Callback<User>() {
             @Override

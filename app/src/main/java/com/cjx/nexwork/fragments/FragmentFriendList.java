@@ -38,8 +38,22 @@ public class FragmentFriendList extends Fragment implements FriendCallback{
     private List<User> friendList;
     private FriendListAdapter friendListAdapter;
 
+    private String loginUser;
+    private Boolean userConected;
+
     public static FragmentFriendList newInstance() {
         return new FragmentFriendList();
+    }
+
+    public FragmentFriendList() {
+        // Required empty public constructor
+    }
+
+
+    @SuppressLint("ValidFragment")
+    public FragmentFriendList(String login, Boolean userConected) {
+        this.loginUser = login;
+        this.userConected = userConected;
     }
 
     @Override
@@ -63,7 +77,7 @@ public class FragmentFriendList extends Fragment implements FriendCallback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_list_friend, container, false);
 
-        FriendManager.getInstance().getFriendsCurrentUser(this);
+        FriendManager.getInstance().getFriendsUser(loginUser, this);
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_friend);

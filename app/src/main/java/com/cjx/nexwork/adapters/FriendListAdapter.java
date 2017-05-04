@@ -1,7 +1,10 @@
 package com.cjx.nexwork.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.activities.ContactProfileActivity;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.util.CustomProperties;
 import com.squareup.picasso.Picasso;
@@ -62,8 +66,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
     public FriendListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_list, parent, false);
 
-
-
         return new ViewHolder(view);
     }
 
@@ -82,15 +84,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Fragment fragment = new FragmentDetailWork();
-                Bundle args = new Bundle();
-                args.putLong(FragmentDetailWork.WORK_ID, holder.work.getId());
-                fragment.setArguments(args);
-                FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit);
-                transaction.replace(R.id.fragment_work, fragment, "detailWork");
-                transaction.addToBackStack(null);
-                transaction.commit();*/
+                Intent loginIntent = new Intent(fragmentOne.getActivity(), ContactProfileActivity.class);
+                loginIntent.putExtra("friendlogin", holder.friend.getLogin());
+                fragmentOne.startActivity(loginIntent);
             }
         });
     }
