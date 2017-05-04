@@ -209,7 +209,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                         getActivity()
                                 .getSupportFragmentManager()
                                 .beginTransaction()
-                                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
                                 .add(R.id.content_main, fragment, "editWork")
                                 .addToBackStack(null)
                                 .commit();
@@ -327,7 +327,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
                     .replace(R.id.fragment_work, new FragmentCreateWork(), "listWorks")
                     .addToBackStack(null)
                     .commit();

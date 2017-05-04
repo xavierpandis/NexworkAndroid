@@ -258,7 +258,7 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.enter, R.anim.exit)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
                 .replace(R.id.fragment_work, new FragmentListWork())
                 .addToBackStack(null)
                 .commit();

@@ -253,7 +253,7 @@ public class FragmentCreateStudy extends Fragment implements View.OnClickListene
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
                 .replace(R.id.fragment_work, new FragmentListStudy())
                 .addToBackStack(null)
                 .commit();

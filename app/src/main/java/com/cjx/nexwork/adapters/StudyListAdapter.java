@@ -106,7 +106,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
                 args.putLong(FragmentDetailStudy.STUDY_ID, holder.study.getId());
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in);
                 transaction.replace(R.id.content_main, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
