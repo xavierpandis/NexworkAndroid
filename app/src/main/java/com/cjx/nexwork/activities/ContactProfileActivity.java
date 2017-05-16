@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -65,10 +69,21 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
     private Toolbar toolbarCollapsed;
     private String userLogin;
 
+    private TextView toolbarTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collapse_layout);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window w = getWindow(); // in Activity's onCreate() for instance
+//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        }
+//
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -81,12 +96,24 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
 
         collapsingToolbar.setTitle("Username");
         collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        collapsingToolbar.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
 
+        Toolbar htab_toolbar = (Toolbar) findViewById(R.id.htab_toolbar);
+        toolbarTitle = (TextView) htab_toolbar.findViewById(R.id.toolbar_title);
+
+        AppBarLayout.OnOffsetChangedListener mListener = new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (collapsingToolbar.getHeight() + verticalOffset < 2 * ViewCompat.getMinimumHeight(collapsingToolbar)) {
+                    Log.d("", "collapse");
+                    toolbarTitle.setAlpha(1.0f);
+                } else {
+                    Log.d("", "no collapsed");
+                    toolbarTitle.setAlpha(0.0f);
+                }
             }
-        });
+        };
+
+
 
         userName = (TextView) findViewById(R.id.profileUserRealName);
         userImage = (ImageView) findViewById(R.id.profileUserImage);
@@ -94,6 +121,7 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
         userBackground = (ImageView) findViewById(R.id.profileUserBackgroundImage);
 
         appBarLayout = (AppBarLayout) findViewById(R.id.htab_appbar);
+        appBarLayout.addOnOffsetChangedListener(mListener);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs_profile);
 
@@ -113,8 +141,10 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
     }
 
     @Override
-    public void onSuccess(User user) {
+    public void onSuccess(final User user) {
         collapsingToolbar.setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
+
+        toolbarTitle.setText(user.getFirstName().concat(" ").concat(user.getLastName()));
 
         if(user.getImagen() == null){
             userImage.setImageResource(R.drawable.account_circle);
