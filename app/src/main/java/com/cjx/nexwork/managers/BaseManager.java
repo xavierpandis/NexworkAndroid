@@ -1,20 +1,28 @@
 package com.cjx.nexwork.managers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cjx.nexwork.activities.LoginActivity;
+import com.cjx.nexwork.activities.MainActivity;
 import com.cjx.nexwork.exceptions.NexworkTokenException;
 import com.cjx.nexwork.model.UserToken;
+import com.cjx.nexwork.util.AppUtils;
 import com.cjx.nexwork.util.CustomProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Authenticator;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -111,5 +119,4 @@ public abstract class BaseManager {
                 .build();
 
     }
-
 }

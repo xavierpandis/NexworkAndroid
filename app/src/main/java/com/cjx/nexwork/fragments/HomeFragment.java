@@ -1,6 +1,8 @@
 package com.cjx.nexwork.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +13,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ShowableListMenu;
+import android.support.v7.widget.ForwardingListener;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.fragments.management.ManagementFragment;
 import com.cjx.nexwork.fragments.work.FragmentListWork;
 
 import java.util.ArrayList;
@@ -75,24 +81,34 @@ public class HomeFragment extends Fragment{
         mViewPager = (ViewPager) view.findViewById(R.id.home_pager);
         setupViewPager(mViewPager);
         tabs.setupWithViewPager(mViewPager);
-        tabs.getTabAt(0).setIcon(R.drawable.home);
+        tabs.getTabAt(0).setIcon(R.drawable.home_white);
         tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
         tabs.getTabAt(2).setIcon(R.drawable.account_circle);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabs.setSelectedTabIndicatorColor(Color.parseColor("#DD050F48"));
+
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int numTab = tab.getPosition();
+                switch (numTab){
+                    case 0:
+                        tabs.getTabAt(0).setIcon(R.drawable.home_white);
+                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
+                        break;
+                    case 1:
+                        tabs.getTabAt(0).setIcon(R.drawable.home);
+                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit_white);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
+                        break;
+                    case 2:
+                        tabs.getTabAt(0).setIcon(R.drawable.home);
+                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_circle_white);
+                        break;
+                }
             }
         });
 
@@ -102,8 +118,8 @@ public class HomeFragment extends Fragment{
 
     private void setupViewPager(ViewPager viewPager) {
         HomeFragment.HomePagerAdapter adapter = new HomeFragment.HomePagerAdapter(getChildFragmentManager());
-        adapter.addFragment(UserManagmentFragment.newInstance());
-        adapter.addFragment(UserManagmentFragment.newInstance());
+        adapter.addFragment(FeedFragment.newInstance());
+        adapter.addFragment(ManagementFragment.newInstance());
         adapter.addFragment(UserProfileFragment.newInstance(true));
         viewPager.setAdapter(adapter);
     }

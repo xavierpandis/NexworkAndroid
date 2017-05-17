@@ -113,8 +113,6 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
             }
         };
 
-
-
         userName = (TextView) findViewById(R.id.profileUserRealName);
         userImage = (ImageView) findViewById(R.id.profileUserImage);
         userAlias = (TextView) findViewById(R.id.profileUserAlias);
@@ -129,27 +127,79 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
 
+        collapsingToolbar.setTitleEnabled(false);
+
         ContactProfileActivity.DemoCollectionPagerAdapter adapter = new ContactProfileActivity.DemoCollectionPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager_profile);
         mViewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setText("Experience");
-        tabLayout.getTabAt(1).setText("Studies");
-        tabLayout.getTabAt(2).setText("Contacts");
+        tabLayout.getTabAt(0).setText(getString(R.string.works_tab));
+        tabLayout.getTabAt(1).setText(getString(R.string.studies_tab));
+        tabLayout.getTabAt(2).setText(getString(R.string.contacts_tab));
 
     }
 
     @Override
     public void onSuccess(final User user) {
+        collapsingToolbar.setTitleEnabled(false);
         collapsingToolbar.setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
-
-        toolbarTitle.setText(user.getFirstName().concat(" ").concat(user.getLastName()));
 
         if(user.getImagen() == null){
             userImage.setImageResource(R.drawable.account_circle);
             userBackground.setImageResource(R.drawable.account_circle);
+        }else{
+
+            Picasso.with(this).load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    .resize(500, 500)
+                    .transform(new CircleTransform())
+                    .into(userImage,
+                            PicassoPalette.with(CustomProperties.baseUrl+"/"+user.getImagen(), userImage)
+                                    .intoCallBack(
+                                            new PicassoPalette.CallBack() {
+                                                @Override
+                                                public void onPaletteLoaded(Palette palette) {
+                                                    //specific task
+                                                    Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+                                                    Palette.Swatch vibrantLightSwatch = palette.getLightVibrantSwatch();
+                                                    Palette.Swatch vibrantDarkSwatch = palette.getDarkVibrantSwatch();
+                                                    Palette.Swatch dominantSwatch = palette.getDominantSwatch();
+
+                                                    if(vibrantSwatch != null){
+                                                        collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
+                                                        collapsingToolbar.setStatusBarScrimColor(vibrantSwatch.getRgb());
+                                                        appBarLayout.setBackgroundColor(vibrantSwatch.getRgb());
+                                                        tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                    }
+                                                    else{
+                                                        if(vibrantLightSwatch == null){
+                                                            collapsingToolbar.setContentScrimColor(dominantSwatch.getRgb());
+                                                            collapsingToolbar.setStatusBarScrimColor(dominantSwatch.getRgb());
+                                                            appBarLayout.setBackgroundColor(dominantSwatch.getRgb());
+                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                        }
+                                                        else{
+                                                            collapsingToolbar.setContentScrimColor(vibrantLightSwatch.getRgb());
+                                                            collapsingToolbar.setStatusBarScrimColor(vibrantLightSwatch.getRgb());
+                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                        }
+                                                    }
+
+                                                }
+                                            })
+                    );
+
+            Picasso
+                    .with(this)
+                    .load(CustomProperties.baseUrl+"/"+user.getImagen())
+                    //.resize(userBackground.getWidth(), userBackground.getHeight())
+                    .resize(600, 500)
+                    .transform(new BlurTransformation(this))
+                    .centerCrop()
+                    .into(userBackground);
+
         }
+
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
         userAlias.setText(user.getLogin());

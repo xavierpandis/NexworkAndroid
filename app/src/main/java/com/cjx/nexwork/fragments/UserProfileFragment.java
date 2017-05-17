@@ -2,12 +2,14 @@ package com.cjx.nexwork.fragments;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -143,6 +145,8 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
     }
 
+    Toolbar htab_toolbar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -161,6 +165,8 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
             }
         });
 
+        htab_toolbar = (Toolbar) view.findViewById(R.id.htab_toolbar);
+
         userName = (TextView) view.findViewById(R.id.profileUserRealName);
         userImage = (ImageView) view.findViewById(R.id.profileUserImage);
         userAlias = (TextView) view.findViewById(R.id.profileUserAlias);
@@ -169,14 +175,6 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         appBarLayout = (AppBarLayout) view.findViewById(R.id.htab_appbar);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs_profile);
-
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getActivity().getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
-
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);*/
 
         tabLayout.addTab(tabLayout.newTab());
         tabLayout.addTab(tabLayout.newTab());
@@ -187,9 +185,9 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
         mViewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setText("Experience");
-        tabLayout.getTabAt(1).setText("Studies");
-        tabLayout.getTabAt(2).setText("Contacts");
+        tabLayout.getTabAt(0).setText(getString(R.string.works_tab));
+        tabLayout.getTabAt(1).setText(getString(R.string.studies_tab));
+        tabLayout.getTabAt(2).setText(getString(R.string.contacts_tab));
 
         return view;
     }
@@ -198,8 +196,6 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
     public void onSuccess(User user) {
 
         collapsingToolbar.setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
-
-        //((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(user.getFirstName().concat(" ").concat(user.getLastName()));
 
         if(user.getImagen() == null){
             userImage.setImageResource(R.drawable.account_circle);
@@ -225,65 +221,27 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
                                                     Palette.Swatch mutedLightSwatch = palette.getLightMutedSwatch();
                                                     Palette.Swatch mutedDarkSwatch = palette.getDarkMutedSwatch();
 
-                                                    Log.d("nxw",""+vibrantSwatch.getRgb());
-                                                    Log.d("nxw",""+vibrantLightSwatch.getRgb());
-                                                    Log.d("nxw",""+vibrantDarkSwatch.getRgb());
-                                                    Log.d("nxw",""+mutedSwatch.getRgb());
-                                                    Log.d("nxw",""+dominantSwatch.getRgb());
-                                                    Log.d("nxw",""+mutedLightSwatch.getRgb());
-                                                    Log.d("nxw",""+mutedDarkSwatch.getRgb());
-
                                                     if(vibrantSwatch != null){
                                                         collapsingToolbar.setContentScrimColor(vibrantSwatch.getRgb());
                                                         collapsingToolbar.setStatusBarScrimColor(vibrantSwatch.getRgb());
                                                         appBarLayout.setBackgroundColor(vibrantSwatch.getRgb());
-
-                                                        /*drawableHomeIcon.setTint(vibrantSwatch.getTitleTextColor());
-                                                        drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                        drawableChatIcon.setTint(vibrantSwatch.getTitleTextColor());
-                                                        drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                        drawableManagementIcon.setTint(vibrantSwatch.getTitleTextColor());
-                                                        drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                        tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
-                                                        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
-                                                        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);*/
+                                                        tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                        //htab_toolbar.setBackgroundColor(vibrantSwatch.getRgb());
                                                     }
                                                     else{
                                                         if(vibrantLightSwatch == null){
                                                             collapsingToolbar.setContentScrimColor(dominantSwatch.getRgb());
                                                             collapsingToolbar.setStatusBarScrimColor(dominantSwatch.getRgb());
                                                             appBarLayout.setBackgroundColor(dominantSwatch.getRgb());
-
-                                                            /*drawableHomeIcon.setTint(dominantSwatch.getTitleTextColor());
-                                                            drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                            drawableChatIcon.setTint(dominantSwatch.getTitleTextColor());
-                                                            drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                            drawableManagementIcon.setTint(dominantSwatch.getTitleTextColor());
-                                                            drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);*/
+                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                            //htab_toolbar.setBackgroundColor(dominantSwatch.getRgb());
                                                         }
                                                         else{
                                                             collapsingToolbar.setContentScrimColor(vibrantLightSwatch.getRgb());
                                                             collapsingToolbar.setStatusBarScrimColor(vibrantLightSwatch.getRgb());
-                                                            /*appBarLayout.setBackgroundColor(vibrantLightSwatch.getRgb());
-
-                                                            drawableHomeIcon.setTint(vibrantLightSwatch.getTitleTextColor());
-                                                            drawableHomeIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                            drawableChatIcon.setTint(vibrantLightSwatch.getTitleTextColor());
-                                                            drawableChatIcon.setTintMode(PorterDuff.Mode.SRC_IN);
-
-                                                            drawableManagementIcon.setTint(vibrantLightSwatch.getTitleTextColor());
-                                                            drawableManagementIcon.setTintMode(PorterDuff.Mode.SRC_IN);*/
+                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                            //htab_toolbar.setBackgroundColor(vibrantLightSwatch.getRgb());
                                                         }
-
-                                                        /*tabLayout.getTabAt(0).setIcon(drawableHomeIcon);
-                                                        tabLayout.getTabAt(1).setIcon(drawableChatIcon);
-                                                        tabLayout.getTabAt(2).setIcon(drawableManagementIcon);*/
                                                     }
 
                                                 }

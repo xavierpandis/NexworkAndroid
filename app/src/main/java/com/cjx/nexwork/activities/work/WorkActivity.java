@@ -58,7 +58,7 @@ public class WorkActivity extends AppCompatActivity{
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.fragment_work, new FragmentListWork())
                 .commit();
     }

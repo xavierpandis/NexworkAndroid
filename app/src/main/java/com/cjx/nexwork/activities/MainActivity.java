@@ -1,31 +1,23 @@
 package com.cjx.nexwork.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.HomeFragment;
-import com.cjx.nexwork.fragments.UserManagmentFragment;
-import com.cjx.nexwork.fragments.UserProfileFragment;
 import com.cjx.nexwork.managers.TokenStoreManager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
     ViewPager mViewPager;
     Toolbar toolbar;
     TabLayout tabs;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -122,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         } else {
             super.onBackPressed();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
 
     }

@@ -7,6 +7,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,6 +36,19 @@ import com.cjx.nexwork.R;
 import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.model.UserToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 /**
  * A login screen that offers login via email/password.
@@ -44,12 +61,80 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
     //private View mProgressView;
     private View mLoginFormView;
     private ProgressDialog progressDialog;
+    CallbackManager callbackManager;
+    LoginButton loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
+        // INTEGRACION FACEBOOK
+
+        /* FacebookSdk.sdkInitialize(getApplicationContext());
+
+       try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.cjx.nexwork",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }*/
+
+        /*callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+                Log.d("nxw-facebook - success", loginResult.getAccessToken().getUserId());
+                Log.d("nxw-facebook - success", Profile.getCurrentProfile().getFirstName());
+
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                Log.d("nxw-facebook - cancel", "ERROR");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                Log.d("nxw-facebook exception", exception.getMessage());
+            }
+        });
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email");
+        */
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         TextView createAccountButton = (TextView) findViewById(R.id.createAccount);
 
@@ -75,6 +160,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
             }
         });
 
+
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -85,6 +172,13 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
 
         mLoginFormView = findViewById(R.id.login_form);
         //mProgressView = findViewById(R.id.login_progress);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

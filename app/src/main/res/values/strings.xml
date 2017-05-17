@@ -31,6 +31,9 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_login2">das</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="small_text">
+        Nunc egestas vulputate mauris, et hendrerit dolor suscipit eu. Suspendisse potenti. Pellentesque non nisl maximus, scelerisque augue eu, accumsan dui. Vestibulum augue nunc, fringilla vitae quam et, pellentesque varius magna.
+    </string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -125,4 +128,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="current_work">now</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+
+
+    <string name="facebook_app_id">1879904562283390</string>
+    <string name="studies_tab">Studies</string>
+    <string name="works_tab">Experience</string>
+    <string name="contacts_tab">Contacts</string>
 </resources>

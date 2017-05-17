@@ -19,12 +19,15 @@ import android.widget.Toast;
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
+import com.cjx.nexwork.managers.user.UserDetailCallback;
+import com.cjx.nexwork.managers.user.UserManager;
+import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.model.UserToken;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity implements UserDetailCallback {
 
     private static final long SPLASH_SCREEN_DELAY = 3000;
 
@@ -68,8 +71,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         TokenStoreManager.getInstance().setUsername(preferences.getString("username",""));
         TokenStoreManager.getInstance().setContext(SplashScreenActivity.this);
 
-        Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
-        startActivity(loginIntent);
+        /*Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+        startActivity(loginIntent);*/
     }
 
     @Override
@@ -93,7 +96,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
 
-        TimerTask task = new TimerTask() {
+        enterApp(preferences);
+
+        UserManager.getInstance().getCurrentUser(this);
+
+        /*TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 if(accessToken.equals("")){
@@ -121,7 +128,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         // Simulate a long loading process on application startup.
         Timer timer = new Timer();
-        timer.schedule(task, SPLASH_SCREEN_DELAY);
+        timer.schedule(task, SPLASH_SCREEN_DELAY);*/
     }
 
     @Override
@@ -137,4 +144,32 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public void accessApp(){
+        Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+        startActivity(loginIntent);
+    }
+
+    @Override
+    public void onSuccess(User user) {
+        Log.d("success", "user success");
+
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if (checkPermission()) {
+                accessApp();
+            } else {
+                requestPermission(); // Code for permission
+                accessApp();
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        Log.d("error", t.getMessage());
+        Intent loginIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+        startActivity(loginIntent);
+    }
 }

@@ -1,5 +1,6 @@
 package com.cjx.nexwork.managers.user;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.cjx.nexwork.exceptions.NexworkTokenException;

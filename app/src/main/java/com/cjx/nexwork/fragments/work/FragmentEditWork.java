@@ -151,7 +151,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
         else{
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_out, android.R.anim.fade_in)
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                     .replace(R.id.fragment_work, new FragmentListWork(), "editFragment")
                     .addToBackStack(null)
                     .commit();
