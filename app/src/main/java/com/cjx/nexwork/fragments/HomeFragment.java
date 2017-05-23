@@ -33,6 +33,7 @@ import java.util.List;
 /**
  * Created by Xavi on 08/04/2017.
  */
+
 public class HomeFragment extends Fragment{
 
     View view;

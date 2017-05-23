@@ -5,10 +5,14 @@ import android.util.Log;
 
 import com.cjx.nexwork.exceptions.NexworkTokenException;
 import com.cjx.nexwork.managers.BaseManager;
+import com.cjx.nexwork.managers.UploadImageCallback;
 import com.cjx.nexwork.managers.friend.FriendCallback;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.services.UserService;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.RequestBody;
@@ -72,19 +76,41 @@ public class UserManager extends BaseManager{
         });
     }
 
-    public synchronized void updateUserImage(RequestBody fbody, RequestBody name, final UserDetailCallback userDetailCallback){
+    public synchronized void updateUserImage(RequestBody fbody, RequestBody name, final UploadImageCallback uploadImageCallback){
         Call<ResponseBody> call = userService.updateUserImage(fbody, name);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                userDetailCallback.onSuccess(null);
+                try {
+                    uploadImageCallback.onSuccessUploadImage(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Log.d("upload", response.message());
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                userDetailCallback.onFailure(t);
+                uploadImageCallback.onFailureUploadImage(t);
+                Log.d("upload", t.getMessage());
+            }
+        });
+    }
+
+    public synchronized void updateUserData(User user, final UserDetailCallback userDetailCallback){
+        Call<User> call = userService.updateUserData(user);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                userDetailCallback.onSuccessSaved(response.body());
+                Log.d("upload", response.message());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                userDetailCallback.onFailureSaved(t);
                 Log.d("upload", t.getMessage());
             }
         });

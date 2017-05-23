@@ -9,4 +9,7 @@ import com.cjx.nexwork.model.User;
 public interface UserDetailCallback {
     void onSuccess(User user);
     void onFailure(Throwable t);
+
+    void onSuccessSaved(User user);
+    void onFailureSaved(Throwable t);
 }

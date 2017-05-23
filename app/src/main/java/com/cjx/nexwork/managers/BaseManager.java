@@ -77,11 +77,11 @@ public abstract class BaseManager {
 
                     retrofit2.Response<UserToken> tokenResponse = call.execute();
 
-                    if(tokenResponse.code() == 400 || tokenResponse.code() == 401){
+                   /* if(tokenResponse.code() == 400 || tokenResponse.code() == 401){
                         Intent intentLogin = new Intent(TokenStoreManager.getInstance().getContext(), LoginActivity.class);
                         TokenStoreManager.getInstance().getContext().startActivity(intentLogin);
                         return null;
-                    }
+                    }*/
                     if(tokenResponse.code() == 200) {
                         UserToken newToken = tokenResponse.body();
 

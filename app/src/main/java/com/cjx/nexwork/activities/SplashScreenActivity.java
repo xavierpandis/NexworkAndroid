@@ -104,7 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
             @Override
             public void run() {
                 if(accessToken.equals("")){
-                    Intent loginIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
                     startActivity(loginIntent);
                 }else{
 
@@ -171,5 +171,15 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
         Log.d("error", t.getMessage());
         Intent loginIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
         startActivity(loginIntent);
+    }
+
+    @Override
+    public void onSuccessSaved(User user) {
+
+    }
+
+    @Override
+    public void onFailureSaved(Throwable t) {
+
     }
 }

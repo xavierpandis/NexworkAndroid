@@ -36,6 +36,9 @@ public interface UserService {
     @GET("/api/account")
     Call<User> getCurrentUser();
 
+    @POST("/api/account")
+    Call<User> updateUserData(@Body User user);
+
     @POST("/api/register/app")
     Call<ResponseBody> registerAccount(@Body User user);
 

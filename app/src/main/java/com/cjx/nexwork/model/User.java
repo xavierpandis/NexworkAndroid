@@ -13,6 +13,7 @@ public class User implements Serializable {
     String password;
     String firstName;
     String lastName;
+    Date userDate;
     String email;
     String imagen;
     String web_personal;
@@ -23,12 +24,13 @@ public class User implements Serializable {
     String carta_presentacion;
     String ciudad;
 
-    public User(Long id, String password, String login, String firstName, String lastName, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal) {
+    public User(Long id, String password, String login, String firstName, String lastName, Date userDate, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userDate = userDate;
         this.email = email;
         this.imagen = imagen;
         this.facebook = facebook;
@@ -72,6 +74,12 @@ public class User implements Serializable {
     }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+    public Date getUserDate() {
+        return userDate;
+    }
+    public void setUserDate(Date userDate) {
+        this.userDate = userDate;
     }
     public String getLastName() {
         return lastName;
@@ -144,6 +152,8 @@ public class User implements Serializable {
             return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null)
             return false;
+        if (userDate != null ? !userDate.equals(user.userDate) : user.userDate != null)
+            return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (imagen != null ? !imagen.equals(user.imagen) : user.imagen != null) return false;
         if (web_personal != null ? !web_personal.equals(user.web_personal) : user.web_personal != null)
@@ -165,6 +175,7 @@ public class User implements Serializable {
         result = 31 * result + (login != null ? login.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (userDate != null ? userDate.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
         result = 31 * result + (web_personal != null ? web_personal.hashCode() : 0);
@@ -185,6 +196,7 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", userDate='" + userDate + '\'' +
                 ", email='" + email + '\'' +
                 ", imagen='" + imagen + '\'' +
                 ", web_personal='" + web_personal + '\'' +

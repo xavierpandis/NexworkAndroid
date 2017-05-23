@@ -210,6 +210,16 @@ public class ContactProfileActivity extends AppCompatActivity implements UserDet
 
     }
 
+    @Override
+    public void onSuccessSaved(User user) {
+
+    }
+
+    @Override
+    public void onFailureSaved(Throwable t) {
+
+    }
+
     public class DemoCollectionPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

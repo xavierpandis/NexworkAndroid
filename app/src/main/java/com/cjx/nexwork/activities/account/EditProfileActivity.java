@@ -133,6 +133,13 @@ public class EditProfileActivity extends AppCompatActivity implements UserDetail
 
     }
 
+    public void saveUserData(){
+
+
+
+
+    }
+
     public void selectImageAndroid(){
         Intent intent = new Intent();
         //Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -174,7 +181,7 @@ public class EditProfileActivity extends AppCompatActivity implements UserDetail
 
         urlNewImage = "uploads/"+TokenStoreManager.getInstance().getUsername()+"."+extension;
 
-        UserManager.getInstance().updateUserImage(fbody, name, this);
+        //UserManager.getInstance().updateUserImage(fbody, name, this);
 
 
     }
@@ -204,5 +211,15 @@ public class EditProfileActivity extends AppCompatActivity implements UserDetail
     @Override
     public void onFailure(Throwable t) {
         Log.d("upload", t.getMessage());
+    }
+
+    @Override
+    public void onSuccessSaved(User user) {
+
+    }
+
+    @Override
+    public void onFailureSaved(Throwable t) {
+
     }
 }

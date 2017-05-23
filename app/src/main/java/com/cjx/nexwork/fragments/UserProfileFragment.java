@@ -233,13 +233,13 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
                                                             collapsingToolbar.setContentScrimColor(dominantSwatch.getRgb());
                                                             collapsingToolbar.setStatusBarScrimColor(dominantSwatch.getRgb());
                                                             appBarLayout.setBackgroundColor(dominantSwatch.getRgb());
-                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                            //tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
                                                             //htab_toolbar.setBackgroundColor(dominantSwatch.getRgb());
                                                         }
                                                         else{
                                                             collapsingToolbar.setContentScrimColor(vibrantLightSwatch.getRgb());
                                                             collapsingToolbar.setStatusBarScrimColor(vibrantLightSwatch.getRgb());
-                                                            tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
+                                                            //tabLayout.setSelectedTabIndicatorColor(vibrantDarkSwatch.getRgb());
                                                             //htab_toolbar.setBackgroundColor(vibrantLightSwatch.getRgb());
                                                         }
                                                     }
@@ -264,6 +264,16 @@ public class UserProfileFragment extends Fragment implements UserDetailCallback 
 
     @Override
     public void onFailure(Throwable t) {
+
+    }
+
+    @Override
+    public void onSuccessSaved(User user) {
+
+    }
+
+    @Override
+    public void onFailureSaved(Throwable t) {
 
     }
 
