@@ -13,7 +13,7 @@ public class User implements Serializable {
     String password;
     String firstName;
     String lastName;
-    Date userDate;
+    Date   fecha_nacimiento;
     String email;
     String imagen;
     String web_personal;
@@ -23,14 +23,15 @@ public class User implements Serializable {
     String github;
     String carta_presentacion;
     String ciudad;
+    String telefono;
 
-    public User(Long id, String password, String login, String firstName, String lastName, Date userDate, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal) {
+    public User(Long id, String password, String login, String firstName, String lastName, Date fecha_nacimiento, String email, String imagen, String facebook, String twitter, String skype, String github, String carta_presentacion, String web_personal, String ciudad, String telefono) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userDate = userDate;
+        this.fecha_nacimiento = fecha_nacimiento;
         this.email = email;
         this.imagen = imagen;
         this.facebook = facebook;
@@ -39,6 +40,92 @@ public class User implements Serializable {
         this.github = github;
         this.carta_presentacion = carta_presentacion;
         this.web_personal = web_personal;
+        this.ciudad = ciudad;
+        this.telefono = telefono;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (telefono != user.telefono) return false;
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null)
+            return false;
+        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null)
+            return false;
+        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null)
+            return false;
+        if (fecha_nacimiento != null ? !fecha_nacimiento.equals(user.fecha_nacimiento) : user.fecha_nacimiento != null)
+            return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (imagen != null ? !imagen.equals(user.imagen) : user.imagen != null) return false;
+        if (web_personal != null ? !web_personal.equals(user.web_personal) : user.web_personal != null)
+            return false;
+        if (facebook != null ? !facebook.equals(user.facebook) : user.facebook != null)
+            return false;
+        if (twitter != null ? !twitter.equals(user.twitter) : user.twitter != null) return false;
+        if (skype != null ? !skype.equals(user.skype) : user.skype != null) return false;
+        if (github != null ? !github.equals(user.github) : user.github != null) return false;
+        if (carta_presentacion != null ? !carta_presentacion.equals(user.carta_presentacion) : user.carta_presentacion != null)
+            return false;
+        return ciudad != null ? ciudad.equals(user.ciudad) : user.ciudad == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (fecha_nacimiento != null ? fecha_nacimiento.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
+        result = 31 * result + (web_personal != null ? web_personal.hashCode() : 0);
+        result = 31 * result + (facebook != null ? facebook.hashCode() : 0);
+        result = 31 * result + (twitter != null ? twitter.hashCode() : 0);
+        result = 31 * result + (skype != null ? skype.hashCode() : 0);
+        result = 31 * result + (github != null ? github.hashCode() : 0);
+        result = 31 * result + (carta_presentacion != null ? carta_presentacion.hashCode() : 0);
+        result = 31 * result + (ciudad != null ? ciudad.hashCode() : 0);
+        result = 31 * result + (telefono != null ? telefono.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", fecha_nacimiento=" + fecha_nacimiento +
+                ", email='" + email + '\'' +
+                ", imagen='" + imagen + '\'' +
+                ", web_personal='" + web_personal + '\'' +
+                ", facebook='" + facebook + '\'' +
+                ", twitter='" + twitter + '\'' +
+                ", skype='" + skype + '\'' +
+                ", github='" + github + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", carta_presentacion='" + carta_presentacion + '\'' +
+                ", ciudad='" + ciudad + '\'' +
+                '}';
     }
 
     public User(String login, String password, String email, String firstName, String lastName){
@@ -75,12 +162,7 @@ public class User implements Serializable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    public Date getUserDate() {
-        return userDate;
-    }
-    public void setUserDate(Date userDate) {
-        this.userDate = userDate;
-    }
+
     public String getLastName() {
         return lastName;
     }
@@ -138,72 +220,9 @@ public class User implements Serializable {
     public String getCiudad() {
         return ciudad;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null)
-            return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null)
-            return false;
-        if (userDate != null ? !userDate.equals(user.userDate) : user.userDate != null)
-            return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (imagen != null ? !imagen.equals(user.imagen) : user.imagen != null) return false;
-        if (web_personal != null ? !web_personal.equals(user.web_personal) : user.web_personal != null)
-            return false;
-        if (facebook != null ? !facebook.equals(user.facebook) : user.facebook != null)
-            return false;
-        if (twitter != null ? !twitter.equals(user.twitter) : user.twitter != null) return false;
-        if (skype != null ? !skype.equals(user.skype) : user.skype != null) return false;
-        if (github != null ? !github.equals(user.github) : user.github != null) return false;
-        if (carta_presentacion != null ? !carta_presentacion.equals(user.carta_presentacion) : user.carta_presentacion != null)
-            return false;
-        return ciudad != null ? ciudad.equals(user.ciudad) : user.ciudad == null;
-
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (userDate != null ? userDate.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (imagen != null ? imagen.hashCode() : 0);
-        result = 31 * result + (web_personal != null ? web_personal.hashCode() : 0);
-        result = 31 * result + (facebook != null ? facebook.hashCode() : 0);
-        result = 31 * result + (twitter != null ? twitter.hashCode() : 0);
-        result = 31 * result + (skype != null ? skype.hashCode() : 0);
-        result = 31 * result + (github != null ? github.hashCode() : 0);
-        result = 31 * result + (carta_presentacion != null ? carta_presentacion.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "carta_presentacion='" + carta_presentacion + '\'' +
-                ", id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userDate='" + userDate + '\'' +
-                ", email='" + email + '\'' +
-                ", imagen='" + imagen + '\'' +
-                ", web_personal='" + web_personal + '\'' +
-                ", facebook='" + facebook + '\'' +
-                ", twitter='" + twitter + '\'' +
-                ", skype='" + skype + '\'' +
-                ", github='" + github + '\'' +
-                '}';
-    }
+    public String getTelefono() {return telefono;}
+    public void setTelefono(String telefono) {this.telefono = telefono;}
 }

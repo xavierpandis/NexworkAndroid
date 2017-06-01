@@ -9,6 +9,7 @@ import com.cjx.nexwork.managers.UploadImageCallback;
 import com.cjx.nexwork.managers.friend.FriendCallback;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.services.UserService;
+import com.facebook.LoggingBehavior;
 
 import org.json.JSONObject;
 
@@ -114,6 +115,12 @@ public class UserManager extends BaseManager{
                 Log.d("upload", t.getMessage());
             }
         });
+    }
+
+    public synchronized Call updatePassword(String password){
+        Call<ResponseBody> call = userService.updatePassword(password);
+        Log.isLoggable(password, 1);
+        return call;
     }
 
     public synchronized void getCurrentUser(final UserDetailCallback userDetailCallback) {

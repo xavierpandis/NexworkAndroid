@@ -36,6 +36,9 @@ public interface UserService {
     @GET("/api/account")
     Call<User> getCurrentUser();
 
+    @POST("/api/account/change_password")
+    Call<ResponseBody> updatePassword(@Body String password);
+
     @POST("/api/account")
     Call<User> updateUserData(@Body User user);
 

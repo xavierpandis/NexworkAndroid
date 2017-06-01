@@ -1,6 +1,7 @@
 package com.cjx.nexwork;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,7 +9,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,6 +32,7 @@ import com.cjx.nexwork.managers.UploadImageCallback;
 import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
+import com.cjx.nexwork.util.CustomDatePicker;
 import com.cjx.nexwork.util.CustomProperties;
 import com.cjx.nexwork.util.FileUtils;
 import com.squareup.picasso.MemoryPolicy;
@@ -36,7 +41,11 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -47,7 +56,7 @@ import static android.app.Activity.RESULT_OK;
  * A simple {@link Fragment} subclass.
  */
 
-public class EditProfileFragment extends Fragment implements UserDetailCallback, UploadImageCallback, View.OnClickListener {
+public class EditProfileFragment extends Fragment implements UserDetailCallback, UploadImageCallback, View.OnClickListener, CustomDatePicker.DatePickerListener {
 
     private int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -55,6 +64,7 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 400;        // min pixels
     private static final String TAG = "ImagePicker";
     private static final String TEMP_IMAGE_NAME = "tempImage";
+    final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
     ImageView userimage;
     EditText firstname;
@@ -67,7 +77,6 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
     EditText webpage;
     EditText skype;
     EditText phone;
-    EditText useraddress;
     EditText city;
     EditText presentationletter;
     Button saveDataUser;
@@ -77,6 +86,13 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
     public EditProfileFragment() {
     }
 
+    public void showDatePicker(String fecha){
+        DialogFragment dialogFragment = new CustomDatePicker(this);
+        Bundle bundle = new Bundle();
+        bundle.putString("fecha", fecha);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(), "");
+    }
 
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
 
@@ -129,10 +145,11 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         webpage = (EditText) view.findViewById(R.id.userWebpage);
         skype = (EditText) view.findViewById(R.id.userSkype);
         phone = (EditText) view.findViewById(R.id.phoneNumber);
-        useraddress = (EditText) view.findViewById(R.id.userAddress);
         city = (EditText) view.findViewById(R.id.userCity);
         presentationletter = (EditText) view.findViewById(R.id.presentationLetter);
         saveDataUser = (Button) view.findViewById(R.id.saveButton);
+
+        userdate.setOnClickListener(this);
 
         UserManager.getInstance().getCurrentUser(this);
 
@@ -143,6 +160,8 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
 
     @Override
     public void onSuccess(User user) {
+        final String fecha = format.format(user.getFecha_nacimiento());
+
         Picasso.with(getActivity())
                 .load(CustomProperties.baseUrl+"/"+user.getImagen()+"?time="+System.currentTimeMillis())
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -152,6 +171,13 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         this.user = user;
 
         userimage.setOnClickListener(this);
+
+        userdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(fecha);
+            }
+        });
 
         saveDataUser.setOnClickListener(this);
 
@@ -167,8 +193,9 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         else{
             lastname.setText("");
         }
-        if(user.getUserDate()!=null){
-            userdate.setText(user.getUserDate().toString());
+        if(user.getFecha_nacimiento()!=null){
+            String date = format.format(user.getFecha_nacimiento());
+            userdate.setText(date);
         }
         else{
             userdate.setText("");
@@ -209,6 +236,12 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         else{
             skype.setText("");
         }
+        if(user.getTelefono()!=null){
+            phone.setText(user.getTelefono());
+        }
+        else{
+            phone.setText("");
+        }
         if(user.getCiudad()!=null){
             city.setText(user.getCiudad());
         }
@@ -230,6 +263,7 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
 
     @Override
     public void onSuccessSaved(User user) {
+        Snackbar.make(getView(), "Se han guardado bien tus datos", Snackbar.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
     }
@@ -317,6 +351,8 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
                     selectImageAndroid();
                 }
                 break;
+            case R.id.userDate:
+                 break;
         }
     }
 
@@ -330,6 +366,15 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         }
         if(!email.getText().toString().equals("")){
             user.setEmail(email.getText().toString());
+        }
+        if(!userdate.getText().toString().equals("")){
+            try {
+                String date = userdate.getText().toString();
+                Date date1 = format.parse(date);
+                user.setFecha_nacimiento(date1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         if(!github.getText().toString().equals("")){
             user.setGithub(github.getText().toString());
@@ -346,8 +391,11 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
         if(!skype.getText().toString().equals("")){
             user.setSkype(skype.getText().toString());
         }
+        if(!phone.getText().toString().equals("")){
+            user.setTelefono(phone.getText().toString());
+        }
         if(!city.getText().toString().equals("")){
-            //user.setCiudad(city.getText().toString());
+            user.setCiudad(city.getText().toString());
         }
         if(!presentationletter.getText().toString().equals("")){
             user.setCarta_presentacion(presentationletter.getText().toString());
@@ -357,4 +405,17 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
 
     }
 
+    @Override
+    public void returnDate(String date) {
+        Log.d("fecha", date);
+        userdate.setText(date);
+    }
+
+   /* @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Log.d("year", year+"");
+        Log.d("month", month+"");
+        Log.d("dayOfMonth", dayOfMonth+"");
+        userdate.setText(dayOfMonth+"/"+month+"/"+year);
+    }*/
 }

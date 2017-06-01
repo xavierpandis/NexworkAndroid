@@ -45,6 +45,7 @@ public abstract class BaseManager {
                 .create();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.connectTimeout(500, TimeUnit.SECONDS).readTimeout(500, TimeUnit.SECONDS);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
