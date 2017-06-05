@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,18 +42,16 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
         // each data item is just a string in this case
         public final View mView;
         public TextView positionWork;
-        public TextView startedDate;
-        public TextView endDate;
-        public TextView current;
+        public TextView companyWork;
+        public TextView dateWork;
         public Work work;
 
         public ViewHolder(View v) {
             super(v);
             mView = v;
             positionWork = (TextView) v.findViewById(R.id.workPosition);
-            startedDate = (TextView) v.findViewById(R.id.startDate);
-            endDate = (TextView) v.findViewById(R.id.endDate);
-            current = (TextView) v.findViewById(R.id.currentWork);
+            companyWork = (TextView) v.findViewById(R.id.companyWork);
+            dateWork = (TextView) v.findViewById(R.id.dateWork);
         }
     }
 
@@ -83,22 +82,47 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         holder.work = workList.get(position);
+
         holder.positionWork.setText(workList.get(position).getCargo());
+
+        if(workList.get(position).getCompany() == null){
+            holder.companyWork.setText(fragmentOne.getResources().getString(R.string.no_company));
+        }else{
+            if(workList.get(position).getCompany().getUbicacion() != null){
+                holder.companyWork.setText(workList.get(position).getCompany().getNombre() +
+                        " ("+workList.get(position).getCompany().getUbicacion()+")");
+            }else{
+                holder.companyWork.setText(workList.get(position).getCompany().getNombre());
+            }
+            //holder.companyWork.setText(workList.get(position).getCompany().getNombre());
+        }
+
+        //dateWork = (TextView) v.findViewById(R.id.dateWork);
+
+        String dateWorkString = "";
 
         Date start = workList.get(position).getFechaInicio();
         Date end = workList.get(position).getFechaFin();
 
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 
-        holder.startedDate.setText(formateador.format(start));
+        dateWorkString.concat(formateador.format(start));
+
+        //holder.startedDate.setText(formateador.format(start));
         if(workList.get(position).getActualmente()){
-            holder.endDate.setVisibility(View.GONE);
-            holder.current.setText(R.string.current_work);
+            //holder.endDate.setVisibility(View.GONE);
+            //holder.current.setText(R.string.current_work);
+            String current = fragmentOne.getResources().getString(R.string.current_work);
+            dateWorkString.concat(" to ");
+            dateWorkString.concat(current);
         }
         else{
-            holder.endDate.setText(formateador.format(end));
-            holder.current.setVisibility(View.GONE);
+            dateWorkString.concat(" to ");
+            dateWorkString.concat(formateador.format(end));
+            //holder.endDate.setText(formateador.format(end));
+           // holder.current.setVisibility(View.GONE);
         }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

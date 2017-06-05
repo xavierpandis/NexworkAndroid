@@ -1,6 +1,7 @@
 package com.cjx.nexwork.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -17,11 +18,14 @@ import android.support.v7.view.menu.ShowableListMenu;
 import android.support.v7.widget.ForwardingListener;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.fragments.management.ManagementFragment;
@@ -40,10 +44,6 @@ public class HomeFragment extends Fragment{
     ViewPager mViewPager;
     Toolbar toolbar;
     TabLayout tabs;
-
-    Drawable drawableHomeIcon;
-    Drawable drawableChatIcon;
-    Drawable drawableManagementIcon;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -70,10 +70,14 @@ public class HomeFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        getActivity().onSearchRequested();
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         tabs = (TabLayout) view.findViewById(R.id.home_tabs);
+
+
 
         tabs.addTab(tabs.newTab());
         tabs.addTab(tabs.newTab());
@@ -82,11 +86,30 @@ public class HomeFragment extends Fragment{
         mViewPager = (ViewPager) view.findViewById(R.id.home_pager);
         setupViewPager(mViewPager);
         tabs.setupWithViewPager(mViewPager);
-        tabs.getTabAt(0).setIcon(R.drawable.home_white);
-        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
-        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
 
-        tabs.setSelectedTabIndicatorColor(Color.parseColor("#DD050F48"));
+        tabs.getTabAt(0).setIcon(R.drawable.home_tab_selected);
+        tabs.getTabAt(1).setIcon(R.drawable.management_tab_normal);
+        tabs.getTabAt(2).setIcon(R.drawable.account_tab_normal);
+
+        //tabs.setSelectedTabIndicatorColor(Color.parseColor("#DD050F48"));
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d("position scrolled", String.valueOf(position));
+                //getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("position page", String.valueOf(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d("state", String.valueOf(state));
+            }
+        });
 
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
             @Override
@@ -95,19 +118,28 @@ public class HomeFragment extends Fragment{
                 int numTab = tab.getPosition();
                 switch (numTab){
                     case 0:
-                        tabs.getTabAt(0).setIcon(R.drawable.home_white);
-                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
-                        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
+                        tabs.getTabAt(0).setIcon(R.drawable.home_tab_selected);
+                        tabs.getTabAt(1).setIcon(R.drawable.management_tab_normal);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_tab_normal);
+                        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         break;
                     case 1:
-                        tabs.getTabAt(0).setIcon(R.drawable.home);
-                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit_white);
-                        tabs.getTabAt(2).setIcon(R.drawable.account_circle);
+                        tabs.getTabAt(0).setIcon(R.drawable.home_tab_normal);
+                        tabs.getTabAt(1).setIcon(R.drawable.management_tab_selected);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_tab_normal);
+                        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         break;
                     case 2:
-                        tabs.getTabAt(0).setIcon(R.drawable.home);
-                        tabs.getTabAt(1).setIcon(R.drawable.tooltip_edit);
-                        tabs.getTabAt(2).setIcon(R.drawable.account_circle_white);
+                        tabs.getTabAt(0).setIcon(R.drawable.home_tab_normal);
+                        tabs.getTabAt(1).setIcon(R.drawable.management_tab_normal);
+                        tabs.getTabAt(2).setIcon(R.drawable.account_tab_selected);
+                        if(((AppCompatActivity) getActivity()).getSupportActionBar().isShowing()){
+                            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+                        }
+                        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                         break;
                 }
             }
@@ -115,7 +147,6 @@ public class HomeFragment extends Fragment{
 
         return view;
     }
-
 
     private void setupViewPager(ViewPager viewPager) {
         HomeFragment.HomePagerAdapter adapter = new HomeFragment.HomePagerAdapter(getChildFragmentManager());

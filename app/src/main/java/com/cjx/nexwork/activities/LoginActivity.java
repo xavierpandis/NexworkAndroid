@@ -35,6 +35,9 @@ import com.cjx.nexwork.managers.LoginCallback;
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.UserLoginManager;
+import com.cjx.nexwork.managers.user.UserDetailCallback;
+import com.cjx.nexwork.managers.user.UserManager;
+import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.model.UserToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -53,7 +56,7 @@ import java.util.concurrent.Callable;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoginCallback {
+public class LoginActivity extends AppCompatActivity implements LoginCallback, UserDetailCallback {
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -139,6 +142,14 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         TextView createAccountButton = (TextView) findViewById(R.id.createAccount);
 
         createAccountButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        Button btn_create_account = (Button) findViewById(R.id.btn_create_account);
+        btn_create_account.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -250,12 +261,22 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         editor.putString("accessToken",userToken.getAccessToken());
         editor.putString("refreshToken",userToken.getRefreshToken());
         editor.putString("tokenType", userToken.getTokenType());
-        editor.putString("username", TokenStoreManager.getInstance().getUsername());
         editor.apply();
 
         TokenStoreManager.getInstance().setAccessToken(userToken.getAccessToken());
         TokenStoreManager.getInstance().setRefreshToken(userToken.getRefreshToken());
         TokenStoreManager.getInstance().setTokenType(userToken.getTokenType());
+
+        UserManager.getInstance().getCurrentUser(this);
+    }
+
+    @Override
+    public void onSuccess(User user) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", user.getLogin());
+        editor.apply();
+        TokenStoreManager.getInstance().setUsername(user.getLogin());
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -268,6 +289,16 @@ public class LoginActivity extends AppCompatActivity implements LoginCallback {
         createAlert("Login error","Wrong username or password");
         mPasswordView.setError("ERROR");
         mPasswordView.requestFocus();
+    }
+
+    @Override
+    public void onSuccessSaved(User user) {
+
+    }
+
+    @Override
+    public void onFailureSaved(Throwable t) {
+
     }
 
 }

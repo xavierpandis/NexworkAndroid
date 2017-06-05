@@ -45,7 +45,8 @@ public abstract class BaseManager {
                 .create();
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.connectTimeout(500, TimeUnit.SECONDS).readTimeout(500, TimeUnit.SECONDS);
+        httpClient.connectTimeout(500, TimeUnit.SECONDS)
+                .readTimeout(500, TimeUnit.SECONDS);
         httpClient.addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -78,11 +79,11 @@ public abstract class BaseManager {
 
                     retrofit2.Response<UserToken> tokenResponse = call.execute();
 
-                   /* if(tokenResponse.code() == 400 || tokenResponse.code() == 401){
+                    if(tokenResponse.code() == 400 || tokenResponse.code() == 401){
                         Intent intentLogin = new Intent(TokenStoreManager.getInstance().getContext(), LoginActivity.class);
                         TokenStoreManager.getInstance().getContext().startActivity(intentLogin);
                         return null;
-                    }*/
+                    }
                     if(tokenResponse.code() == 200) {
                         UserToken newToken = tokenResponse.body();
 

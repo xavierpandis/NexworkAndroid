@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.activities.MainActivity;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
@@ -69,8 +72,8 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        //((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         if(getArguments() != null){
             this.workId = getArguments().getLong(WORK);
@@ -122,8 +125,8 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
         viewPager.setVisibility(View.VISIBLE);
         FrameLayout frameLayout = (FrameLayout) getActivity().findViewById(R.id.relfragmentapp);
         frameLayout.setVisibility(View.GONE);*/
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        /*((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);*/
         super.onDetach();
     }
 
@@ -149,11 +152,13 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
             editDescription.setText(work.getDescripcionCargo());
         }
         else{
+            Snackbar.make(getView(), "Tu trabajo se ha actualizado", Snackbar.LENGTH_SHORT)
+                    .setActionTextColor(Color.WHITE).show();
+
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(R.id.fragment_work, new FragmentListWork(), "editFragment")
-                    .addToBackStack(null)
+                    .replace(R.id.content_main, new FragmentListWork(TokenStoreManager.getInstance().getUsername(), true), "editFragment")
                     .commit();
         }
 
@@ -230,7 +235,6 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
             work.setFechaInicio(startDate);
             editPetition = true;
             WorkManager.getInstance().editWork(work, this);
-
 
         }
         catch (Exception e){

@@ -67,6 +67,12 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
         context = cntxt;
     }
 
+    public void removeItem(int position) {
+        studyList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, studyList.size());
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public StudyListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

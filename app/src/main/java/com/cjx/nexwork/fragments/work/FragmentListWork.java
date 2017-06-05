@@ -12,8 +12,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ import android.widget.FrameLayout;
 
 import com.cjx.nexwork.R;
 import com.cjx.nexwork.adapters.WorkListAdapter;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
@@ -43,7 +46,7 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FragmentListWork extends Fragment implements WorkCallback, View.OnClickListener{
+public class FragmentListWork extends Fragment implements WorkCallback, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,8 +62,8 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     private Toolbar toolbar;
     private ActionBar actionBar;
 
-    private String loginUser;
-    private Boolean userConected;
+    private String loginUser = "admin";
+    private Boolean userConected = false;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -85,15 +88,13 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
     }
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    Fragment fragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,11 +102,42 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_list_work,container, false);
 
-        WorkManager.getInstance().getWorksUser(loginUser, this);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
 
-        if(actionBar != null){
+        fragment = this;
+
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.material_blue500,
+                R.color.material_blue700,
+                R.color.colorAccent);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+
+        /*if(actionBar != null){
             actionBar.setTitle("Your works");
+        }*/
+
+        if(userConected){
+            actionBar.setTitle("YOUR WORKS");
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.create_job_btn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .replace(R.id.content_main, new FragmentCreateWork(), "createWorkFrag")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        if(userConected) fab.setVisibility(View.VISIBLE);
+        else fab.setVisibility(View.GONE);
+
 
         Context context = view.getContext();
         recyclerView = (RecyclerView) view.findViewById(R.id.list_work);
@@ -115,6 +147,8 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         recyclerView.setAdapter(workListAdapter);
 
         workListAdapter.notifyDataSetChanged();
+
+        WorkManager.getInstance().getWorksUser(loginUser, this);
 
         return view;
     }
@@ -135,25 +169,12 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
         super.onDetach();
     }
 
+
     @Override
     public void onSuccess(List<Work> workList) {
-        Log.d("nxw", workList.toString());
 
-        /*SharedPreferences mPrefs = getActivity().getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor prefsEditor = mPrefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(workList); // myObject - instance of MyObject
-        prefsEditor.putString("worksUserLogged", json);
-        prefsEditor.apply();
-
-        String jsonLoaded = mPrefs.getString("worksUserLogged", "");
-        if(!json.equals("")){
-
-        }
-        MyObject obj = gson.fromJson(json, MyObject.class);*/
-
-        for(Work work: workList){
-            Log.d("nxw", "Company -> "+work.getCompany());
+        if(mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         works = workList;
@@ -210,8 +231,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                                 .getSupportFragmentManager()
                                 .beginTransaction()
                                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                                .add(R.id.content_main, fragment, "editWork")
-                                .addToBackStack(null)
+                                .replace(R.id.content_main, fragment, "editWork")
                                 .commit();
 
                         workListAdapter.notifyDataSetChanged();
@@ -341,5 +361,10 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        WorkManager.getInstance().getWorksUser(loginUser, this);
     }
 }

@@ -134,4 +134,6 @@
     <string name="studies_tab">Studies</string>
     <string name="works_tab">Experience</string>
     <string name="contacts_tab">Contacts</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="no_company">No company added</string>
 </resources>

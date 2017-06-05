@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,10 +68,16 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
             WorkManager.getInstance().getDetailWork(getArguments().getLong(WORK_ID), this);
         }
 
-        actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+
+       // actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,11 +106,6 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
     }
@@ -112,8 +114,8 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
     public void onSuccess(Work work) {
         Log.d("nxw", work.toString());
 
-        actionBar.setTitle(work.getCargo());
-        actionBar.setSubtitle("Work detail");
+        /*actionBar.setTitle(work.getCargo());
+        actionBar.setSubtitle("Work detail");*/
 
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 

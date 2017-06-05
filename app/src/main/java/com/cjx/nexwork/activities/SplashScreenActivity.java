@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -23,9 +22,6 @@ import com.cjx.nexwork.managers.user.UserDetailCallback;
 import com.cjx.nexwork.managers.user.UserManager;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.model.UserToken;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SplashScreenActivity extends AppCompatActivity implements UserDetailCallback {
 
@@ -71,6 +67,11 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
         TokenStoreManager.getInstance().setUsername(preferences.getString("username",""));
         TokenStoreManager.getInstance().setContext(SplashScreenActivity.this);
 
+        Log.d("refresh_token token", TokenStoreManager.getInstance().getRefreshToken());
+        Log.d("access_token token", TokenStoreManager.getInstance().getAccessToken());
+
+        UserManager.getInstance().getCurrentUser(this);
+
         /*Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
         startActivity(loginIntent);*/
     }
@@ -82,23 +83,14 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_splash_screen);
 
-        final UserToken userToken = UserLoginManager.getInstance().getUserToken();
-
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String accessToken =  preferences.getString("accessToken","");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow(); // in Activity's onCreate() for instance
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-
         enterApp(preferences);
-
-        UserManager.getInstance().getCurrentUser(this);
 
         /*TimerTask task = new TimerTask() {
             @Override
@@ -144,9 +136,21 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
         super.onDestroy();
     }
 
-    public void accessApp(){
+    public void accessApp(String login){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        TokenStoreManager.getInstance().setAccessToken(preferences.getString("accessToken",""));
+        TokenStoreManager.getInstance().setRefreshToken(preferences.getString("refreshToken",""));
+        TokenStoreManager.getInstance().setTokenType(preferences.getString("tokenType",""));
+        TokenStoreManager.getInstance().setUsername(login);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", login);
+        editor.apply();
+
         Intent loginIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
         startActivity(loginIntent);
+        finish();
     }
 
     @Override
@@ -156,13 +160,13 @@ public class SplashScreenActivity extends AppCompatActivity implements UserDetai
         if (Build.VERSION.SDK_INT >= 23)
         {
             if (checkPermission()) {
-                accessApp();
+                accessApp(user.getLogin());
             } else {
                 requestPermission(); // Code for permission
-                accessApp();
+                accessApp(user.getLogin());
             }
         }
-
+        else accessApp(user.getLogin());
 
     }
 

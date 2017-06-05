@@ -18,8 +18,12 @@ import android.widget.EditText;
 import android.widget.TableRow;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.managers.TokenStoreManager;
+import com.cjx.nexwork.managers.study.StudyDetailCallback;
+import com.cjx.nexwork.managers.study.StudyManager;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
+import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.model.Work;
 
 import java.text.SimpleDateFormat;
@@ -30,13 +34,13 @@ import java.util.Date;
  * Created by Xavi on 28/03/2017.
  */
 
-public class FragmentEditStudy extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, WorkDetailCallback {
+public class FragmentEditStudy extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, StudyDetailCallback {
 
-    public static final String WORK = null;
+    public static final String STUDY = null;
 
-    private Long workId;
+    private Long studyId;
 
-    private Work work;
+    private Study study;
 
     Calendar startCalendar = Calendar.getInstance();
     Calendar endCalendar = Calendar.getInstance();
@@ -59,8 +63,7 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            this.workId = getArguments().getLong(WORK);
-            WorkManager.getInstance().getDetailWork(this.workId, this);
+            this.studyId = getArguments().getLong(STUDY);
         }
     }
 
@@ -69,6 +72,8 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_work,container, false);
+
+        StudyManager.getInstance().getDetailStudy(this.studyId, this);
 
         editPosition = (EditText) view.findViewById(R.id.editPosition);
         editDateStarted = (EditText) view.findViewById(R.id.editDateStarted);
@@ -108,32 +113,34 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onSuccess(Work work) {
+    public void onSuccess(Study study) {
         Log.d("nxw", ""+editPetition);
         if(!editPetition){
-            this.work = work;
+            this.study = study;
 
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
 
-            editPosition.setText(work.getCargo());
-            editDateStarted.setText(formateador.format(work.getFechaInicio()));
-            startCalendar.setTime(work.getFechaInicio());
-            if(!work.getActualmente()){
-                editDateEnd.setText(formateador.format(work.getFechaFin()));
-                endCalendar.setTime(work.getFechaFin());
+            editPosition.setText(study.getCurso());
+            editDateStarted.setText(formateador.format(study.getFechaInicio()));
+            startCalendar.setTime(study.getFechaInicio());
+            if(study.getActualmente() == null){
+                checkWorking.setChecked(false);
+            }
+            else if(!study.getActualmente()){
+                editDateEnd.setText(formateador.format(study.getFechaFinal()));
+                endCalendar.setTime(study.getFechaFinal());
                 checkWorking.setChecked(false);
             }
             else {
                 checkWorking.setChecked(true);
             }
-            editDescription.setText(work.getDescripcionCargo());
+            editDescription.setText(study.getDescripcion());
         }
         else{
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(R.id.fragment_work, new FragmentListStudy(), "editFragment")
-                    .addToBackStack(null)
+                    .replace(R.id.content_main, new FragmentListStudy(TokenStoreManager.getInstance().getUsername(), true), "editFragment")
                     .commit();
         }
 
@@ -152,7 +159,7 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
         switch (v.getId())
         {
             case R.id.btn_add_job:
-                editJob();
+                editStudy();
                 break;
             case R.id.editPosition:
                 Log.d("nxw", "position");
@@ -191,25 +198,25 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
         }
     }
 
-    private void editJob() {
+    private void editStudy() {
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         try{
-            work.setCargo(editPosition.getText().toString());
+            study.setCurso(editPosition.getText().toString());
             Date startDate = new Date();
             Date endDate = new Date();
             if(!checkWorking.isChecked()) {
                 endDate = dateFormat.parse(editDateEnd.getText().toString());
-                work.setFechaFin(endDate);
-            }else work.setActualmente(true);
+                study.setFechaFinal(endDate);
+            }else study.setActualmente(true);
 
-            if(!editDescription.getText().toString().isEmpty()) work.setDescripcionCargo(editDescription.getText().toString());
+            if(!editDescription.getText().toString().isEmpty()) study.setDescripcion(editDescription.getText().toString());
             startDate = dateFormat.parse(editDateStarted.getText().toString());
-            work.setFechaInicio(startDate);
+            study.setFechaInicio(startDate);
             editPetition = true;
-            WorkManager.getInstance().editWork(work, this);
+            StudyManager.getInstance().editStudy(study, this);
 
 
         }

@@ -90,4 +90,30 @@ public class StudyManager extends BaseManager{
 
         });
     }
+
+    public synchronized void editStudy(Study editedStudy, final StudyDetailCallback studyDetailCallback){
+        Call<Study> call = studyService.editStudy(editedStudy);
+        call.enqueue(new Callback<Study>() {
+            @Override
+            public void onResponse(Call<Study> call, Response<Study> response) {
+                study = response.body();
+
+                int code = response.code();
+
+                if(code == 200 || code == 201){
+                    studyDetailCallback.onSuccess(study);
+                }
+                else{
+                    studyDetailCallback.onFailure(new Throwable());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Study> call, Throwable t) {
+                Log.e("StudyManager->", "getAllStudies()->ERROR: " + t);
+
+                studyDetailCallback.onFailure(t);
+            }
+        });
+    }
 }

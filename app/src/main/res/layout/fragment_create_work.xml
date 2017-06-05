@@ -21,19 +21,22 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:minHeight="50dp">
 
                 <TextView
                     android:id="@+id/txtPosition"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="Position" />
 
                 <EditText
                     android:id="@+id/editPosition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Job position"
@@ -42,19 +45,22 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:minHeight="50dp">
 
                 <TextView
                     android:id="@+id/txtDateStarted"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="From" />
 
                 <EditText
                     android:id="@+id/editDateStarted"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Date started"
@@ -64,19 +70,23 @@
             <TableRow
                 android:id="@+id/rowEnd"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:minHeight="50dp"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/txtDateEnd"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="To" />
 
                 <EditText
                     android:id="@+id/editDateEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Date ended"
@@ -85,19 +95,22 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:minHeight="50dp">
 
                 <TextView
                     android:id="@+id/txtWorking"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="Currently working?" />
 
                 <CheckBox
                     android:id="@+id/checkWorking"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1" />
 
             </TableRow>
@@ -111,19 +124,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal"
+                    android:gravity="left|center_horizontal"
                     android:text="Description" />
 
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <ScrollView
                     android:id="@+id/ScrollView01"
                     android:layout_width="wrap_content"
-                    android:layout_height="150dip"
+                    android:layout_height="match_parent"
                     android:layout_weight="1">
 
 
@@ -148,13 +161,15 @@
 
     <Button
         android:id="@+id/btn_add_job"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/relform"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
         android:layout_centerVertical="false"
-        android:layout_weight="1"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#fff"
         android:text="Create" />
 
 </RelativeLayout>

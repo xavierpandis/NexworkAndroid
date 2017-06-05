@@ -65,14 +65,17 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/username"
+                        style="@style/App_EditTextStyle"
+                        app:hintTextAppearance="@style/App_EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="@string/prompt_username"
                         android:inputType="text"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:textSize="20sp"
-                        android:layout_weight="1" />
+                        android:textColor="#fff"
+                        android:textSize="20sp" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -82,8 +85,11 @@
 
                     <EditText
                         android:id="@+id/password"
+                        style="@style/App_EditTextStyle"
+                        app:hintTextAppearance="@style/App_EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="@string/prompt_password"
                         android:imeActionId="@+id/login"
                         android:imeActionLabel="@string/action_log_in"
@@ -91,9 +97,8 @@
                         android:inputType="textPassword"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:theme="@style/AppTheme.Login"
-                        android:textSize="20sp"
-                        android:layout_weight="1" />
+                        android:textColor="#fff"
+                        android:textSize="20sp"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -102,11 +107,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/action_sign_in_short"
-                    android:textStyle="bold"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_margin="20dp"
                     android:background="@color/colorPrimaryDark"
                     android:layout_weight="2.56" />
+
+                <TextView
+                    android:id="@+id/createAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="No account yet? Create one"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btn_create_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="false"
+                    android:layout_centerVertical="false"
+                    android:layout_margin="20dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="CREATE ACCOUNT"
+                    android:textColor="#fff" />
 
                 <!--<com.facebook.login.widget.LoginButton
                     android:id="@+id/login_button"
@@ -116,13 +142,6 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp" />-->
 
-                <TextView android:id="@+id/createAccount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:text="No account yet? Create one"
-                    android:gravity="center"
-                    android:textSize="16sp"/>
             </LinearLayout>
 
         </LinearLayout>

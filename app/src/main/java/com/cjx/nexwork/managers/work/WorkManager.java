@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -87,6 +88,8 @@ public class WorkManager extends BaseManager {
             @Override
             public void onResponse(Call<List<WorkDTO>> call, Response<List<WorkDTO>> response) {
                 List<WorkDTO> workDTO = response.body();
+
+                Collections.reverse(workDTO);
 
                 if(workDTO != null) {
 

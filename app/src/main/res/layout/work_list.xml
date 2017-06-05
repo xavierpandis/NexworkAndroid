@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/track_wrapper"
-    android:background="@android:color/transparent">
+    android:background="@drawable/ripple_effect"
+    android:clickable="true">
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,12 +32,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="ID"
+                    android:text="Job name"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    android:textSize="20sp" />
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:id="@+id/companyWork"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Company"
+                    android:textColor="@color/material_grey700" />
+
+                <TextView
+                    android:id="@+id/dateWork"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="12/04/2012 to now"
+                    android:textColor="@color/material_grey700" />
 
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
 
                     <TableRow
                         android:layout_width="match_parent"

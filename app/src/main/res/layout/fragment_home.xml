@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/content_frame"
@@ -19,11 +20,13 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/home_tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_tab_top"
-            app:tabBackground="@drawable/tab_background"
+            android:layout_height="48dp"
+            app:tabIndicatorHeight="2dp"
             android:layout_alignParentBottom="true"
-            android:minHeight="?attr/actionBarSize"/>
+            android:background="@drawable/border_tab_top"
+            android:minHeight="?attr/actionBarSize"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
 
     </RelativeLayout>
 

@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/track_wrapper"
-    android:background="@android:color/transparent">
+    android:background="@drawable/ripple_effect"
+    android:clickable="true">
 
     <LinearLayout
         android:orientation="vertical"

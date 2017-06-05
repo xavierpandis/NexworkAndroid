@@ -80,7 +80,7 @@
     <color name="material_blue200">#ff90caf9</color>
     <color name="material_blue300">#ff64b5f6</color>
     <color name="material_blue400">#ff42a5f5</color>
-    <color name="material_blue500">#ff2196f3</color>
+    <color name="material_blue500">#2196f3</color>
     <color name="material_blue600">#ff1e88e5</color>
     <color name="material_blue700">#ff1976d2</color>
     <color name="material_blue800">#ff1565c0</color>
