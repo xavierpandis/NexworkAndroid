@@ -44,7 +44,6 @@ public class EditPasswordFragment extends Fragment implements UserDetailCallback
 
         View view = inflater.inflate(R.layout.edit_password, container, false);
         key = (EditText) view.findViewById(R.id.password);
-        key.setText("");
         saveButton = (Button) view.findViewById(R.id.saveButton);
 
         UserManager.getInstance().getCurrentUser(this);
@@ -89,31 +88,31 @@ public class EditPasswordFragment extends Fragment implements UserDetailCallback
         }
     }
 
-    public void saveUserData(){
-
-        if(!key.getText().toString().isEmpty()){
+    public void saveUserData() {
+        if (!key.getText().toString().isEmpty()) {
             String password = key.getText().toString();
-            /*if(isValidPassword(key.getText().toString())){*/
-               Call<ResponseBody> call = UserManager.getInstance().updatePassword(password);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Log.d("OK", "OK");
-                }
+            if (isValidPassword(key.getText().toString())) {
+                Call<ResponseBody> call = UserManager.getInstance().updatePassword(password);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.d("OK", "OK");
+                    }
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.d("OHHHHHHHHHH", "MYYY GOAAADDDD");
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("OHHHHHHHHHH", "MYYY GOAAADDDD");
+                    }
+                });
+            }
+                else{
+                    key.setError("No cumples los requisitos");
                 }
-            });
-            /*}else {
-                key.setError("No cumples los requisitos");
-            }*/
         }
-
     }
 
-    /*public boolean isValidPassword(final String password) {
+
+    public boolean isValidPassword(final String password) {
 
         Pattern pattern;
         Matcher matcher;
@@ -125,6 +124,6 @@ public class EditPasswordFragment extends Fragment implements UserDetailCallback
 
         return matcher.matches();
 
-    }*/
-
+    }
 }
+

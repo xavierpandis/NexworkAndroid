@@ -273,6 +273,6 @@
     <color name="material_bluegrey800">#ff37474f</color>
     <color name="material_bluegrey900">#ff263238</color>
 
-    <color name="material_black">#ff000000</color>
+    <color name="material_black">#3f51b5</color>
     <color name="material_white">#ffffffff</color>
 </resources>
