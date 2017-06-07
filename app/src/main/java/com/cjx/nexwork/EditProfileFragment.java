@@ -160,7 +160,11 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
 
     @Override
     public void onSuccess(User user) {
-        final String fecha = format.format(user.getFecha_nacimiento());
+        String fecha = format.format(new Date());
+        if(user.getFecha_nacimiento()!=null){
+            fecha = format.format(user.getFecha_nacimiento());
+        }
+
 
         Picasso.with(getActivity())
                 .load(CustomProperties.baseUrl+"/"+user.getImagen()+"?time="+System.currentTimeMillis())
@@ -172,10 +176,11 @@ public class EditProfileFragment extends Fragment implements UserDetailCallback,
 
         userimage.setOnClickListener(this);
 
+        final String finalFecha = fecha;
         userdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePicker(fecha);
+                showDatePicker(finalFecha);
             }
         });
 
