@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             super.onBackPressed();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
         }
     }
 }

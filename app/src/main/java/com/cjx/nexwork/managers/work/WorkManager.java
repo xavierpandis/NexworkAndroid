@@ -9,6 +9,7 @@ import com.cjx.nexwork.managers.UserLoginManager;
 import com.cjx.nexwork.managers.study.StudyCallback;
 import com.cjx.nexwork.managers.study.StudyDetailCallback;
 import com.cjx.nexwork.managers.study.StudyManager;
+import com.cjx.nexwork.model.Company;
 import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.model.Work;
 import com.cjx.nexwork.model.dto.WorkDTO;
@@ -78,6 +79,16 @@ public class WorkManager extends BaseManager {
                 workDetailCallback.onFailure(t);
             }
         });
+    }
+
+    public synchronized Call<Company> createCompany(Company company){
+        Call<Company> call = workService.postCompany(company);
+        return call;
+    }
+
+    public synchronized Call<List<Company>> getAllCompanies(){
+        Call<List<Company>> call = workService.getAllCompanies();
+        return call;
     }
 
     public synchronized void getWorksUser(String login, final WorkCallback workCallback) {

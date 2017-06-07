@@ -7,10 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +18,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.cjx.nexwork.R;
-import com.cjx.nexwork.activities.MainActivity;
 import com.cjx.nexwork.managers.TokenStoreManager;
-import com.cjx.nexwork.managers.work.WorkCallback;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
@@ -37,7 +29,6 @@ import com.cjx.nexwork.model.Work;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Xavi on 28/03/2017.
@@ -93,7 +84,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
         checkWorking = (CheckBox) view.findViewById(R.id.checkWorking);
         editDescription = (EditText) view.findViewById(R.id.editDescription);
 
-        Button btnAddJob = (Button) view.findViewById(R.id.btn_add_job);
+        Button btnAddJob = (Button) view.findViewById(R.id.btn_create_company);
         btnAddJob.setText("GUARDAR");
         btnAddJob.setOnClickListener(this);
 
@@ -157,7 +148,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                     .replace(R.id.content_main, new FragmentListWork(TokenStoreManager.getInstance().getUsername(), true), "editFragment")
                     .commit();
         }
@@ -176,7 +167,7 @@ public class FragmentEditWork extends Fragment implements View.OnClickListener, 
         }
         switch (v.getId())
         {
-            case R.id.btn_add_job:
+            case R.id.btn_create_company:
                 editJob();
                 break;
             case R.id.editPosition:

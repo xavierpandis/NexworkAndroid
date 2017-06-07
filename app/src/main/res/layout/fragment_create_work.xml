@@ -5,171 +5,231 @@
     android:animateLayoutChanges="true"
     android:background="#fff">
 
-    <LinearLayout
-        android:id="@+id/relform"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:orientation="vertical">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="50dp">
-
-                <TextView
-                    android:id="@+id/txtPosition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Position" />
-
-                <EditText
-                    android:id="@+id/editPosition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Job position"
-                    android:inputType="text" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="50dp">
-
-                <TextView
-                    android:id="@+id/txtDateStarted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="From" />
-
-                <EditText
-                    android:id="@+id/editDateStarted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Date started"
-                    android:inputType="none" />
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/rowEnd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="50dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtDateEnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="To" />
-
-                <EditText
-                    android:id="@+id/editDateEnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Date ended"
-                    android:inputType="datetime|date|time" />
-            </TableRow>
-
-            <TableRow
+            <LinearLayout
+                android:id="@+id/relform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="50dp">
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtWorking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Currently working?" />
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
 
-                <CheckBox
-                    android:id="@+id/checkWorking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:minHeight="50dp">
 
-            </TableRow>
+                        <TextView
+                            android:id="@+id/txtPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Position" />
 
-            <TableRow
+                        <EditText
+                            android:id="@+id/editPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Job position"
+                            android:inputType="text" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:minHeight="50dp">
+
+                        <TextView
+                            android:id="@+id/txtDateStarted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="From" />
+
+                        <EditText
+                            android:id="@+id/editDateStarted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Date started"
+                            android:inputType="none" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/rowEnd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:minHeight="50dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/txtDateEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="To" />
+
+                        <EditText
+                            android:id="@+id/editDateEnd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Date ended"
+                            android:inputType="datetime|date|time" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="50dp">
+
+                        <TextView
+                            android:id="@+id/txtWorking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="Currently working?" />
+
+                        <CheckBox
+                            android:id="@+id/checkWorking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/txtDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="left|center_horizontal"
+                            android:text="Description" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="visible">
+
+                        <ScrollView
+                            android:id="@+id/ScrollView01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+
+                            <EditText
+                                android:id="@+id/editDescription"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="top|left"
+                                android:inputType="textMultiLine"
+                                android:lines="8"
+                                android:maxLines="10"
+                                android:minLines="6"
+                                android:scrollbars="vertical" />
+
+                        </ScrollView>
+
+                    </TableRow>
+                </TableLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/txtDescription"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="left|center_horizontal"
-                    android:text="Description" />
+                    android:text="Company" />
 
-            </TableRow>
+                <Spinner
+                    android:id="@+id/spinnerSelCompany"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
 
-            <TableRow
+            <RelativeLayout
+                android:id="@+id/relformMap"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_below="@+id/relform">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_create_company"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="false"
+                android:layout_centerVertical="false"
+                android:layout_margin="20dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="Create"
+                android:textColor="#fff" />
 
-                <ScrollView
-                    android:id="@+id/ScrollView01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
+        </LinearLayout>
 
+    </ScrollView>
 
-                    <EditText
-                        android:id="@+id/editDescription"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|left"
-                        android:inputType="textMultiLine"
-                        android:lines="8"
-                        android:maxLines="10"
-                        android:minLines="6"
-                        android:scrollbars="vertical" />
-
-                </ScrollView>
-
-            </TableRow>
-        </TableLayout>
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_add_job"
+    <ProgressBar
+        android:id="@+id/progressBarSaved"
+        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="false"
-        android:layout_centerVertical="false"
-        android:layout_margin="20dp"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="#fff"
-        android:text="Create" />
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="#b5080808"
+        android:padding="160dp"
+        android:translationZ="2dp"
+        android:visibility="visible" />
 
 </RelativeLayout>

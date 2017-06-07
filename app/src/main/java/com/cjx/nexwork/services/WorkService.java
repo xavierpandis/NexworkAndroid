@@ -2,6 +2,7 @@ package com.cjx.nexwork.services;
 
 import android.net.http.HttpResponseCache;
 
+import com.cjx.nexwork.model.Company;
 import com.cjx.nexwork.model.Study;
 import com.cjx.nexwork.model.Work;
 import com.cjx.nexwork.model.dto.WorkDTO;
@@ -37,4 +38,11 @@ public interface WorkService {
 
     @PUT("/api/trabajos")
     Call<Work> editWork(@Body Work body);
+
+
+    @POST("/api/empresas")
+    Call<Company> postCompany(@Body Company company);
+
+    @GET("/api/empresas")
+    Call<List<Company>> getAllCompanies();
 }

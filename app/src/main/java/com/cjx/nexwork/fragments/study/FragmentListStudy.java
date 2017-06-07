@@ -98,15 +98,9 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
         StudyManager.getInstance().getUserStudies(loginUser, this);
 
         List<Study> studyList = new ArrayList<>();
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-
         fragment = this;
-
-        mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.material_blue500,
-                R.color.material_blue700,
-                R.color.colorAccent);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.material_blue500, R.color.material_blue700, R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.create_study_btn);
@@ -115,7 +109,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new FragmentCreateStudy(), "createWorkFrag")
                         .addToBackStack(null)
                         .commit();
@@ -181,7 +175,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, FragmentCreateStudy.newInstance(), "createStudyFrag")
                         .addToBackStack(null)
                         .commit();
@@ -215,7 +209,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                     .replace(R.id.content_main, new FragmentCreateWork(), "listStudies")
                     .addToBackStack(null)
                     .commit();
@@ -267,7 +261,7 @@ public class FragmentListStudy extends Fragment implements StudyCallback, View.O
                         getActivity()
                                 .getSupportFragmentManager()
                                 .beginTransaction()
-                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                                 .replace(R.id.content_main, fragment, "editStudy")
                                 .commit();
 

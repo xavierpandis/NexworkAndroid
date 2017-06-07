@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nexwork</string>
+    <string name="current_work">actualmente</string>
+    <string name="action_sign_in_short">Conectarse</string>
+    <string name="action_sign_in">Conectarse o registrarse</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_log_in">Conectate</string>
+    <string name="action_create_account">Unete</string>
+    <string name="drawer_close">Cerrar menu</string>
+    <string name="drawer_open">Abrir menu</string>
+    <string name="error_confirm_password">Contraseña no concuerda</string>
+    <string name="error_field_required">Este campo es reguerido</string>
+    <string name="error_incorrect_password">Contraseña incorrecta</string>
+    <string name="error_invalid_email">El email no es válido</string>
+    <string name="error_invalid_password">Contraseña demasiada corta</string>
+    <string name="hello_blank_fragment">Hola fragmento blanco</string>
+    <string name="large_text">[...]</string>
+    <string name="navigation_drawer_close"></string>
+    <string name="studies_tab">Estudios</string>
+    <string name="works_tab">Experiencia</string>
+    <string name="contacts_tab">Contactos</string>
+    <string name="no_company">No empresa añadida</string>
+</resources>

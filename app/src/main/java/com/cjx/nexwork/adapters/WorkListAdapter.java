@@ -133,7 +133,7 @@ public class WorkListAdapter extends RecyclerView.Adapter<WorkListAdapter.ViewHo
                 args.putLong(FragmentDetailWork.WORK_ID, holder.work.getId());
                 fragment.setArguments(args);
                 FragmentTransaction transaction = fragmentOne.getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                transaction.setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
                 transaction.replace(R.id.content_main, fragment, "detailWork");
                 transaction.addToBackStack(null);
                 transaction.commit();

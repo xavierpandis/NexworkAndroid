@@ -116,7 +116,7 @@ public class FragmentCreateStudy extends Fragment implements View.OnClickListene
         checkWorking = (CheckBox) view.findViewById(R.id.checkWorking);
         editDescription = (EditText) view.findViewById(R.id.editDescription);
 
-        Button btnAddJob = (Button) view.findViewById(R.id.btn_add_job);
+        Button btnAddJob = (Button) view.findViewById(R.id.btn_create_company);
         btnAddJob.setOnClickListener(this);
 
         editDateStarted.setFocusable(false);
@@ -148,7 +148,7 @@ public class FragmentCreateStudy extends Fragment implements View.OnClickListene
         }
         switch (v.getId())
         {
-            case R.id.btn_add_job:
+            case R.id.btn_create_company:
                 addJob();
                 break;
             case R.id.editPosition:
@@ -253,7 +253,7 @@ public class FragmentCreateStudy extends Fragment implements View.OnClickListene
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                 .replace(R.id.fragment_work, new FragmentListStudy())
                 .addToBackStack(null)
                 .commit();

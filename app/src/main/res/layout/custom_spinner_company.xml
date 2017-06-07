@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/companyNameSpinner"
+                style="?android:attr/spinnerItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:ellipsize="marquee"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textAlignment="inherit"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/companyUbication"
+                style="?android:attr/spinnerItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:ellipsize="marquee"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textAlignment="inherit"
+                android:textColor="@color/material_grey700" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

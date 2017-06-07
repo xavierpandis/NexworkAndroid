@@ -9,7 +9,6 @@ import com.cjx.nexwork.managers.UploadImageCallback;
 import com.cjx.nexwork.managers.friend.FriendCallback;
 import com.cjx.nexwork.model.User;
 import com.cjx.nexwork.services.UserService;
-import com.facebook.LoggingBehavior;
 
 import org.json.JSONObject;
 

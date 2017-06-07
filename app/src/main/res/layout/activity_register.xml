@@ -35,8 +35,20 @@
             android:id="@+id/user_register_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="#56354499"
             android:orientation="vertical"
+            android:padding="20dp"
             android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Creating account"
+                android:gravity="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Headline"
+                android:textColor="#fff" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -44,12 +56,14 @@
 
                 <EditText
                     android:id="@+id/username_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -59,6 +73,7 @@
 
                 <EditText
                     android:id="@+id/firstName_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
@@ -66,7 +81,8 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -76,6 +92,7 @@
 
                 <EditText
                     android:id="@+id/lastName_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
@@ -83,7 +100,8 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -93,12 +111,14 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/email_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -108,6 +128,7 @@
 
                 <EditText
                     android:id="@+id/password_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -116,7 +137,8 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -126,28 +148,33 @@
 
                 <EditText
                     android:id="@+id/confirm_password_registration"
+                    style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/repeat_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    app:hintTextAppearance="@style/App_EditTextStyle" />
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/action_register_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_weight="2.56"
-                android:background="@color/colorPrimary"
-                android:text="@string/action_create_account"
-                android:textStyle="bold" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/action_register_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="CREATE ACCOUNT"
+        android:textColor="#fff" />
 
     <ProgressBar
         android:id="@+id/login_progress"

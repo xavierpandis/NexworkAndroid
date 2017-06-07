@@ -6,31 +6,43 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
+import com.cjx.nexwork.model.Company;
 import com.cjx.nexwork.model.Work;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +64,9 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     private EditText editDateEnd;
     private CheckBox checkWorking;
     private EditText editDescription;
+    private Spinner spinnerCompanies;
+
+    private List<Company> companies;
 
     /*DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
 
@@ -86,6 +101,8 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    ProgressBar progressBarSaved;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -115,13 +132,20 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_create_work,container, false);
 
+        RelativeLayout relformMap = (RelativeLayout) view.findViewById(R.id.relformMap);
+        relformMap.setVisibility(View.GONE);
+
+        progressBarSaved = (ProgressBar) view.findViewById(R.id.progressBarSaved);
+        progressBarSaved.setVisibility(View.GONE);
+        progressBarSaved.setIndeterminate(true);
+
         editPosition = (EditText) view.findViewById(R.id.editPosition);
         editDateStarted = (EditText) view.findViewById(R.id.editDateStarted);
         editDateEnd = (EditText) view.findViewById(R.id.editDateEnd);
         checkWorking = (CheckBox) view.findViewById(R.id.checkWorking);
         editDescription = (EditText) view.findViewById(R.id.editDescription);
 
-        Button btnAddJob = (Button) view.findViewById(R.id.btn_add_job);
+        Button btnAddJob = (Button) view.findViewById(R.id.btn_create_company);
         btnAddJob.setOnClickListener(this);
 
         editDateStarted.setFocusable(false);
@@ -132,6 +156,81 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         editDateStarted.setOnClickListener(this);
         editDateEnd.setOnClickListener(this);
         checkWorking.setOnCheckedChangeListener(this);
+
+        //getAllCompanies
+
+        spinnerCompanies = (Spinner) view.findViewById(R.id.spinnerSelCompany);
+
+        Call<List<Company>> call = WorkManager.getInstance().getAllCompanies();
+        call.enqueue(new Callback<List<Company>>() {
+            @Override
+            public void onResponse(Call<List<Company>> call, Response<List<Company>> response) {
+                companies = response.body();
+                ArrayAdapter<Company> spinnerArrayAdapter = new ArrayAdapter<Company>(
+                        getContext(),
+                        R.layout.custom_spinner_company,
+                        companies){
+
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup arg2) {
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        convertView = inflater.inflate(R.layout.custom_spinner_company, null);
+
+                        TextView wv = (TextView) convertView.findViewById(R.id.companyNameSpinner);
+                        wv.setText(companies.get(position).getNombre());
+
+                        convertView.setTag(wv);
+
+                        return convertView;
+                    }
+
+                    @Override
+                    public View getDropDownView (int position, View convertView, ViewGroup parent){
+                        View row = null;
+
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        convertView = inflater.inflate(R.layout.custom_spinner_company, null);
+
+                        TextView wv = (TextView) convertView.findViewById(R.id.companyNameSpinner);
+                        wv.setText(companies.get(position).getNombre());
+
+                        TextView companyUbication = (TextView) convertView.findViewById(R.id.companyUbication);
+                        companyUbication.setText(companies.get(position).getUbicacion());
+
+                        convertView.setPadding(10, 10, 10, 10);
+
+                        convertView.setTag(wv);
+
+                        return convertView;
+                    }
+
+                    @Override
+                    public int getCount(){
+                        return companies.size();
+                    }
+
+                };
+                spinnerArrayAdapter.setDropDownViewResource(R.layout.custom_spinner_company);
+                spinnerArrayAdapter.notifyDataSetChanged();
+                spinnerCompanies.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        Log.d("position companies", companies.get(position).getNombre());
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                spinnerCompanies.setAdapter(spinnerArrayAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Company>> call, Throwable t) {
+
+            }
+        });
 
         return view;
     }
@@ -153,7 +252,7 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
         }
         switch (v.getId())
         {
-            case R.id.btn_add_job:
+            case R.id.btn_create_company:
                 addJob();
                 break;
             case R.id.editPosition:
@@ -198,6 +297,11 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
 
         try{
             Work work = new Work();
+
+            int companySelected = spinnerCompanies.getSelectedItemPosition();
+            Company company = companies.get(companySelected);
+            work.setCompany(company);
+
             work.setCargo(editPosition.getText().toString());
             Date startDate = new Date();
             Date endDate = new Date();
@@ -209,6 +313,8 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
             if(!editDescription.getText().toString().isEmpty()) work.setDescripcionCargo(editDescription.getText().toString());
             startDate = dateFormat.parse(editDateStarted.getText().toString());
             work.setFechaInicio(startDate);
+
+            progressBarSaved.setVisibility(View.VISIBLE);
 
             WorkManager.getInstance().createWork(work, this);
 
@@ -255,12 +361,21 @@ public class FragmentCreateWork extends Fragment implements View.OnClickListener
     @Override
     public void onSuccess(Work work) {
         Log.d("nxw", work.toString());
+        progressBarSaved.setVisibility(View.GONE);
+
+        Snackbar snackbar = Snackbar.make(getView(), "<span style='color: #ffffff;'>Work added</span>", Snackbar.LENGTH_LONG);
+        View snackbarLayout = snackbar.getView();
+        TextView textView = (TextView)snackbarLayout.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.check_white, 0, 0, 0);
+        textView.setCompoundDrawablePadding(getResources().getDimensionPixelOffset(android.R.dimen.app_icon_size));
+        snackbar.show();
+
+        //Snackbar.make(getView(), Html.fromHtml("<span style='color: #ffffff;'>Work added</span>"), Snackbar.LENGTH_SHORT).show();
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.fragment_work, new FragmentListWork())
-                .addToBackStack(null)
+                .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
+                .replace(R.id.content_main, new FragmentListWork(TokenStoreManager.getInstance().getUsername(), true))
                 .commit();
     }
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ScrollingView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +17,28 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.WorkaroundMapFragment;
 import com.cjx.nexwork.activities.work.WorkActivity;
 import com.cjx.nexwork.managers.work.WorkDetailCallback;
 import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Work;
 import com.cjx.nexwork.util.CustomProperties;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -41,7 +52,7 @@ import java.util.List;
  * Created by Xavi on 25/03/2017.
  */
 
-public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
+public class FragmentDetailWork extends Fragment implements WorkDetailCallback, OnMapReadyCallback {
 
     public static final String WORK_ID = "0";
 
@@ -55,7 +66,12 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
     private TextView workCompany;
     private ActionBar actionBar;
 
+    private Work work;
+
     private Toolbar toolbar;
+
+    private GoogleMap mMap;
+    SupportMapFragment mapFragment;
 
     public FragmentDetailWork() {
         // Required empty public constructor
@@ -87,6 +103,16 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
 
         Log.d("nxw", "DETAIL WORK");
 
+        mapFragment = (WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.mapWorkDetail);
+        final ScrollView mScrollView = (ScrollView) view.findViewById(R.id.scrollviewDetail);
+
+        ((WorkaroundMapFragment) getChildFragmentManager().findFragmentById(R.id.mapWorkDetail)).setListener(new WorkaroundMapFragment.OnTouchListener() {
+            @Override
+            public void onTouch() {
+                mScrollView.requestDisallowInterceptTouchEvent(true);
+            }
+        });
+
         workPosition = (TextView) view.findViewById(R.id.workPosition);
         workWorker = (TextView) view.findViewById(R.id.workWorker);
         workerImage = (ImageView) view.findViewById(R.id.workUserImage);
@@ -114,10 +140,9 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
     public void onSuccess(Work work) {
         Log.d("nxw", work.toString());
 
-        /*actionBar.setTitle(work.getCargo());
-        actionBar.setSubtitle("Work detail");*/
-
+        this.work = work;
         SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+        mapFragment.getMapAsync(this);
 
         workPosition.setText(work.getCargo());
         //workPosition.setVisibility(View.GONE);
@@ -134,8 +159,6 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
             workCompany.setText("No establecida");
         }else workCompany.setText(work.getCompany().getNombre());
 
-
-
         Picasso.with(getContext())
                 .load(CustomProperties.baseUrl+"/"+work.getWorker().getImagen())
                 .resize(200, 200)
@@ -146,5 +169,30 @@ public class FragmentDetailWork extends Fragment implements WorkDetailCallback {
     @Override
     public void onFailure(Throwable t) {
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        if(this.work.getCompany() == null){
+            LatLng sydney = new LatLng(-34, 151);
+            mMap.addMarker(new MarkerOptions().position(sydney).title("Sidney"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(sydney));
+        }
+        else{
+            if(this.work.getCompany().getLatitud() == null){
+                LatLng sydney = new LatLng(-34, 151);
+                mMap.addMarker(new MarkerOptions().position(sydney).title("Sidney"));
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(sydney));
+            }
+            else{
+                LatLng latLng = new LatLng(Double.parseDouble(this.work.getCompany().getLatitud()),
+                        Double.parseDouble(this.work.getCompany().getLongitud()));
+                mMap.addMarker(new MarkerOptions().position(latLng).title(this.work.getCompany().getNombre()));
+                CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                mMap.animateCamera(yourLocation);
+            }
+        }
     }
 }

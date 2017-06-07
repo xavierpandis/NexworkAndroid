@@ -21,10 +21,13 @@ import com.cjx.nexwork.R;
 import com.cjx.nexwork.managers.TokenStoreManager;
 import com.cjx.nexwork.managers.study.StudyDetailCallback;
 import com.cjx.nexwork.managers.study.StudyManager;
-import com.cjx.nexwork.managers.work.WorkDetailCallback;
-import com.cjx.nexwork.managers.work.WorkManager;
 import com.cjx.nexwork.model.Study;
-import com.cjx.nexwork.model.Work;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,7 +37,7 @@ import java.util.Date;
  * Created by Xavi on 28/03/2017.
  */
 
-public class FragmentEditStudy extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, StudyDetailCallback {
+public class FragmentEditStudy extends Fragment implements View.OnClickListener, CheckBox.OnCheckedChangeListener, StudyDetailCallback, OnMapReadyCallback {
 
     public static final String STUDY = null;
 
@@ -54,6 +57,18 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
     private EditText editDescription;
 
     private boolean editPetition = false;
+
+    private GoogleMap mMap;
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
 
     public FragmentEditStudy() {
         // Required empty public constructor
@@ -81,7 +96,11 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
         checkWorking = (CheckBox) view.findViewById(R.id.checkWorking);
         editDescription = (EditText) view.findViewById(R.id.editDescription);
 
-        Button btnAddJob = (Button) view.findViewById(R.id.btn_add_job);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(this);
+
+        Button btnAddJob = (Button) view.findViewById(R.id.btn_create_company);
         btnAddJob.setText("GUARDAR");
         btnAddJob.setOnClickListener(this);
 
@@ -139,7 +158,7 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
         else{
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                     .replace(R.id.content_main, new FragmentListStudy(TokenStoreManager.getInstance().getUsername(), true), "editFragment")
                     .commit();
         }
@@ -158,7 +177,7 @@ public class FragmentEditStudy extends Fragment implements View.OnClickListener,
         }
         switch (v.getId())
         {
-            case R.id.btn_add_job:
+            case R.id.btn_create_company:
                 editStudy();
                 break;
             case R.id.editPosition:

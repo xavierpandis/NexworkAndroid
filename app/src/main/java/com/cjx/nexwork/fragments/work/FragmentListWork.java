@@ -99,7 +99,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_list_work,container, false);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
@@ -112,11 +111,6 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                 R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-
-        /*if(actionBar != null){
-            actionBar.setTitle("Your works");
-        }*/
-
         if(userConected){
             actionBar.setTitle("YOUR WORKS");
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,7 +122,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new FragmentCreateWork(), "createWorkFrag")
                         .addToBackStack(null)
                         .commit();
@@ -225,12 +219,13 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
                         args.putLong(FragmentEditWork.WORK, work.getId());
 
                         Fragment fragment = new FragmentEditWork();
+                        Fragment efragment = new FragmentEditWork();
                         fragment.setArguments(args);
 
                         getActivity()
                                 .getSupportFragmentManager()
                                 .beginTransaction()
-                                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                                .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                                 .replace(R.id.content_main, fragment, "editWork")
                                 .commit();
 
@@ -347,7 +342,7 @@ public class FragmentListWork extends Fragment implements WorkCallback, View.OnC
 
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                     .replace(R.id.fragment_work, new FragmentCreateWork(), "listWorks")
                     .addToBackStack(null)
                     .commit();

@@ -136,4 +136,5 @@
     <string name="contacts_tab">Contacts</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="no_company">No company added</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

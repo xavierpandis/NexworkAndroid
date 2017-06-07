@@ -58,7 +58,7 @@ public class WorkActivity extends AppCompatActivity{
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                 .replace(R.id.fragment_work, new FragmentListWork())
                 .commit();
     }
@@ -74,7 +74,7 @@ public class WorkActivity extends AppCompatActivity{
         } else {
             super.onBackPressed();
         }
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.cjx.nexwork.fragments.management;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.widget.RelativeLayout;
 import com.cjx.nexwork.EditPasswordFragment;
 import com.cjx.nexwork.EditProfileFragment;
 import com.cjx.nexwork.R;
+import com.cjx.nexwork.activities.CreateCompanyActivity;
 import com.cjx.nexwork.fragments.FragmentFriendList;
 import com.cjx.nexwork.fragments.study.FragmentListStudy;
 import com.cjx.nexwork.fragments.work.FragmentListWork;
@@ -107,7 +109,7 @@ public class ManagementFragment extends Fragment implements View.OnClickListener
 
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new FragmentListWork(TokenStoreManager.getInstance().getUsername(), true))
                         .addToBackStack(null)
                         .commit();
@@ -115,7 +117,7 @@ public class ManagementFragment extends Fragment implements View.OnClickListener
             case R.id.manageStudies:
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new FragmentListStudy(TokenStoreManager.getInstance().getUsername(), true))
                         .addToBackStack(null)
                         .commit();
@@ -123,7 +125,7 @@ public class ManagementFragment extends Fragment implements View.OnClickListener
             case R.id.manageContacts:
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new FragmentFriendList(TokenStoreManager.getInstance().getUsername(), true))
                         .addToBackStack(null)
                         .commit();
@@ -131,18 +133,21 @@ public class ManagementFragment extends Fragment implements View.OnClickListener
             case R.id.manageUser:
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new EditProfileFragment())
                         .addToBackStack(null)
                         .commit();
                 break;
             case R.id.managePass:
-                getActivity().getSupportFragmentManager()
+                /*getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                        .setCustomAnimations(R.anim.swap_in_bottom, R.anim.swap_out_bottom)
                         .replace(R.id.content_main, new EditPasswordFragment())
                         .addToBackStack(null)
-                        .commit();
+                        .commit();*/
+
+                Intent intent = new Intent(getActivity(), CreateCompanyActivity.class);
+                startActivity(intent);
                 break;
         }
     }
